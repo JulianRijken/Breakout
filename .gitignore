@@ -1,0 +1,9 @@
+.vs/
+build/
+out/
+Scores/
+*.idea
+*.user
+compile_commands.json
+
+
