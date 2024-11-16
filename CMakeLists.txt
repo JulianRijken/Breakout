@@ -17,12 +17,18 @@ make_libs_available()
 
 # Adds the source files to the executible
 set(SOURCE_FILES
-                            ${SOURCE_DIR}/Main.cpp
-    ${SOURCE_DIR}/Game.h    ${SOURCE_DIR}/Game.cpp
+                              ${SOURCE_DIR}/Main.cpp
+    ${SOURCE_DIR}/Core.h      ${SOURCE_DIR}/Core.cpp
+    ${SOURCE_DIR}/GameTime.h  ${SOURCE_DIR}/GameTime.cpp
+    ${SOURCE_DIR}/Renderer.h  ${SOURCE_DIR}/Renderer.cpp
+    ${SOURCE_DIR}/Breakout.h  ${SOURCE_DIR}/Breakout.cpp
+    ${SOURCE_DIR}/Locator.h
+    ${SOURCE_DIR}/MathExtensions.h
 )
 
 add_executable(${TARGET_NAME}
     ${SOURCE_FILES}
+
 )
 
 
@@ -43,7 +49,7 @@ if(EMSCRIPTEN)
     SET(CMAKE_EXECUTABLE_SUFFIX ".html")
 
     target_link_libraries(${TARGET_NAME} PUBLIC
-        "--preload-file ${CMAKE_SOURCE_DIR}/Assets@Assets"
+        # "--preload-file ${CMAKE_SOURCE_DIR}/Assets@Assets"
         "-s ALLOW_MEMORY_GROWTH"
         "-s EXIT_RUNTIME=1"
         "-s SDL2_IMAGE_FORMATS='[\"png\"]'"
@@ -63,7 +69,6 @@ else()
 endif()
 
 
-# enable c++20 features
 target_compile_features(${TARGET_NAME} PUBLIC cxx_std_20)
 set_property(TARGET ${TARGET_NAME} PROPERTY
     CXX_STANDARD 20
