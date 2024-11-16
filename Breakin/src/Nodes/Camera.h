@@ -24,7 +24,7 @@ namespace bin
         [[nodiscard]] glm::vec2 ScreenToWorldPosition(const glm::ivec2& screenPosition) const;
 
         [[nodiscard]] glm::mat4 GetViewPorjectionMatrix() const;
-
+        [[nodiscard]] glm::vec2 GetViewWorldSize() const;
 
         int m_Priority{};  // NOLINT - C.131: Avoid trivial getters and setters
 

@@ -29,8 +29,8 @@ void bout::Breakout::Update()
     SDL_GetMouseState(&mouseX, &mouseY);
 
 
-    // const float time = bin::GameTime::GetElapsedTime();
-    // m_Camera->SetLocalPosition({ time, 0 });
+    const float time = bin::GameTime::GetElapsedTime();
+    m_Camera->SetLocalPosition({ time, time });
 
 
     const glm::vec2 mousePosition = { mouseX, mouseY };
@@ -54,20 +54,6 @@ void bout::Breakout::Draw() const
     pos *= distance;
 
     renderer.DrawLine({ 0, 0 }, pos);
-
-    // for(int x = 0; x < 5; ++x)
-    // {
-    //     for(int y = 0; y < 5; ++y)
-    //     {
-    //         // Testing
-    //         const SDL_Color randomColor{ static_cast<Uint8>(bin::math::RandomRange(0, 255)),
-    //                                      static_cast<Uint8>(bin::math::RandomRange(0, 255)),
-    //                                      static_cast<Uint8>(bin::math::RandomRange(0, 255)),
-    //                                      static_cast<Uint8>(bin::math::RandomRange(0, 255)) };
-
-    //         renderer.DrawBox({ x * 2, y }, { 1, 1 }, randomColor);
-    //     }
-    // }
 
     renderer.DrawLine({ -5, 0 }, { 5, 0 }, { 217, 64, 237, 255 });
     renderer.DrawLine({ 0, -5 }, { 0, 5 }, { 217, 64, 237, 255 });

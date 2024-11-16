@@ -19,7 +19,7 @@ glm::ivec2 bin::Camera::WorldToScreenScale(const glm::vec2& worldScale) const
 {
     auto& renderer = bin::Locator::Get<Renderer>();
 
-    const glm::vec2 worldSize = { m_OrthoSize * 2.0f * renderer.GetAspectRatio(), m_OrthoSize * 2.0f };
+    const glm::vec2 worldSize = GetViewWorldSize();
     const glm::ivec2 windowSize = renderer.GetWindowSize();
 
     // Floats are not perfect, we use ceil as we prefere the pixel shown over cut off
@@ -30,7 +30,6 @@ glm::ivec2 bin::Camera::WorldToScreenScale(const glm::vec2& worldScale) const
 glm::ivec2 bin::Camera::WorldToScreenPosition(const glm::vec2& worldPosition) const
 {
     auto& renderer = bin::Locator::Get<Renderer>();
-
     const glm::ivec2 windowSize = renderer.GetWindowSize();
     const glm::vec4 clipSpacePos = GetViewPorjectionMatrix() * glm::vec4(worldPosition, 0, 1.0f);
 
@@ -64,4 +63,10 @@ glm::mat4 bin::Camera::GetViewPorjectionMatrix() const
     const glm::mat4 view = glm::translate(glm::mat4(1.0f), -glm::vec3(GetLocalPosition(), 0));
 
     return projection * view;
+}
+
+glm::vec2 bin::Camera::GetViewWorldSize() const
+{
+    auto& renderer = bin::Locator::Get<Renderer>();
+    return { m_OrthoSize * 2.0f * renderer.GetAspectRatio(), m_OrthoSize * 2.0f };
 }

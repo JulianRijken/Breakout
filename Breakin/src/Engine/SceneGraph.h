@@ -30,7 +30,7 @@ namespace bin
 
         // Retruns camera with highest priority
         // Can be nullptr
-        [[nodiscard]] const Camera* GetBestCamera();
+        [[nodiscard]] Camera* GetBestCamera();
 
         void AddCamera(Camera* camera);
         void RemoveCamera(Camera* camera);
