@@ -9,7 +9,7 @@ bin::BoxCollider::BoxCollider(const glm::vec2& size) :
     Locator::Get<Physics>().RegisterCollider(this);
 }
 
-bin::BoxCollider::~BoxCollider() { Locator::Get<Physics>().RegisterCollider(this); }
+bin::BoxCollider::~BoxCollider() { Locator::Get<Physics>().UnregisterCollider(this); }
 
 const glm::vec2& bin::BoxCollider::GetSize() { return m_Size; }
 

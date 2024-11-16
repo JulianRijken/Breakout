@@ -5,7 +5,7 @@
 
 void Physics::RegisterCollider(bin::BoxCollider* boxCollider) { m_Colliders.insert(boxCollider); }
 
-void Physics::UnregisterColluder(bin::BoxCollider* boxCollider) { m_Colliders.erase(boxCollider); }
+void Physics::UnregisterCollider(bin::BoxCollider* boxCollider) { m_Colliders.erase(boxCollider); }
 
 std::pair<bool, Manifold> Physics::DoesOverlap(bin::BoxCollider* a, bin::BoxCollider* b)
 {

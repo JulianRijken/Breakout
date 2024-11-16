@@ -1,6 +1,7 @@
 #ifndef BOXCOLLIDER_H
 #define BOXCOLLIDER_H
 
+#include <Event.h>
 #include <Node.h>
 
 #include <glm/vec2.hpp>
@@ -14,6 +15,8 @@ namespace bin
         ~BoxCollider() override;
 
         [[nodiscard]] const glm::vec2& GetSize();
+
+        bin::Event<> m_OnHit{};
 
     private:
         void Draw() override;

@@ -8,6 +8,8 @@ namespace bin
 {
     class Node
     {
+        friend class SceneGraph;
+
     public:
         virtual ~Node() = default;
 
@@ -17,22 +19,27 @@ namespace bin
 
         void SetLocalPosition(const glm::vec2& position);
         void Translate(const glm::vec2& delta);
-
         void SetPositionDiry();
+
+        void SetParent(Node* newParentPtr, bool worldPositionStays = true);
+        void MarkForDestroy(bool destroy = true);
 
         [[nodiscard]] const glm::vec2& GetWorldPosition();
         [[nodiscard]] const glm::vec2& GetLocalPosition() const;
         [[nodiscard]] bool IsChild(Node* checkChildPtr) const;
-
-        void SetParent(Node* newParentPtr, bool worldPositionStays = true);
+        [[nodiscard]] bool IsMarkedForDestroy() const;
 
     private:
         void UpdateWorldPosition();
+        void PropagateDestroy();
+        void ClearFromSceneGraph();
 
         bool m_IsPositionDirty{ true };
         glm::vec2 m_LocalPosition{};  // Primary Data
         glm::vec2 m_WorldPosition{};  // Derived Data
 
+        bool m_MarkedForDestroy{ false };  // Marked by the user does not propagate
+        bool m_GettingDestroyed{ false };  // Used by the SceneGraph
         Node* m_ParentPtr{ nullptr };
         std::unordered_set<Node*> m_ChildPtrs{};
     };

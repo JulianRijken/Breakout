@@ -16,9 +16,10 @@ namespace bin
     public:
         void UpdateAll();
         void FixedUpdateAll();
-        void DrawAll() const;
+        void DrawAll();
 
-        void Cleanup();
+        void CleanupNodesSetToDestroy();
+        void ClearAllNodes();
 
         template<typename NodeType, typename... Args>
             requires std::derived_from<NodeType, Node>

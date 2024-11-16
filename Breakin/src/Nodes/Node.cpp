@@ -1,6 +1,7 @@
 #include "Node.h"
 
 #include <algorithm>
+#include <iostream>
 
 void bin::Node::SetLocalPosition(const glm::vec2& position)
 {
@@ -22,6 +23,7 @@ void bin::Node::SetPositionDiry()
             childPtr->SetPositionDiry();
 }
 
+
 const glm::vec2& bin::Node::GetWorldPosition()
 {
     if(m_IsPositionDirty)
@@ -42,9 +44,11 @@ bool bin::Node::IsChild(Node* checkChildPtr) const
                                [checkChildPtr](const Node* childPtr) { return childPtr->IsChild(checkChildPtr); });
 }
 
+bool bin::Node::IsMarkedForDestroy() const { return m_MarkedForDestroy; }
+
+
 void bin::Node::SetParent(Node* newParentPtr, bool worldPositionStays)
 {
-    // Avoid: same parent - new parent being this - new parent being a child of this
     if(newParentPtr == m_ParentPtr or newParentPtr == this or IsChild(newParentPtr))
         return;
 
@@ -69,6 +73,27 @@ void bin::Node::SetParent(Node* newParentPtr, bool worldPositionStays)
     }
 
     SetPositionDiry();
+}
+
+void bin::Node::MarkForDestroy(bool destroy) { m_MarkedForDestroy = destroy; }
+
+void bin::Node::PropagateDestroy()
+{
+    m_GettingDestroyed = true;
+
+    if(m_ParentPtr != nullptr)
+        m_ParentPtr->m_ChildPtrs.erase(this);
+
+    for(Node* child : m_ChildPtrs)
+        child->PropagateDestroy();
+}
+
+void bin::Node::ClearFromSceneGraph()
+{
+    if(m_ParentPtr != nullptr)
+        m_ParentPtr->m_ChildPtrs.erase(this);
+
+    m_ChildPtrs.clear();
 }
 
 void bin::Node::UpdateWorldPosition()

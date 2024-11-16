@@ -17,7 +17,7 @@ class Physics : public bin::Service
 {
 public:
     void RegisterCollider(bin::BoxCollider* boxCollider);
-    void UnregisterColluder(bin::BoxCollider* boxCollider);
+    void UnregisterCollider(bin::BoxCollider* boxCollider);
 
     [[nodiscard]] std::pair<bool, Manifold> DoesOverlap(bin::BoxCollider* a, bin::BoxCollider* b);
 

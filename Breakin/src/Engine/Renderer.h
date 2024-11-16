@@ -29,7 +29,6 @@ namespace bin
         [[nodiscard]] glm::ivec2 GetWindowSize() const;
         [[nodiscard]] float GetAspectRatio() const;
 
-
     private:
         void DrawUnitGrid();
 

@@ -9,6 +9,7 @@
 #include <stdexcept>
 
 #include "GameTime.h"
+#include "MessageQueue.h"
 #include "Physics.h"
 #include "Renderer.h"
 #include "SceneGraph.h"
@@ -73,17 +74,19 @@ void bin::Core::RunOneFrame()
     while(m_Lag >= bin::GameTime::GetFixedDeltaTime())
     {
         m_Lag -= bin::GameTime::GetFixedDeltaTime();
-
         bin::SceneGraph::GetInstance().FixedUpdateAll();
     }
 
+    bin::MessageQueue::Dispatch();
     bin::SceneGraph::GetInstance().UpdateAll();
     Locator::Get<Renderer>().Render();
+
+    bin::SceneGraph::GetInstance().CleanupNodesSetToDestroy();
 }
 
 bin::Core::~Core()
 {
-    SceneGraph::GetInstance().Cleanup();
+    SceneGraph::GetInstance().ClearAllNodes();
     Locator::Release<Renderer>();
     Locator::Release<Physics>();
 

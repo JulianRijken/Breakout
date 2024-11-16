@@ -3,9 +3,12 @@
 #include <BoxCollider.h>
 #include <fmt/core.h>
 #include <GameTime.h>
+#include <MessageQueue.h>
 #include <Physics.h>
 #include <Renderer.h>
 #include <SceneGraph.h>
+
+#include "Breakout.h"
 
 bout::Ball::Ball()
 {
@@ -45,6 +48,8 @@ void bout::Ball::Draw()
     renderer.DrawBox(GetWorldPosition(), { 0.5f, 0.5f }, { 0.5f, 0.5f });
 }
 
+void bout::Ball::OnHitWall() { bin::MessageQueue::Broadcast(bout::MessageType::OnWallHit); }
+
 void bout::Ball::HandleBallCollision()
 {
     const auto& colliders = bin::Locator::Get<Physics>().GetColliders();
@@ -56,7 +61,6 @@ void bout::Ball::HandleBallCollision()
 
         auto [didHit, manifold] = bin::Locator::Get<Physics>().DoesOverlap(collider, m_BoxColliderPtr);
 
-
         if(didHit)
         {
             // Reflection formula w = v - 2 * dot(v, n)
@@ -67,6 +71,8 @@ void bout::Ball::HandleBallCollision()
 
             m_MoveDirection = glm::round(reflectedDirection);
             Translate(-(normal * manifold.penetration));
+            OnHitWall();
+            collider->m_OnHit.Invoke();
         }
     }
 }

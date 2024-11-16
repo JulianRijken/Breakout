@@ -5,11 +5,18 @@
 
 namespace bin
 {
+    struct Message;
     class Camera;
 }
 
 namespace bout
 {
+
+    enum class MessageType
+    {
+        OnWallHit,
+    };
+
     class Playfield;
     class Paddle;
 
@@ -22,6 +29,7 @@ namespace bout
         void Update() override;
         void Draw() override;
 
+        void OnWallHitMessage(const bin::Message& message);
         void ShakeCamera();
 
     private:

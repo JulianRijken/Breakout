@@ -28,16 +28,20 @@ set(BREAKIN_SOURCE_FILES
     # Engine
     ${SOURCE_DIR}/Engine/GameTime.h         ${SOURCE_DIR}/Engine/GameTime.cpp
     ${SOURCE_DIR}/Engine/Renderer.h         ${SOURCE_DIR}/Engine/Renderer.cpp
-    ${SOURCE_DIR}/Engine/Locator.h
-    ${SOURCE_DIR}/Engine/MathExtensions.h
     ${SOURCE_DIR}/Engine/Physics.h          ${SOURCE_DIR}/Engine/Physics.cpp
     ${SOURCE_DIR}/Engine/SceneGraph.h       ${SOURCE_DIR}/Engine/SceneGraph.cpp
-    ${SOURCE_DIR}/Engine/Singleton.h
 
     # Nodes
     ${SOURCE_DIR}/Nodes/Node.h              ${SOURCE_DIR}/Nodes/Node.cpp
     ${SOURCE_DIR}/Nodes/BoxCollider.h       ${SOURCE_DIR}/Nodes/BoxCollider.cpp
     ${SOURCE_DIR}/Nodes/Camera.h            ${SOURCE_DIR}/Nodes/Camera.cpp
+
+    # Helper
+    ${SOURCE_DIR}/Helper/Event.h
+    ${SOURCE_DIR}/Helper/Locator.h
+    ${SOURCE_DIR}/Helper/MathExtensions.h
+    ${SOURCE_DIR}/Helper/MessageQueue.h     ${SOURCE_DIR}/Helper/MessageQueue.cpp
+    ${SOURCE_DIR}/Helper/Singleton.h
 )
 
 add_library(${TARGET_NAME} STATIC
@@ -51,6 +55,7 @@ target_include_directories(${TARGET_NAME} PUBLIC
     ${SOURCE_DIR}/Core
     ${SOURCE_DIR}/Nodes
     ${SOURCE_DIR}/Engine
+    ${SOURCE_DIR}/Helper
 )
 
 target_link_libraries(${TARGET_NAME} PUBLIC

@@ -4,6 +4,7 @@
 #include <GameTime.h>
 #include <Locator.h>
 #include <MathExtensions.h>
+#include <MessageQueue.h>
 #include <Paddle.h>
 #include <Renderer.h>
 #include <SceneGraph.h>
@@ -31,6 +32,8 @@ bout::Breakout::Breakout() :
 
     m_Camera->SetOrthoSize(m_PlayfieldPtr->GetSize().y / 2 + CAMERA_PADDING);
     m_Camera->SetLocalPosition({ 0, 0 });
+
+    bin::MessageQueue::AddListener(MessageType::OnWallHit, this, &Breakout::OnWallHitMessage);
 }
 
 void bout::Breakout::FixedUpdate()
@@ -48,17 +51,14 @@ void bout::Breakout::Update()
 {
     const float decayRate = 0.1f;
 
-    if(m_ShakeTimer < decayRate)
-    {
-        m_ShakeTimer += bin::GameTime::GetDeltaTime();
-        const float shakeStrength = 0.5f;
+    m_ShakeTimer += bin::GameTime::GetDeltaTime();
+    const float shakeStrength = 0.3f;
 
-        const glm::vec2 offset = { bin::math::RandomRange(-1.0f, 1.0f), bin::math::RandomRange(-1.0f, 1.0f) };
-        const float decay = std::exp(-m_ShakeTimer / decayRate);
+    const glm::vec2 offset = { bin::math::RandomRange(-1.0f, 1.0f), bin::math::RandomRange(-1.0f, 1.0f) };
+    const float decay = std::exp(-m_ShakeTimer / decayRate);
 
-        const glm::vec2 cameraOffset = shakeStrength * offset * decay;
-        m_Camera->SetLocalPosition(cameraOffset);
-    }
+    const glm::vec2 cameraOffset = shakeStrength * offset * decay;
+    m_Camera->SetLocalPosition(cameraOffset);
 }
 
 void bout::Breakout::Draw()
@@ -76,5 +76,7 @@ void bout::Breakout::Draw()
     // renderer.DrawWireBox({ 0, 0 }, { 5, 5 });
     // renderer.DrawWireBox({ 5, 5 }, { 5, 5 });
 }
+
+void bout::Breakout::OnWallHitMessage(const bin::Message& /*unused*/) { ShakeCamera(); }
 
 void bout::Breakout::ShakeCamera() { m_ShakeTimer = 0.0f; }

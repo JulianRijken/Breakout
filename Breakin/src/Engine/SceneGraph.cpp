@@ -14,13 +14,29 @@ void bin::SceneGraph::FixedUpdateAll()
         node->FixedUpdate();
 }
 
-void bin::SceneGraph::DrawAll() const
+void bin::SceneGraph::DrawAll()
 {
-    for(const auto& node : m_Nodes)
+    for(auto& node : m_Nodes)
         node->Draw();
 }
 
-void bin::SceneGraph::Cleanup() { m_Nodes.clear(); }
+void bin::SceneGraph::CleanupNodesSetToDestroy()
+{
+    // Propegate all nodes marked for destroy
+    for(auto& node : m_Nodes)
+        if(node->IsMarkedForDestroy())
+            if(not node->m_GettingDestroyed)
+                node->PropagateDestroy();
+
+    for(auto iterator = m_Nodes.begin(); iterator != m_Nodes.end();)
+        if((*iterator)->m_GettingDestroyed)
+            iterator = m_Nodes.erase(iterator);
+        else
+            ++iterator;
+}
+
+void bin::SceneGraph::ClearAllNodes() { m_Nodes.clear(); }
+
 
 bin::Camera* bin::SceneGraph::GetBestCamera()
 {
