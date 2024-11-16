@@ -1,12 +1,11 @@
+#include <Core.h>
 #include <fmt/core.h>
+#include <SceneGraph.h>
 
 #include "Breakout.h"
-#include "Core.h"
-#include "SceneGraph.h"
 
 void jul::Core::GameEntry()
 {
-
     jul::SceneGraph::GetInstance().AddNode<Breakout>();
     //
 }

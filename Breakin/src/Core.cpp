@@ -17,9 +17,6 @@ jul::Core::Core()
     if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER) != 0)
         throw std::runtime_error(fmt::format("SDL_Init Error: {}", SDL_GetError()));
 
-    fmt::println("CPP Version {}", __cplusplus);
-
-
     // Not stored as member variable as SDL might change the width or height
     constexpr const char* windowTitle = "Julgen - Custom Engine by Julian Rijken";
     constexpr int windowWidth{ 1280 };

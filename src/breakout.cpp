@@ -1,14 +1,13 @@
 #include "Breakout.h"
 
 #include <fmt/core.h>
+#include <GameTime.h>
+#include <Locator.h>
+#include <MathExtensions.h>
 #include <Paddle.h>
-
-#include "GameTime.h"
-#include "Locator.h"
-#include "MathExtensions.h"
-#include "Renderer.h"
-#include "SceneGraph.h"
-#include "SDL_mouse.h"
+#include <Renderer.h>
+#include <SceneGraph.h>
+#include <SDL_mouse.h>
 
 jul::Breakout::Breakout() { jul::SceneGraph::GetInstance().AddNode<Paddle>(); }
 

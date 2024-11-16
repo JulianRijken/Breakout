@@ -1,7 +1,7 @@
 #ifndef PADDLE_H
 #define PADDLE_H
 
-#include "Node.h"
+#include <Node.h>
 
 namespace jul
 {

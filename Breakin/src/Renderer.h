@@ -1,11 +1,8 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
-
 #include <SDL_pixels.h>
-
 #include <glm/vec2.hpp>
-
 #include "Locator.h"
 
 struct SDL_Renderer;
