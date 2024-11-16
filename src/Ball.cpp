@@ -16,7 +16,7 @@ bout::Ball::Ball()
     m_BoxColliderPtr = bin::SceneGraph::AddNode<bin::BoxCollider>(glm::vec2{ 0.5f, 0.5f });
     m_BoxColliderPtr->SetParent(this);
 
-    auto trailPtr = bin::SceneGraph::AddNode<bout::Trail>();
+    const auto trailPtr = bin::SceneGraph::AddNode<bout::Trail>();
     trailPtr->SetParent(this);
 }
 
@@ -62,7 +62,7 @@ void bout::Ball::FixedUpdate()
 
 void bout::Ball::Draw()
 {
-    auto& renderer = bin::Locator::Get<bin::Renderer>();
+    const auto& renderer = bin::Locator::Get<bin::Renderer>();
     renderer.DrawBox(GetWorldPosition(), { 0.5f, 0.5f }, { 0.5f, 0.5f });
 }
 

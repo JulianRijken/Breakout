@@ -9,18 +9,18 @@ void bin::Node::SetLocalPosition(const glm::vec2& position)
         return;
 
     m_LocalPosition = position;
-    SetPositionDiry();
+    SetPositionDirty();
 }
 
 void bin::Node::Translate(const glm::vec2& delta) { SetLocalPosition(m_LocalPosition + delta); }
 
-void bin::Node::SetPositionDiry()
+void bin::Node::SetPositionDirty()
 {
     m_IsPositionDirty = true;
 
     for(Node* childPtr : m_ChildPtrs)
         if(not childPtr->m_IsPositionDirty)
-            childPtr->SetPositionDiry();
+            childPtr->SetPositionDirty();
 }
 
 
@@ -39,7 +39,7 @@ bool bin::Node::IsChild(Node* checkChildPtr) const
     if(m_ChildPtrs.contains(checkChildPtr))
         return true;
 
-    // Recursivly checks all children
+    // Recursively checks all children
     return std::ranges::any_of(m_ChildPtrs,
                                [checkChildPtr](const Node* childPtr) { return childPtr->IsChild(checkChildPtr); });
 }
@@ -72,7 +72,7 @@ void bin::Node::SetParent(Node* newParentPtr, bool worldPositionStays)
             m_LocalPosition -= m_ParentPtr->GetWorldPosition();
     }
 
-    SetPositionDiry();
+    SetPositionDirty();
 }
 
 void bin::Node::MarkForDestroy(bool destroy) { m_MarkedForDestroy = destroy; }

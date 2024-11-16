@@ -19,7 +19,7 @@ bin::Renderer::Renderer(SDL_Window* windowPtr) :
     SDL_SetRenderDrawBlendMode(m_RendererPtr, SDL_BLENDMODE_BLEND);
 }
 
-void bin::Renderer::Render()
+void bin::Renderer::Render() const
 {
     SDL_SetRenderDrawColor(m_RendererPtr, m_ClearColor.r, m_ClearColor.g, m_ClearColor.b, m_ClearColor.a);
     SDL_RenderClear(m_RendererPtr);
@@ -36,7 +36,7 @@ void bin::Renderer::Render()
 
 void bin::Renderer::SetClearColor(const SDL_Color& color) { m_ClearColor = color; }
 
-void bin::Renderer::DrawLine(const glm::vec2& from, const glm::vec2& to, const SDL_Color& color)
+void bin::Renderer::DrawLine(const glm::vec2& from, const glm::vec2& to, const SDL_Color& color) const
 {
     const Camera* camera = SceneGraph::GetInstance().GetBestCamera();
     assert(camera && "Camera is null, you are probably drawing outside of Draw()");
@@ -49,7 +49,7 @@ void bin::Renderer::DrawLine(const glm::vec2& from, const glm::vec2& to, const S
 }
 
 void bin::Renderer::DrawBox(const glm::vec2& position, const glm::vec2& scale, const glm::vec2& pivot,
-                            const SDL_Color& color)
+                            const SDL_Color& color) const
 {
     const Camera* camera = SceneGraph::GetInstance().GetBestCamera();
     assert(camera && "Camera is null, you are probably drawing outside of Draw()");
@@ -65,7 +65,7 @@ void bin::Renderer::DrawBox(const glm::vec2& position, const glm::vec2& scale, c
 }
 
 void bin::Renderer::DrawWireBox(const glm::vec2& position, const glm::vec2& scale, const glm::vec2& pivot,
-                                const SDL_Color& color)
+                                const SDL_Color& color) const
 {
     const Camera* camera = SceneGraph::GetInstance().GetBestCamera();
     assert(camera && "Camera is null, you are probably drawing outside of Draw()");

@@ -13,18 +13,18 @@ namespace bin
     class Renderer final : public bin::Service
     {
     public:
-        Renderer(SDL_Window* windowPtr);
+        explicit Renderer(SDL_Window* windowPtr);
 
-        void Render();
+        void Render() const;
 
         void SetClearColor(const SDL_Color& color);
-        void DrawLine(const glm::vec2& from, const glm::vec2& to, const SDL_Color& color = { 255, 255, 255, 255 });
+        void DrawLine(const glm::vec2& from, const glm::vec2& to, const SDL_Color& color = { 255, 255, 255, 255 }) const;
 
         void DrawBox(const glm::vec2& position, const glm::vec2& scale, const glm::vec2& pivot = { 0.5, 0.5 },
-                     const SDL_Color& color = { 255, 255, 255, 255 });
+                     const SDL_Color& color = { 255, 255, 255, 255 }) const;
 
         void DrawWireBox(const glm::vec2& position, const glm::vec2& scale, const glm::vec2& pivot = { 0.5, 0.5 },
-                         const SDL_Color& color = { 255, 255, 255, 255 });
+                         const SDL_Color& color = { 255, 255, 255, 255 }) const;
 
         [[nodiscard]] glm::ivec2 GetWindowSize() const;
         [[nodiscard]] float GetAspectRatio() const;

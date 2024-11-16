@@ -4,7 +4,7 @@
 
 void bout::Trail::FixedUpdate()
 {
-    const int maxFramesBack{ 30 };
+    constexpr int maxFramesBack{ 30 };
 
     m_PastPositions.emplace_back(GetWorldPosition());
 
@@ -18,9 +18,10 @@ void bout::Trail::Draw()
     if(m_PastPositions.empty())
         return;
 
-    auto& renderer = bin::Locator::Get<bin::Renderer>();
+    const auto& renderer = bin::Locator::Get<bin::Renderer>();
 
-    const int pointCount{ 20 };
+    constexpr int pointCount{ 20 };
+
     for(int i = 0; i < pointCount; ++i)
     {
         const float alpha = static_cast<float>(i) / static_cast<float>(pointCount - 1);

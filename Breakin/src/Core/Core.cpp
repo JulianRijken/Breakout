@@ -68,7 +68,7 @@ void bin::Core::RunOneFrame()
         if(sdlEvent.type == SDL_QUIT)
             m_IsApplicationQuitting = true;
 
-        // More input events
+        // TODO: Handle input
     }
 
     while(m_Lag >= bin::GameTime::GetFixedDeltaTime())

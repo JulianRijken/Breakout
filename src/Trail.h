@@ -13,7 +13,6 @@ namespace bout
         void FixedUpdate() override;
         void Draw() override;
 
-
         std::deque<glm::vec2> m_PastPositions{};
     };
 }  // namespace bin

@@ -2,19 +2,19 @@
 
 #include <algorithm>
 
-void bin::SceneGraph::UpdateAll()
+void bin::SceneGraph::UpdateAll() const
 {
     for(auto& node : m_Nodes)
         node->Update();
 }
 
-void bin::SceneGraph::FixedUpdateAll()
+void bin::SceneGraph::FixedUpdateAll() const
 {
     for(auto& node : m_Nodes)
         node->FixedUpdate();
 }
 
-void bin::SceneGraph::DrawAll()
+void bin::SceneGraph::DrawAll() const
 {
     for(auto& node : m_Nodes)
         node->Draw();
@@ -22,13 +22,13 @@ void bin::SceneGraph::DrawAll()
 
 void bin::SceneGraph::CleanupNodesSetToDestroy()
 {
-    // Propegate all nodes marked for destroy
-    for(auto& node : m_Nodes)
+    // Propagate all nodes marked for destroy
+    for(const auto& node : m_Nodes)
         if(node->IsMarkedForDestroy())
             if(not node->m_GettingDestroyed)
                 node->PropagateDestroy();
 
-    for(auto& node : m_Nodes)
+    for(const auto& node : m_Nodes)
         if(node->m_GettingDestroyed)
             node->ClearFromSceneGraph();
 
@@ -46,7 +46,7 @@ bin::Camera* bin::SceneGraph::GetBestCamera()
 {
     if(m_BestCameraDiry)
     {
-        auto bestCameraIt = std::ranges::max_element(m_Cameras);
+        const auto bestCameraIt = std::ranges::max_element(m_Cameras);
 
         if(bestCameraIt != m_Cameras.end())
             m_BestCamera = *bestCameraIt;

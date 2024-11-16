@@ -9,7 +9,7 @@ namespace bout
     {
 
     public:
-        Playfield(glm::vec2 size);
+        Playfield(const glm::vec2& size);
 
         [[nodiscard]] const glm::vec2& GetSize() const;
 

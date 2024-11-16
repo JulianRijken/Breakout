@@ -14,7 +14,12 @@ namespace bin
         BoxCollider(const glm::vec2& size, uint16_t layers = 0x0001);
         ~BoxCollider() override;
 
-        [[nodiscard]] const glm::vec2& GetSize();
+        BoxCollider(BoxCollider&&) = delete;
+        BoxCollider(const BoxCollider&) = delete;
+        BoxCollider& operator=(BoxCollider&&) = delete;
+        BoxCollider& operator=(const BoxCollider&) = delete;
+
+        [[nodiscard]] const glm::vec2& GetSize() const;
 
         bin::Event<> m_OnHit{};
 

@@ -19,13 +19,13 @@ bout::Paddle::Paddle()
 
 void bout::Paddle::SetPaddleTargetPosition(float targetPosition)
 {
-    m_PaddleTargetPostion = std::clamp(targetPosition, -MAX_MOVE_DISTANCE, MAX_MOVE_DISTANCE);
+    m_PaddleTargetPosition = std::clamp(targetPosition, -MAX_MOVE_DISTANCE, MAX_MOVE_DISTANCE);
 }
 
 void bout::Paddle::FixedUpdate()
 {
     m_PaddlePosition =
-        bin::math::LerpSmooth(m_PaddlePosition, m_PaddleTargetPostion, MOVE_DURATION, bin::GameTime::GetDeltaTime());
+        bin::math::LerpSmooth(m_PaddlePosition, m_PaddleTargetPosition, MOVE_DURATION, bin::GameTime::GetDeltaTime());
 
     SetLocalPosition({ m_PaddlePosition, GetLocalPosition().y });
 }

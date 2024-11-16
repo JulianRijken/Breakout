@@ -2,9 +2,6 @@
 
 #include "Renderer.h"
 #include "SceneGraph.h"
-
-
-
 #include "Locator.h"
 
 bin::Camera::Camera() { bin::SceneGraph::GetInstance().AddCamera(this); }
@@ -17,21 +14,21 @@ void bin::Camera::SetOrthoSize(float orthoSize) { m_OrthoSize = std::max(0.0f, o
 
 glm::ivec2 bin::Camera::WorldToScreenScale(const glm::vec2& worldScale) const
 {
-    auto& renderer = bin::Locator::Get<Renderer>();
+    const auto& renderer = bin::Locator::Get<Renderer>();
 
     const glm::vec2 worldSize = GetViewWorldSize();
     const glm::ivec2 windowSize = renderer.GetWindowSize();
 
-    // Floats are not perfect, we use ceil as we prefere the pixel shown over cut off
+    // Floats are not perfect, we use ceil as we prefer the pixel shown over cut off
     return { std::ceil(static_cast<float>(windowSize.x) / worldSize.x * worldScale.x),
              -std::ceil(static_cast<float>(windowSize.y) / worldSize.y * worldScale.y) };
 }
 
 glm::ivec2 bin::Camera::WorldToScreenPosition(const glm::vec2& worldPosition) const
 {
-    auto& renderer = bin::Locator::Get<Renderer>();
+    const auto& renderer = bin::Locator::Get<Renderer>();
     const glm::ivec2 windowSize = renderer.GetWindowSize();
-    const glm::vec4 clipSpacePos = GetViewPorjectionMatrix() * glm::vec4(worldPosition, 0, 1.0f);
+    const glm::vec4 clipSpacePos = GetViewProjectionMatrix() * glm::vec4(worldPosition, 0, 1.0f);
 
     // We chose to round when it comes to positions
     return { std::round((clipSpacePos.x + 1.0f) * 0.5f * static_cast<float>(windowSize.x)),
@@ -40,21 +37,21 @@ glm::ivec2 bin::Camera::WorldToScreenPosition(const glm::vec2& worldPosition) co
 
 glm::vec2 bin::Camera::ScreenToWorldPosition(const glm::ivec2& screenPosition) const
 {
-    auto& renderer = bin::Locator::Get<Renderer>();
+    const auto& renderer = bin::Locator::Get<Renderer>();
     const glm::ivec2 windowSize = renderer.GetWindowSize();
 
     glm::vec2 ndc;
     ndc.x = 2.0f * static_cast<float>(screenPosition.x) / static_cast<float>(windowSize.x) - 1.0f;
     ndc.y = 1.0f - 2.0f * static_cast<float>(screenPosition.y) / static_cast<float>(windowSize.y);
 
-    const glm::vec4 worldPosition = glm::inverse(GetViewPorjectionMatrix()) * glm::vec4(ndc, 0.0f, 1.0f);
+    const glm::vec4 worldPosition = glm::inverse(GetViewProjectionMatrix()) * glm::vec4(ndc, 0.0f, 1.0f);
 
     return { worldPosition.x, worldPosition.y };
 }
 
-glm::mat4 bin::Camera::GetViewPorjectionMatrix() const
+glm::mat4 bin::Camera::GetViewProjectionMatrix() const
 {
-    auto& renderer = bin::Locator::Get<Renderer>();
+    const auto& renderer = bin::Locator::Get<Renderer>();
     const float aspectRatio = renderer.GetAspectRatio();
 
     const glm::mat4 projection =
@@ -67,6 +64,6 @@ glm::mat4 bin::Camera::GetViewPorjectionMatrix() const
 
 glm::vec2 bin::Camera::GetViewWorldSize() const
 {
-    auto& renderer = bin::Locator::Get<Renderer>();
+    const auto& renderer = bin::Locator::Get<Renderer>();
     return { m_OrthoSize * 2.0f * renderer.GetAspectRatio(), m_OrthoSize * 2.0f };
 }

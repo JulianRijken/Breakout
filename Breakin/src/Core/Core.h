@@ -17,10 +17,12 @@ namespace bin
         Core& operator=(Core&&) = delete;
         Core& operator=(const Core&) = delete;
 
-        // Requres to be public for Emscripten
+        // Requires to be public for Emscripten
         void RunOneFrame();
 
     private:
+
+        // Is implemented by the game
         void GameEntry();
 
         void Run();

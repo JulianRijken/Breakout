@@ -14,9 +14,9 @@ namespace bin
     class SceneGraph final : public Singleton<SceneGraph>
     {
     public:
-        void UpdateAll();
-        void FixedUpdateAll();
-        void DrawAll();
+        void UpdateAll() const;
+        void FixedUpdateAll() const;
+        void DrawAll() const;
 
         void CleanupNodesSetToDestroy();
         void ClearAllNodes();
@@ -31,7 +31,7 @@ namespace bin
             return static_cast<NodeType*>(addedNode.get());
         }
 
-        // Retruns camera with highest priority
+        // Reruns camera with the highest priority
         // Can be nullptr
         [[nodiscard]] Camera* GetBestCamera();
 

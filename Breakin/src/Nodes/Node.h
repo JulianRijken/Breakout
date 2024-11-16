@@ -11,15 +11,22 @@ namespace bin
         friend class SceneGraph;
 
     public:
+        Node() = default;
         virtual ~Node() = default;
+       
+        Node(Node&&) = delete;
+        Node(const Node&) = delete;
+        Node& operator=(Node&&) = delete;
+        Node& operator=(const Node&) = delete;
 
-        virtual void Draw(){};
-        virtual void Update(){};
-        virtual void FixedUpdate(){};
+
+        virtual void Draw(){}
+        virtual void Update(){}
+        virtual void FixedUpdate(){}
 
         void SetLocalPosition(const glm::vec2& position);
         void Translate(const glm::vec2& delta);
-        void SetPositionDiry();
+        void SetPositionDirty();
 
         void SetParent(Node* newParentPtr, bool worldPositionStays = true);
         void MarkForDestroy(bool destroy = true);

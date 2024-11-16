@@ -15,6 +15,11 @@ namespace bin
         Camera();
         ~Camera() override;
 
+        Camera(Camera&&) = delete;
+        Camera(const Camera&) = delete;
+        Camera& operator=(Camera&&) = delete;
+        Camera& operator=(const Camera&) = delete;
+
         [[nodiscard]] float GetOrthoSize() const;
 
         void SetOrthoSize(float orthoSize);
@@ -23,7 +28,7 @@ namespace bin
         [[nodiscard]] glm::ivec2 WorldToScreenPosition(const glm::vec2& worldPosition) const;
         [[nodiscard]] glm::vec2 ScreenToWorldPosition(const glm::ivec2& screenPosition) const;
 
-        [[nodiscard]] glm::mat4 GetViewPorjectionMatrix() const;
+        [[nodiscard]] glm::mat4 GetViewProjectionMatrix() const;
         [[nodiscard]] glm::vec2 GetViewWorldSize() const;
 
         int m_Priority{ 0 };  // NOLINT - C.131: Avoid trivial getters and setters

@@ -7,7 +7,7 @@
 #include "BoxCollider.h"
 
 
-bout::Playfield::Playfield(glm::vec2 size) :
+bout::Playfield::Playfield(const glm::vec2& size) :
     m_Size(size)
 
 {

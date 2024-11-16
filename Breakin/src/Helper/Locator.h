@@ -1,8 +1,6 @@
 #ifndef LOCATOR_H
 #define LOCATOR_H
 
-// Implementation used from Julgen (My Engine) https://github.com/JulianRijken/Julgen/blob/main/src/Engine/Locator.h
-
 #include <memory>
 #include <typeindex>
 #include <unordered_map>

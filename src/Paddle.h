@@ -19,7 +19,7 @@ namespace bout
         static constexpr float MAX_MOVE_DISTANCE = 11;
 
         float m_PaddlePosition{};
-        float m_PaddleTargetPostion{};
+        float m_PaddleTargetPosition{};
     };
 }  // namespace bout
 
