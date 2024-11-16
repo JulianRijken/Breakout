@@ -20,6 +20,8 @@ void bin::SceneGraph::DrawAll() const
         node->Draw();
 }
 
+void bin::SceneGraph::Cleanup() { m_Nodes.clear(); }
+
 bin::Camera* bin::SceneGraph::GetBestCamera()
 {
     if(m_BestCameraDiry)

@@ -18,6 +18,8 @@ namespace bin
         void FixedUpdateAll();
         void DrawAll() const;
 
+        void Cleanup();
+
         template<typename NodeType, typename... Args>
             requires std::derived_from<NodeType, Node>
         static NodeType* AddNode(Args&&... args)
@@ -38,6 +40,7 @@ namespace bin
     private:
         bool m_BestCameraDiry{ false };
         Camera* m_BestCamera{ nullptr };
+
         std::vector<std::unique_ptr<Node>> m_Nodes{};
         std::unordered_set<Camera*> m_Cameras{};
     };

@@ -10,6 +10,8 @@ namespace bin
 
 namespace bout
 {
+    class Playfield;
+    class Paddle;
     class Ball;
 
     class Breakout final : public bin::Node
@@ -18,18 +20,17 @@ namespace bout
         Breakout();
 
         void Update() override;
-        void Draw() const override;
+        void Draw() override;
 
     private:
-        static constexpr float PADDLE_MOVE_DURATION = 0.1f;
+        static constexpr float CAMERA_PADDING{ 3 };
 
         float m_GameTime{};
 
-        float m_PaddlePosition{};
-        float m_paddleTargetPostion{};
-
         bin::Camera* m_Camera{};
-        bout::Ball* m_Ball{};
+        bout::Playfield* m_PlayfieldPtr{};
+        bout::Paddle* m_PaddlePtr{};
+        bout::Ball* m_BallPtr{};
     };
 
 }  // namespace bin

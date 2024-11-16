@@ -10,56 +10,53 @@
 #include <SDL_mouse.h>
 
 #include "Ball.h"
+#include "Playfield.h"
 
-bout::Breakout::Breakout()
+bout::Breakout::Breakout() :
+    m_Camera(bin::SceneGraph::AddNode<bin::Camera>()),
+    m_PlayfieldPtr(bin::SceneGraph::AddNode<Playfield>(glm::vec2{ 14, 22 })),
+    m_PaddlePtr(bin::SceneGraph::AddNode<Paddle>()),
+    m_BallPtr(bin::SceneGraph::AddNode<Ball>())
 {
-    m_Camera = bin::SceneGraph::AddNode<bin::Camera>();
-    m_Camera->SetOrthoSize(10);
-    m_Camera->SetLocalPosition({ 0, 5 });
+    m_PaddlePtr->SetParent(m_PlayfieldPtr);
+    m_PaddlePtr->SetLocalPosition({ 0, -11 });
 
-    bin::SceneGraph::AddNode<Paddle>();
+    m_BallPtr->SetParent(m_PlayfieldPtr);
+    m_BallPtr->SetLocalPosition({ 0, -5 });
 
-    m_Ball = bin::SceneGraph::AddNode<Ball>();
+    m_Camera->SetOrthoSize(m_PlayfieldPtr->GetSize().y / 2 + CAMERA_PADDING);
+    m_Camera->SetLocalPosition({ 0, 0 });
 }
 
 void bout::Breakout::Update()
 {
-    int mouseX;
-    int mouseY;
+    int mouseX{};
+    int mouseY{};
     SDL_GetMouseState(&mouseX, &mouseY);
-
-
-    const float time = bin::GameTime::GetElapsedTime();
-    m_Camera->SetLocalPosition({ time, time });
-
 
     const glm::vec2 mousePosition = { mouseX, mouseY };
     const glm::vec2 mousePositionWorld = m_Camera->ScreenToWorldPosition(mousePosition);
 
+    m_PaddlePtr->SetPaddleTargetPosition(mousePositionWorld.x);
 
-    m_paddleTargetPostion = std::clamp(mousePositionWorld.x, -10.0f, 10.0f);
-    m_paddleTargetPostion = std::round(m_paddleTargetPostion);
-
-    m_PaddlePosition = bin::math::LerpSmooth(
-        m_PaddlePosition, m_paddleTargetPostion, PADDLE_MOVE_DURATION, bin::GameTime::GetDeltaTime());
+    // Testing
+    // const float time = bin::GameTime::GetElapsedTime();
+    // m_Camera->SetLocalPosition({ time, time });
+    // m_PlayfieldPtr->SetLocalPosition({ time, time });
 }
 
-void bout::Breakout::Draw() const
+void bout::Breakout::Draw()
 {
-    auto& renderer = bin::Locator::Get<bin::Renderer>();
+    // const float time = bin::GameTime::GetElapsedTime();
+    // constexpr float distance = 5;
+    // glm::vec2 pos = { std::cos(time), std::sin(time) };
+    // pos *= distance;
 
-    const float time = bin::GameTime::GetElapsedTime();
-    constexpr float distance = 5;
-    glm::vec2 pos = { std::cos(time), std::sin(time) };
-    pos *= distance;
+    // renderer.DrawLine({ 0, 0 }, pos);
 
-    renderer.DrawLine({ 0, 0 }, pos);
+    // renderer.DrawLine({ -5, 0 }, { 5, 0 }, { 217, 64, 237, 255 });
+    // renderer.DrawLine({ 0, -5 }, { 0, 5 }, { 217, 64, 237, 255 });
 
-    renderer.DrawLine({ -5, 0 }, { 5, 0 }, { 217, 64, 237, 255 });
-    renderer.DrawLine({ 0, -5 }, { 0, 5 }, { 217, 64, 237, 255 });
-    renderer.DrawWireBox({ 0, 0 }, { 5, 5 });
-    renderer.DrawWireBox({ 5, 5 }, { 5, 5 });
-
-
-    renderer.DrawBox({ m_PaddlePosition, 0 }, { 1, 1 }, { 0.5f, 0.5f });
+    // renderer.DrawWireBox({ 0, 0 }, { 5, 5 });
+    // renderer.DrawWireBox({ 5, 5 }, { 5, 5 });
 }

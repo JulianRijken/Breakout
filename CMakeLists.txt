@@ -19,6 +19,8 @@ set(SOURCE_FILES
 add_executable(${TARGET_NAME}
     ${SOURCE_FILES}
     src/Ball.h src/Ball.cpp
+    src/Playfield.h src/Playfield.cpp
+    src/Brick.h src/Brick.cpp
 )
 
 target_include_directories(${TARGET_NAME} PUBLIC

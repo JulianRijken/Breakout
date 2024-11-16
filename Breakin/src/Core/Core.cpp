@@ -9,6 +9,7 @@
 #include <stdexcept>
 
 #include "GameTime.h"
+#include "Physics.h"
 #include "Renderer.h"
 #include "SceneGraph.h"
 
@@ -18,9 +19,9 @@ bin::Core::Core()
         throw std::runtime_error(fmt::format("SDL_Init Error: {}", SDL_GetError()));
 
     // Not stored as member variable as SDL might change the width or height
-    constexpr const char* windowTitle = "bingen - Custom Engine by binian Rijken";
-    constexpr int windowWidth{ 1280 };
-    constexpr int windowHeight{ 720 };
+    constexpr const char* windowTitle = "Breakout - By Julian Rijken";
+    constexpr int windowWidth{ 1100 };
+    constexpr int windowHeight{ 900 };
 
     m_WindowPtr = SDL_CreateWindow(windowTitle,
                                    SDL_WINDOWPOS_CENTERED,
@@ -30,7 +31,7 @@ bin::Core::Core()
                                    SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
     Locator::Provide<Renderer>(m_WindowPtr);
-
+    Locator::Provide<Physics>();
 
     GameEntry();
     Run();
@@ -82,6 +83,10 @@ void bin::Core::RunOneFrame()
 
 bin::Core::~Core()
 {
+    SceneGraph::GetInstance().Cleanup();
+    Locator::Release<Renderer>();
+    Locator::Release<Physics>();
+
     SDL_DestroyWindow(m_WindowPtr);
     m_WindowPtr = nullptr;
     SDL_Quit();

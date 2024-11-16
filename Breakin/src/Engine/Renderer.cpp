@@ -1,4 +1,4 @@
-#include "renderer.h"
+#include "Renderer.h"
 
 #include <SDL.h>
 #include <SDL_pixels.h>
@@ -112,10 +112,20 @@ void bin::Renderer::DrawUnitGrid()
     const glm::ivec2 size = { std::ceil(worldSize.x * 0.5f + worldCenter.x),
                               std::ceil(worldSize.y * 0.5f + worldCenter.y) };
 
-    constexpr SDL_Color gridColor = { 255, 255, 255, 30 };
+    auto getGridColor = [](int pos) -> SDL_Color
+    {
+        if(pos == 0)
+            return SDL_Color{ 255, 255, 255, 100 };
+
+        if(pos % 10 == 0)
+            return SDL_Color{ 255, 255, 255, 40 };
+
+        return SDL_Color{ 255, 255, 255, 15 };
+    };
+
     for(int x = -size.x; x < size.x; ++x)
-        DrawLine({ x, size.y }, { x, -size.y }, gridColor);
+        DrawLine({ x, size.y }, { x, -size.y }, getGridColor(x));
 
     for(int y = -size.y; y < size.y; ++y)
-        DrawLine({ size.x, y }, { -size.x, y }, gridColor);
+        DrawLine({ size.x, y }, { -size.x, y }, getGridColor(y));
 }

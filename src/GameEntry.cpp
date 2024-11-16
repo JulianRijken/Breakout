@@ -8,6 +8,4 @@
 void bin::Core::GameEntry()
 {
     bin::SceneGraph::AddNode<bout::Breakout>();
-
-    //
 }

@@ -26,7 +26,7 @@ namespace bin
         [[nodiscard]] glm::mat4 GetViewPorjectionMatrix() const;
         [[nodiscard]] glm::vec2 GetViewWorldSize() const;
 
-        int m_Priority{};  // NOLINT - C.131: Avoid trivial getters and setters
+        int m_Priority{ 0 };  // NOLINT - C.131: Avoid trivial getters and setters
 
         // Allows for sorting the camera by priority
         bool operator<(const Camera& other) const { return m_Priority < other.m_Priority; }

@@ -3,10 +3,20 @@
 
 #include <Node.h>
 
+#include <glm/vec2.hpp>
+
 namespace bin
 {
     class BoxCollider final : public bin::Node
     {
+    public:
+        BoxCollider(const glm::vec2& size);
+        ~BoxCollider() override;
+
+    private:
+        void Draw() override;
+
+        glm::vec2 m_Size{ 0.8f, 0.8f };
     };
 
 }  // namespace bin
