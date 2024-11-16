@@ -5,6 +5,8 @@
 
 #include <stdexcept>
 
+#include "SceneGraph.h"
+
 #define GLM_ENABLE_EXPERIMENTAL
 #include <SDL.h>
 
@@ -20,13 +22,13 @@ jul::Renderer::Renderer(SDL_Window* windowPtr) :
         throw std::runtime_error("Failed to create renderer");
 }
 
-void jul::Renderer::ClearScreen()
+void jul::Renderer::Render()
 {
     SDL_SetRenderDrawColor(m_RendererPtr, m_ClearColor.r, m_ClearColor.g, m_ClearColor.b, m_ClearColor.a);
     SDL_RenderClear(m_RendererPtr);
+    jul::SceneGraph::GetInstance().Draw();
+    SDL_RenderPresent(m_RendererPtr);
 }
-
-void jul::Renderer::PresentFrame() { SDL_RenderPresent(m_RendererPtr); }
 
 void jul::Renderer::SetClearColor(const SDL_Color& color) { m_ClearColor = color; }
 

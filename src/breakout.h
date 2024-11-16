@@ -1,13 +1,17 @@
 #ifndef BREAKOUT_H
 #define BREAKOUT_H
 
+#include "Node.h"
+
 namespace jul
 {
-    class Breakout final
+    class Breakout final : public Node
     {
     public:
-        void Update();
-        void Draw() const;
+        Breakout();
+
+        void Update() override;
+        void Draw() const override;
 
     private:
         static constexpr float PADDLE_MOVE_DURATION = 0.1f;

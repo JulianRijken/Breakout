@@ -18,8 +18,7 @@ namespace jul
     public:
         Renderer(SDL_Window* windowPtr);
 
-        void ClearScreen();
-        void PresentFrame();
+        void Render();
 
         void SetClearColor(const SDL_Color& color);
         void DrawLine(const glm::vec2& from, const glm::vec2& to, const SDL_Color& color = { 255, 255, 255, 255 });

@@ -1,10 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <Breakout.h>
-
-#include <memory>
-
 struct SDL_Window;
 struct SDL_Renderer;
 
@@ -25,12 +21,13 @@ namespace jul
         void RunOneFrame();
 
     private:
+        void GameEntry();
+
         void Run();
 
         double m_Lag{ 0.0 };
         bool m_IsApplicationQuitting{ false };
         SDL_Window* m_WindowPtr{ nullptr };
-        std::unique_ptr<Breakout> m_BreakoutPtr{};
     };
 }  // namespace jul
 #endif  // GAME_H

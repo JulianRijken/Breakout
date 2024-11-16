@@ -10,6 +10,7 @@
 
 #include "GameTime.h"
 #include "Renderer.h"
+#include "SceneGraph.h"
 
 jul::Core::Core()
 {
@@ -33,8 +34,8 @@ jul::Core::Core()
 
     Locator::Provide<Renderer>(m_WindowPtr);
 
-    m_BreakoutPtr = std::make_unique<Breakout>();
 
+    GameEntry();
     Run();
 }
 
@@ -75,14 +76,11 @@ void jul::Core::RunOneFrame()
     {
         m_Lag -= jul::GameTime::GetFixedDeltaTime();
 
-        // FixedUpdate();
+        jul::SceneGraph::GetInstance().FixedUpdate();
     }
 
-    m_BreakoutPtr->Update();
-
-    Locator::Get<Renderer>().ClearScreen();
-    m_BreakoutPtr->Draw();
-    Locator::Get<Renderer>().PresentFrame();
+    jul::SceneGraph::GetInstance().Update();
+    Locator::Get<Renderer>().Render();
 }
 
 jul::Core::~Core()
