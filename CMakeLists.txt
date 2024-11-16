@@ -13,14 +13,15 @@ set(SOURCE_FILES
     ${SOURCE_DIR}/Breakout.h        ${SOURCE_DIR}/Breakout.cpp
     ${SOURCE_DIR}/Paddle.h          ${SOURCE_DIR}/Paddle.cpp
                                     ${SOURCE_DIR}/GameEntry.cpp
+    ${SOURCE_DIR}/Ball.h            ${SOURCE_DIR}/Ball.cpp
+    ${SOURCE_DIR}/Playfield.h       ${SOURCE_DIR}/Playfield.cpp
+    ${SOURCE_DIR}/Brick.h           ${SOURCE_DIR}/Brick.cpp
+    ${SOURCE_DIR}/Trail.h           ${SOURCE_DIR}/Trail.cpp
 
 )
 
 add_executable(${TARGET_NAME}
     ${SOURCE_FILES}
-    src/Ball.h src/Ball.cpp
-    src/Playfield.h src/Playfield.cpp
-    src/Brick.h src/Brick.cpp
 )
 
 target_include_directories(${TARGET_NAME} PUBLIC

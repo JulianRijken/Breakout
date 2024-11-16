@@ -9,11 +9,15 @@
 #include <SceneGraph.h>
 
 #include "Breakout.h"
+#include "Trail.h"
 
 bout::Ball::Ball()
 {
     m_BoxColliderPtr = bin::SceneGraph::AddNode<bin::BoxCollider>(glm::vec2{ 0.5f, 0.5f });
     m_BoxColliderPtr->SetParent(this);
+
+    auto trailPtr = bin::SceneGraph::AddNode<bout::Trail>();
+    trailPtr->SetParent(this);
 }
 
 void bout::Ball::HoldBall() { m_HoldingBall = true; }
@@ -31,6 +35,20 @@ void bout::Ball::FixedUpdate()
 
     // NOTE: We always normalize movement direction
     m_MoveDirection = glm::normalize(m_MoveDirection);
+
+    constexpr float minDirection = 0.4f;
+
+    if(m_MoveDirection.y >= 0 and m_MoveDirection.y < minDirection)
+        m_MoveDirection.y = minDirection;
+
+    if(m_MoveDirection.y < 0 and m_MoveDirection.y > -minDirection)
+        m_MoveDirection.y = -minDirection;
+
+    if(m_MoveDirection.x >= 0 and m_MoveDirection.x < minDirection)
+        m_MoveDirection.x = minDirection;
+
+    if(m_MoveDirection.x < 0 and m_MoveDirection.x > -minDirection)
+        m_MoveDirection.x = -minDirection;
 
 
     const glm::vec2 velocity = static_cast<glm::vec2>(m_MoveDirection) * m_MoveSpeed;
@@ -63,13 +81,23 @@ void bout::Ball::HandleBallCollision()
 
         if(didHit)
         {
-            // Reflection formula w = v - 2 * dot(v, n)
             const glm::vec2 normal = glm::normalize(static_cast<glm::vec2>(manifold.normal));
-            const glm::vec2 normalizedDirection = glm::normalize(m_MoveDirection);
-            const glm::vec2 reflectedDirection =
-                normalizedDirection - 2.0f * glm::dot(normalizedDirection, normal) * normal;
 
-            m_MoveDirection = glm::round(reflectedDirection);
+            if(collider->CompareLayers(bout::layer::PADDLE))
+            {
+                const glm::vec2 paddleDirection = GetWorldPosition() - collider->GetWorldPosition();
+                m_MoveDirection = paddleDirection;
+            }
+            else
+            {
+                // Reflection formula w = v - 2 * dot(v, n)
+                const glm::vec2 normalizedDirection = glm::normalize(m_MoveDirection);
+                const glm::vec2 reflectedDirection =
+                    normalizedDirection - 2.0f * glm::dot(normalizedDirection, normal) * normal;
+
+                m_MoveDirection = reflectedDirection;
+            }
+
             Translate(-(normal * manifold.penetration));
             OnHitWall();
             collider->m_OnHit.Invoke();

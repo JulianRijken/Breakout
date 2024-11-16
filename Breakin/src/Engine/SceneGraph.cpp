@@ -28,6 +28,10 @@ void bin::SceneGraph::CleanupNodesSetToDestroy()
             if(not node->m_GettingDestroyed)
                 node->PropagateDestroy();
 
+    for(auto& node : m_Nodes)
+        if(node->m_GettingDestroyed)
+            node->ClearFromSceneGraph();
+
     for(auto iterator = m_Nodes.begin(); iterator != m_Nodes.end();)
         if((*iterator)->m_GettingDestroyed)
             iterator = m_Nodes.erase(iterator);

@@ -43,8 +43,6 @@ const glm::vec2& bout::Playfield::GetSize() const { return m_Size; }
 
 void bout::Playfield::Draw()
 {
-
-    auto& renderer = bin::Locator::Get<bin::Renderer>();
-
-    renderer.DrawWireBox(GetLocalPosition(), m_Size, { 0.5f, 0.5f }, { 217, 64, 237, 255 });
+    // auto& renderer = bin::Locator::Get<bin::Renderer>();
+    // renderer.DrawWireBox(GetLocalPosition(), m_Size, { 0.5f, 0.5f }, { 217, 64, 237, 255 });
 }

@@ -11,17 +11,20 @@ namespace bin
     class BoxCollider final : public bin::Node
     {
     public:
-        BoxCollider(const glm::vec2& size);
+        BoxCollider(const glm::vec2& size, uint16_t layers = 0x0001);
         ~BoxCollider() override;
 
         [[nodiscard]] const glm::vec2& GetSize();
 
         bin::Event<> m_OnHit{};
 
+        bool CompareLayers(uint16_t layers) const;
+
     private:
         void Draw() override;
 
-        glm::vec2 m_Size{ 0.8f, 0.8f };
+        uint16_t m_Layers;
+        glm::vec2 m_Size;
     };
 
 }  // namespace bin

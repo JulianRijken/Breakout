@@ -8,10 +8,12 @@
 #include <algorithm>
 
 #include "BoxCollider.h"
+#include "Breakout.h"
+
 
 bout::Paddle::Paddle()
 {
-    auto* boxColliderPtr = bin::SceneGraph::AddNode<bin::BoxCollider>(glm::vec2{ 2, 0.5f });
+    auto* boxColliderPtr = bin::SceneGraph::AddNode<bin::BoxCollider>(glm::vec2{ 2, 0.5f }, bout::layer::PADDLE);
     boxColliderPtr->SetParent(this);
 }
 

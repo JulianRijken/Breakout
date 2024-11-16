@@ -27,7 +27,7 @@ void bin::Renderer::Render()
     // We can't draw without a camera
     if(SceneGraph::GetInstance().GetBestCamera() != nullptr)
     {
-        DrawUnitGrid();
+        // DrawUnitGrid();
         bin::SceneGraph::GetInstance().DrawAll();
     }
 

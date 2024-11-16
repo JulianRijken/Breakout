@@ -81,9 +81,6 @@ void bin::Node::PropagateDestroy()
 {
     m_GettingDestroyed = true;
 
-    if(m_ParentPtr != nullptr)
-        m_ParentPtr->m_ChildPtrs.erase(this);
-
     for(Node* child : m_ChildPtrs)
         child->PropagateDestroy();
 }
