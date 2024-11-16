@@ -8,6 +8,7 @@ namespace bout
     class Paddle final : public bin::Node
     {
     public:
+        Paddle();
         void SetPaddleTargetPosition(float targetPosition);
 
     private:

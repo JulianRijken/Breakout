@@ -3,9 +3,19 @@
 #include <GameTime.h>
 #include <MathExtensions.h>
 #include <Renderer.h>
+#include <SceneGraph.h>
 
 #include <algorithm>
 #include <iostream>
+
+#include "BoxCollider.h"
+
+bout::Paddle::Paddle()
+{
+
+    auto* boxColliderPtr = bin::SceneGraph::AddNode<bin::BoxCollider>(glm::vec2{ 2, 0.5f });
+    boxColliderPtr->SetParent(this);
+}
 
 void bout::Paddle::SetPaddleTargetPosition(float targetPosition)
 {

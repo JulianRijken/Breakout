@@ -13,6 +13,8 @@ namespace bin
         BoxCollider(const glm::vec2& size);
         ~BoxCollider() override;
 
+        [[nodiscard]] const glm::vec2& GetSize();
+
     private:
         void Draw() override;
 

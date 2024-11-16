@@ -23,7 +23,7 @@ namespace bout
         void Draw() override;
 
     private:
-        static constexpr float CAMERA_PADDING{ 3 };
+        static constexpr float CAMERA_PADDING{ 2 };
 
         float m_GameTime{};
 

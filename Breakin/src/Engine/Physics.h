@@ -13,6 +13,10 @@ public:
     void RegisterCollider(bin::BoxCollider* boxCollider);
     void UnregisterColluder(bin::BoxCollider* boxCollider);
 
+    [[nodiscard]] bool DoesOverlap(bin::BoxCollider* a, bin::BoxCollider* b);
+
+    [[nodiscard]] const std::unordered_set<bin::BoxCollider*>& GetColliders() const;
+
 private:
     std::unordered_set<bin::BoxCollider*> m_Colliders{};
 };

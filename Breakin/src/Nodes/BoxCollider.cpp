@@ -11,6 +11,8 @@ bin::BoxCollider::BoxCollider(const glm::vec2& size) :
 
 bin::BoxCollider::~BoxCollider() { Locator::Get<Physics>().RegisterCollider(this); }
 
+const glm::vec2& bin::BoxCollider::GetSize() { return m_Size; }
+
 void bin::BoxCollider::Draw()
 {
     auto& renderer = bin::Locator::Get<bin::Renderer>();
