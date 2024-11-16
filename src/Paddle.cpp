@@ -6,13 +6,11 @@
 #include <SceneGraph.h>
 
 #include <algorithm>
-#include <iostream>
 
 #include "BoxCollider.h"
 
 bout::Paddle::Paddle()
 {
-
     auto* boxColliderPtr = bin::SceneGraph::AddNode<bin::BoxCollider>(glm::vec2{ 2, 0.5f });
     boxColliderPtr->SetParent(this);
 }
@@ -33,5 +31,5 @@ void bout::Paddle::FixedUpdate()
 void bout::Paddle::Draw()
 {
     auto& renderer = bin::Locator::Get<bin::Renderer>();
-    renderer.DrawBox({ GetWorldPosition() }, { 1, 0.5 }, { 0.5f, 0.5f });
+    renderer.DrawBox({ GetWorldPosition() }, { 2, 0.5 }, { 0.5f, 0.5f });
 }

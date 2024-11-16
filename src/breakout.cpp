@@ -14,15 +14,17 @@
 
 bout::Breakout::Breakout() :
     m_Camera(bin::SceneGraph::AddNode<bin::Camera>()),
-    m_PlayfieldPtr(bin::SceneGraph::AddNode<Playfield>(glm::vec2{ 14, 22 })),
-    m_PaddlePtr(bin::SceneGraph::AddNode<Paddle>()),
-    m_BallPtr(bin::SceneGraph::AddNode<Ball>())
+    m_PlayfieldPtr(bin::SceneGraph::AddNode<Playfield>(glm::vec2{ 24, 22 })),
+    m_PaddlePtr(bin::SceneGraph::AddNode<Paddle>())
 {
     m_PaddlePtr->SetParent(m_PlayfieldPtr);
-    m_PaddlePtr->SetLocalPosition({ 0, -11 });
+    m_PaddlePtr->SetLocalPosition({ 0, -m_PlayfieldPtr->GetSize().y / 2.0f });
 
-    m_BallPtr->SetParent(m_PlayfieldPtr);
-    m_BallPtr->SetLocalPosition({ 0, -5 });
+
+    auto* ball = bin::SceneGraph::AddNode<Ball>();
+    ball->SetParent(m_PaddlePtr);
+    ball->SetLocalPosition({ 0, 1 });
+
 
     m_Camera->SetOrthoSize(m_PlayfieldPtr->GetSize().y / 2 + CAMERA_PADDING);
     m_Camera->SetLocalPosition({ 0, 0 });

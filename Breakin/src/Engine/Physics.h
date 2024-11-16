@@ -7,13 +7,20 @@
 
 #include "BoxCollider.h"
 
+struct Manifold
+{
+    glm::vec2 penetration;
+    glm::ivec2 normal;
+};
+
 class Physics : public bin::Service
 {
 public:
     void RegisterCollider(bin::BoxCollider* boxCollider);
     void UnregisterColluder(bin::BoxCollider* boxCollider);
 
-    [[nodiscard]] bool DoesOverlap(bin::BoxCollider* a, bin::BoxCollider* b);
+    [[nodiscard]] std::pair<bool, Manifold> DoesOverlap(bin::BoxCollider* a, bin::BoxCollider* b);
+
 
     [[nodiscard]] const std::unordered_set<bin::BoxCollider*>& GetColliders() const;
 

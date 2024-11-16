@@ -15,14 +15,18 @@ namespace bout
     public:
         Ball();
 
+        void SetHoldingBall(bool holding);
+
     private:
         void FixedUpdate() override;
         void Draw() override;
 
-        // In Units a second
-        float m_MoveSpeed{ 7.0 };
+        void HandleBallCollision();
 
-        glm::ivec2 m_MoveDirection{ 1, 1 };
+        // In Units a second
+        float m_MoveSpeed{ 10.0 };
+        bool m_HoldingBall{ true };
+        glm::vec2 m_MoveDirection{ 1, 1 };
         bin::BoxCollider* m_BoxColliderPtr{};
     };
 }  // namespace bout

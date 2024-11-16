@@ -16,7 +16,7 @@ namespace bout
         void Draw() override;
 
         static constexpr float MOVE_DURATION = 0.1f;
-        static constexpr float MAX_MOVE_DISTANCE = 6.5f;
+        static constexpr float MAX_MOVE_DISTANCE = 11;
 
         float m_PaddlePosition{};
         float m_PaddleTargetPostion{};

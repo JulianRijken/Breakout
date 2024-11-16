@@ -13,43 +13,99 @@ bout::Ball::Ball()
     m_BoxColliderPtr->SetParent(this);
 }
 
+void bout::Ball::SetHoldingBall(bool holding) { m_HoldingBall = holding; }
+
 void bout::Ball::FixedUpdate()
 {
+    if(m_HoldingBall)
+        return;
+
     const glm::vec2 velocity = static_cast<glm::vec2>(m_MoveDirection) * m_MoveSpeed;
     Translate(velocity * static_cast<float>(bin::GameTime::GetFixedDeltaTime()));
 
+    HandleBallCollision();
 
-    auto& colliders = bin::Locator::Get<Physics>().GetColliders();
+    if(GetLocalPosition().y < -15)
+        SetLocalPosition({ 0, 0 });
+}
 
+void bout::Ball::Draw()
+{
+    auto& renderer = bin::Locator::Get<bin::Renderer>();
+    renderer.DrawBox(GetWorldPosition(), { 0.5f, 0.5f }, { 0.5f, 0.5f });
+}
+
+void bout::Ball::HandleBallCollision()
+{
+    const auto& colliders = bin::Locator::Get<Physics>().GetColliders();
 
     for(const auto& collider : colliders)
     {
         if(collider == m_BoxColliderPtr)
             continue;
 
-        bool overlap = bin::Locator::Get<Physics>().DoesOverlap(collider, m_BoxColliderPtr);
+        auto [didHit, manifold] = bin::Locator::Get<Physics>().DoesOverlap(collider, m_BoxColliderPtr);
 
-        if(overlap)
+        const glm::vec2 normal = manifold.normal;
+
+        if(didHit)
         {
-            const glm::vec2 dir = collider->GetWorldPosition() - GetWorldPosition();
+            const glm::vec2 normalizedDirection = glm::normalize(m_MoveDirection);
+            const glm::vec2 collisionNormal = glm::normalize(normal);
 
-            if(dir.y > 0)
-                m_MoveDirection.y = -1;
+            // Reflection formula w = v - 2 * dot(v, n)
+            const glm::vec2 reflectedDirection =
+                normalizedDirection - 2.0f * glm::dot(normalizedDirection, collisionNormal) * collisionNormal;
 
-            if(dir.y < 0)
-                m_MoveDirection.y = 1;
+            // if(m_MoveDirection.x < )
+            // m_MoveDirection.x =
 
-            if(dir.x > 0)
-                m_MoveDirection.x = -1;
 
-            if(dir.x < 0)
-                m_MoveDirection.x = 1;
+            // Update direction to the reflected vector
+            m_MoveDirection = reflectedDirection;
+
+            // Resolve penetration
+            Translate(-normal * manifold.penetration);
         }
     }
-}
 
-void bout::Ball::Draw()
-{
-    auto& renderer = bin::Locator::Get<bin::Renderer>();
-    renderer.DrawBox(GetLocalPosition(), { 0.5f, 0.5f }, { 0.5f, 0.5f });
+
+    // const auto& colliders = bin::Locator::Get<Physics>().GetColliders();
+
+    // for(const auto& collider : colliders)
+    // {
+    //     if(collider == m_BoxColliderPtr)
+    //         continue;
+
+    //     auto [didHit, manifold] = bin::Locator::Get<Physics>().DoesOverlap(collider, m_BoxColliderPtr);
+
+
+    //     if(didHit)
+    //     {
+    //         if(manifold.normal.y > 0)
+    //         {
+    //             m_MoveDirection.y = -1;
+    //             Translate({ 0, -manifold.penetration.y });
+    //         }
+
+    //         if(manifold.normal.y < 0)
+    //         {
+    //             m_MoveDirection.y = 1;
+    //             Translate({ 0, manifold.penetration.y });
+    //         }
+
+    //         if(manifold.normal.x > 0)
+    //         {
+    //             m_MoveDirection.x = -1;
+    //             Translate({ -manifold.penetration.x, 0 });
+    //         }
+
+
+    //         if(manifold.normal.x < 0)
+    //         {
+    //             m_MoveDirection.x = 1;
+    //             Translate({ manifold.penetration.x, 0 });
+    //         }
+    //     }
+    // }
 }

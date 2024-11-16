@@ -23,17 +23,19 @@ bout::Playfield::Playfield(glm::vec2 size) :
         }
     }
 
-    auto* rightWallPtr = bin::SceneGraph::AddNode<bin::BoxCollider>(glm::vec2{ 1, m_Size.y });
-    rightWallPtr->SetLocalPosition({ m_Size.x / 2.0f + 0.5f, 0 });
+    constexpr float wallWidth = 50.0f;
+
+    auto* rightWallPtr = bin::SceneGraph::AddNode<bin::BoxCollider>(glm::vec2{ wallWidth, m_Size.y + wallWidth * 2 });
+    rightWallPtr->SetLocalPosition({ m_Size.x / 2.0f + wallWidth / 2.0f, 0 });
     rightWallPtr->SetParent(this);
 
-    auto* leftWallPtr = bin::SceneGraph::AddNode<bin::BoxCollider>(glm::vec2{ 1, m_Size.y });
-    leftWallPtr->SetLocalPosition({ -m_Size.x / 2.0f - 0.5f, 0 });
+    auto* leftWallPtr = bin::SceneGraph::AddNode<bin::BoxCollider>(glm::vec2{ wallWidth, m_Size.y + wallWidth * 2 });
+    leftWallPtr->SetLocalPosition({ -m_Size.x / 2.0f - wallWidth / 2.0f, 0 });
     leftWallPtr->SetParent(this);
 
 
-    auto* topWallPtr = bin::SceneGraph::AddNode<bin::BoxCollider>(glm::vec2{ m_Size.x, 1 });
-    topWallPtr->SetLocalPosition({ 0, m_Size.y / 2.0f + 0.5f });
+    auto* topWallPtr = bin::SceneGraph::AddNode<bin::BoxCollider>(glm::vec2{ m_Size.x, wallWidth });
+    topWallPtr->SetLocalPosition({ 0, m_Size.y / 2.0f + wallWidth / 2.0f });
     topWallPtr->SetParent(this);
 }
 

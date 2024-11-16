@@ -12,7 +12,6 @@ namespace bout
 {
     class Playfield;
     class Paddle;
-    class Ball;
 
     class Breakout final : public bin::Node
     {
@@ -30,7 +29,6 @@ namespace bout
         bin::Camera* m_Camera{};
         bout::Playfield* m_PlayfieldPtr{};
         bout::Paddle* m_PaddlePtr{};
-        bout::Ball* m_BallPtr{};
     };
 
 }  // namespace bin

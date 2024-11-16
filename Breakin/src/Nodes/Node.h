@@ -4,7 +4,6 @@
 #include <glm/vec2.hpp>
 #include <unordered_set>
 
-
 namespace bin
 {
     class Node
