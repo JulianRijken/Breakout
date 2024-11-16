@@ -3,7 +3,7 @@
 
 #include <glm/vec2.hpp>
 
-namespace jul
+namespace bin
 {
     class Node
     {
@@ -21,6 +21,6 @@ namespace jul
 
         // Node* m_Parent;
     };
-}  // namespace jul
+}  // namespace bin
 
 #endif  // NODE_H

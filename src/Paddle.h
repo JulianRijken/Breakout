@@ -3,14 +3,14 @@
 
 #include <Node.h>
 
-namespace jul
+namespace bout
 {
-    class Paddle final : public jul::Node
+    class Paddle final : public bin::Node
     {
     public:
         Paddle();
     };
-}  // namespace jul
+}  // namespace bout
 
 
 #endif  // PADDLE_H

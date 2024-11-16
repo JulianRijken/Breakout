@@ -5,6 +5,6 @@
 
 int main()
 {
-    const jul::Core core;
+    const bin::Core core;
     return 0;
 }

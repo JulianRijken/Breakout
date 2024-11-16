@@ -1,7 +1,7 @@
 #ifndef GAMETIME_H
 #define GAMETIME_H
 
-namespace jul
+namespace bin
 {
     class GameTime final
     {
@@ -21,6 +21,6 @@ namespace jul
         inline static double g_DeltaTime{ 0.0 };
         inline static double g_TimeScale{ 1.0 };
     };
-}  // namespace jul
+}  // namespace bin
 
 #endif  // GAMETIME_H

@@ -1,18 +1,18 @@
 #include "SceneGraph.h"
 
-void jul::SceneGraph::Update()
+void bin::SceneGraph::UpdateAll()
 {
     for(auto& node : m_Nodes)
         node->Update();
 }
 
-void jul::SceneGraph::FixedUpdate()
+void bin::SceneGraph::FixedUpdateAll()
 {
     for(auto& node : m_Nodes)
         node->FixedUpdate();
 }
 
-void jul::SceneGraph::Draw() const
+void bin::SceneGraph::DrawAll() const
 {
     for(auto& node : m_Nodes)
         node->Draw();

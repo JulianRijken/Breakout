@@ -8,9 +8,9 @@
 struct SDL_Renderer;
 struct SDL_Window;
 
-namespace jul
+namespace bin
 {
-    class Renderer final : public jul::Service
+    class Renderer final : public bin::Service
     {
     public:
         Renderer(SDL_Window* windowPtr);
@@ -39,5 +39,5 @@ namespace jul
         SDL_Window* m_WindowPtr{};
         SDL_Color m_ClearColor{ 25, 25, 25, 0 };
     };
-}  // namespace jul
+}  // namespace bin
 #endif  // RENDERER_H

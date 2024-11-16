@@ -1,7 +1,7 @@
 #ifndef SINGLETON_H
 #define SINGLETON_H
 
-namespace jul
+namespace bin
 {
     template<typename T>
     class Singleton
@@ -23,5 +23,5 @@ namespace jul
     protected:
         Singleton() = default;
     };
-}  // namespace jul
+}  // namespace bin
 #endif  // SINGLETON_H

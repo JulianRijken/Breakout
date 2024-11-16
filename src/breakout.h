@@ -1,11 +1,11 @@
 #ifndef BREAKOUT_H
 #define BREAKOUT_H
 
-#include "Node.h"
+#include <Node.h>
 
-namespace jul
+namespace bout
 {
-    class Breakout final : public Node
+    class Breakout final : public bin::Node
     {
     public:
         Breakout();
@@ -22,5 +22,5 @@ namespace jul
         float m_paddleTargetPostion{};
     };
 
-}  // namespace jul
+}  // namespace bin
 #endif  // BREAKOUT_H

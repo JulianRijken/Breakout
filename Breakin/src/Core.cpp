@@ -12,13 +12,13 @@
 #include "Renderer.h"
 #include "SceneGraph.h"
 
-jul::Core::Core()
+bin::Core::Core()
 {
     if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER) != 0)
         throw std::runtime_error(fmt::format("SDL_Init Error: {}", SDL_GetError()));
 
     // Not stored as member variable as SDL might change the width or height
-    constexpr const char* windowTitle = "Julgen - Custom Engine by Julian Rijken";
+    constexpr const char* windowTitle = "bingen - Custom Engine by binian Rijken";
     constexpr int windowWidth{ 1280 };
     constexpr int windowHeight{ 720 };
 
@@ -40,11 +40,11 @@ jul::Core::Core()
 #ifdef __EMSCRIPTEN__
 #include "emscripten.h"
 
-void LoopCallback(void* arg) { static_cast<jul::Core*>(arg)->RunOneFrame(); }
+void LoopCallback(void* arg) { static_cast<bin::Core*>(arg)->RunOneFrame(); }
 #endif
 
 
-void jul::Core::Run()
+void bin::Core::Run()
 {
 #ifdef __EMSCRIPTEN__
     emscripten_set_main_loop_arg(&LoopCallback, this, 0, true);
@@ -55,7 +55,7 @@ void jul::Core::Run()
 #endif
 }
 
-void jul::Core::RunOneFrame()
+void bin::Core::RunOneFrame()
 {
     GameTime::Increment();
     m_Lag += GameTime::GetDeltaTime();
@@ -69,18 +69,18 @@ void jul::Core::RunOneFrame()
         // More input events
     }
 
-    while(m_Lag >= jul::GameTime::GetFixedDeltaTime())
+    while(m_Lag >= bin::GameTime::GetFixedDeltaTime())
     {
-        m_Lag -= jul::GameTime::GetFixedDeltaTime();
+        m_Lag -= bin::GameTime::GetFixedDeltaTime();
 
-        jul::SceneGraph::GetInstance().FixedUpdate();
+        bin::SceneGraph::GetInstance().FixedUpdateAll();
     }
 
-    jul::SceneGraph::GetInstance().Update();
+    bin::SceneGraph::GetInstance().UpdateAll();
     Locator::Get<Renderer>().Render();
 }
 
-jul::Core::~Core()
+bin::Core::~Core()
 {
     SDL_DestroyWindow(m_WindowPtr);
     m_WindowPtr = nullptr;

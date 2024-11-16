@@ -34,6 +34,8 @@ set(BREAKIN_SOURCE_FILES
 
 add_library(${TARGET_NAME} STATIC
     ${BREAKIN_SOURCE_FILES}
+    src/BoxCollider.h src/BoxCollider.cpp
+    src/Camera.h src/Camera.cpp
 )
 
 

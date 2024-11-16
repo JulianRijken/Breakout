@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <chrono>
 
-void jul::GameTime::Increment()
+void bin::GameTime::Increment()
 {
     static std::chrono::time_point<std::chrono::high_resolution_clock> s_LastTime{
         std::chrono::high_resolution_clock::now()
@@ -18,10 +18,10 @@ void jul::GameTime::Increment()
     g_ElapsedTime += GetDeltaTime();
 }
 
-double jul::GameTime::GetDeltaTime() { return g_DeltaTime * g_TimeScale; }
+double bin::GameTime::GetDeltaTime() { return g_DeltaTime * g_TimeScale; }
 
-double jul::GameTime::GetUnscaledDeltaTime() { return g_DeltaTime; }
+double bin::GameTime::GetUnscaledDeltaTime() { return g_DeltaTime; }
 
-double jul::GameTime::GetFixedDeltaTime() { return g_FixedDeltaTime; }
+double bin::GameTime::GetFixedDeltaTime() { return g_FixedDeltaTime; }
 
-double jul::GameTime::GetElapsedTime() { return g_ElapsedTime; }
+double bin::GameTime::GetElapsedTime() { return g_ElapsedTime; }

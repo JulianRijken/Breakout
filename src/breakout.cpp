@@ -9,16 +9,16 @@
 #include <SceneGraph.h>
 #include <SDL_mouse.h>
 
-jul::Breakout::Breakout() { jul::SceneGraph::GetInstance().AddNode<Paddle>(); }
+bout::Breakout::Breakout() { bin::SceneGraph::GetInstance().AddNode<Paddle>(); }
 
-void jul::Breakout::Update()
+void bout::Breakout::Update()
 {
     int mouseX;
     int mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
 
 
-    auto& renderer = jul::Locator::Get<Renderer>();
+    auto& renderer = bin::Locator::Get<bin::Renderer>();
     const glm::vec2 mousePosition = { mouseX, mouseY };
     const glm::vec2 mousePositionWorld = renderer.ScreenToWorldPosition(mousePosition);
 
@@ -26,15 +26,15 @@ void jul::Breakout::Update()
     m_paddleTargetPostion = std::clamp(mousePositionWorld.x, -10.0f, 10.0f);
     m_paddleTargetPostion = std::round(m_paddleTargetPostion);
 
-    m_PaddlePosition = jul::math::LerpSmooth(
-        m_PaddlePosition, m_paddleTargetPostion, PADDLE_MOVE_DURATION, jul::GameTime::GetDeltaTime());
+    m_PaddlePosition = bin::math::LerpSmooth(
+        m_PaddlePosition, m_paddleTargetPostion, PADDLE_MOVE_DURATION, bin::GameTime::GetDeltaTime());
 }
 
-void jul::Breakout::Draw() const
+void bout::Breakout::Draw() const
 {
-    auto& renderer = jul::Locator::Get<Renderer>();
+    auto& renderer = bin::Locator::Get<bin::Renderer>();
 
-    const double time = jul::GameTime::GetElapsedTime();
+    const double time = bin::GameTime::GetElapsedTime();
     constexpr double distance = 5;
     glm::vec2 pos = { std::cos(time), std::sin(time) };
     pos *= distance;
@@ -46,10 +46,10 @@ void jul::Breakout::Draw() const
     //     for(int y = 0; y < 5; ++y)
     //     {
     //         // Testing
-    //         const SDL_Color randomColor{ static_cast<Uint8>(jul::math::RandomRange(0, 255)),
-    //                                      static_cast<Uint8>(jul::math::RandomRange(0, 255)),
-    //                                      static_cast<Uint8>(jul::math::RandomRange(0, 255)),
-    //                                      static_cast<Uint8>(jul::math::RandomRange(0, 255)) };
+    //         const SDL_Color randomColor{ static_cast<Uint8>(bin::math::RandomRange(0, 255)),
+    //                                      static_cast<Uint8>(bin::math::RandomRange(0, 255)),
+    //                                      static_cast<Uint8>(bin::math::RandomRange(0, 255)),
+    //                                      static_cast<Uint8>(bin::math::RandomRange(0, 255)) };
 
     //         renderer.DrawBox({ x * 2, y }, { 1, 1 }, randomColor);
     //     }

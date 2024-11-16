@@ -7,14 +7,14 @@
 #include "Node.h"
 #include "Singleton.h"
 
-namespace jul
+namespace bin
 {
     class SceneGraph final : public Singleton<SceneGraph>
     {
     public:
-        void Update();
-        void FixedUpdate();
-        void Draw() const;
+        void UpdateAll();
+        void FixedUpdateAll();
+        void DrawAll() const;
 
         template<typename NodeType, typename... Args>
             requires std::derived_from<NodeType, Node>
@@ -25,10 +25,11 @@ namespace jul
             return static_cast<NodeType*>(addedComponent.get());
         }
 
+    private:
         std::vector<std::unique_ptr<Node>> m_Nodes{};
     };
 
-}  // namespace jul
+}  // namespace bin
 
 
 #endif  // SCENE_H

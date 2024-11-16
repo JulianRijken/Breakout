@@ -7,7 +7,7 @@
 #include <glm/vec3.hpp>
 #include <numbers>
 
-namespace jul::math
+namespace bin::math
 {
     // TODO: For the random stuff consider std::rand or random number generator
     //       this also to make it thread safe

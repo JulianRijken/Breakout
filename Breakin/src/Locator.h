@@ -1,13 +1,13 @@
 #ifndef LOCATOR_H
 #define LOCATOR_H
 
-// Implementation used from Julgen (My Engine) https://github.com/JulianRijken/Julgen/blob/main/src/Engine/Locator.h
+// Implementation used from bingen (My Engine) https://github.com/binianRijken/bingen/blob/main/src/Engine/Locator.h
 
 #include <memory>
 #include <typeindex>
 #include <unordered_map>
 
-namespace jul
+namespace bin
 {
     class Service
     {
@@ -74,5 +74,5 @@ namespace jul
         static inline std::unordered_map<std::type_index, std::unique_ptr<Service>> g_Services{};
     };
 
-}  // namespace jul
+}  // namespace bin
 #endif // LOCATOR_H

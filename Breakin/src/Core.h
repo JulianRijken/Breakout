@@ -4,7 +4,7 @@
 struct SDL_Window;
 struct SDL_Renderer;
 
-namespace jul
+namespace bin
 {
     class Core final
     {
@@ -29,5 +29,5 @@ namespace jul
         bool m_IsApplicationQuitting{ false };
         SDL_Window* m_WindowPtr{ nullptr };
     };
-}  // namespace jul
+}  // namespace bin
 #endif  // GAME_H

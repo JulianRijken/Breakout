@@ -4,8 +4,8 @@
 
 #include "Breakout.h"
 
-void jul::Core::GameEntry()
+void bin::Core::GameEntry()
 {
-    jul::SceneGraph::GetInstance().AddNode<Breakout>();
+    bin::SceneGraph::GetInstance().AddNode<bout::Breakout>();
     //
 }

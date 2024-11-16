@@ -13,8 +13,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 
-
-jul::Renderer::Renderer(SDL_Window* windowPtr) :
+bin::Renderer::Renderer(SDL_Window* windowPtr) :
     m_RendererPtr(SDL_CreateRenderer(windowPtr, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)),
     m_WindowPtr(windowPtr)
 {
@@ -22,17 +21,17 @@ jul::Renderer::Renderer(SDL_Window* windowPtr) :
         throw std::runtime_error("Failed to create renderer");
 }
 
-void jul::Renderer::Render()
+void bin::Renderer::Render()
 {
     SDL_SetRenderDrawColor(m_RendererPtr, m_ClearColor.r, m_ClearColor.g, m_ClearColor.b, m_ClearColor.a);
     SDL_RenderClear(m_RendererPtr);
-    jul::SceneGraph::GetInstance().Draw();
+    bin::SceneGraph::GetInstance().DrawAll();
     SDL_RenderPresent(m_RendererPtr);
 }
 
-void jul::Renderer::SetClearColor(const SDL_Color& color) { m_ClearColor = color; }
+void bin::Renderer::SetClearColor(const SDL_Color& color) { m_ClearColor = color; }
 
-void jul::Renderer::DrawLine(const glm::vec2& from, const glm::vec2& to, const SDL_Color& color)
+void bin::Renderer::DrawLine(const glm::vec2& from, const glm::vec2& to, const SDL_Color& color)
 {
     const glm::ivec2 fromScreen = WorldToScreenPosition(from);
     const glm::ivec2 toScreen = WorldToScreenPosition(to);
@@ -41,7 +40,7 @@ void jul::Renderer::DrawLine(const glm::vec2& from, const glm::vec2& to, const S
     SDL_RenderDrawLine(m_RendererPtr, fromScreen.x, fromScreen.y, toScreen.x, toScreen.y);
 }
 
-void jul::Renderer::DrawBox(const glm::vec2& position, const glm::vec2& scale, const SDL_Color& color)
+void bin::Renderer::DrawBox(const glm::vec2& position, const glm::vec2& scale, const SDL_Color& color)
 {
     const glm::ivec2 screenPos = WorldToScreenPosition(position);
     const glm::ivec2 screenScale = WorldToScreenScale(scale);
@@ -52,7 +51,7 @@ void jul::Renderer::DrawBox(const glm::vec2& position, const glm::vec2& scale, c
     SDL_RenderFillRect(m_RendererPtr, &rect);
 }
 
-void jul::Renderer::DrawWireBox(const glm::vec2& position, const glm::vec2& scale, const glm::vec2&,
+void bin::Renderer::DrawWireBox(const glm::vec2& position, const glm::vec2& scale, const glm::vec2&,
                                 const SDL_Color& color)
 {
     const glm::ivec2 screenPos = WorldToScreenPosition(position);
@@ -64,7 +63,7 @@ void jul::Renderer::DrawWireBox(const glm::vec2& position, const glm::vec2& scal
     SDL_RenderDrawRect(m_RendererPtr, &rect);
 }
 
-glm::ivec2 jul::Renderer::GetWindowSize()
+glm::ivec2 bin::Renderer::GetWindowSize()
 {
     // TODO: These values could be stored and only updated when the window changes
     //       Function encaptulation provided for this in the future
@@ -76,7 +75,7 @@ glm::ivec2 jul::Renderer::GetWindowSize()
     return { width, height };
 }
 
-float jul::Renderer::GetAspectRatio()
+float bin::Renderer::GetAspectRatio()
 {
     // TODO: These values could be stored and only updated when the window changes
     //       Function encaptulation provided for this in the future
@@ -85,7 +84,7 @@ float jul::Renderer::GetAspectRatio()
     return static_cast<float>(windowSize.x) / static_cast<float>(windowSize.y);
 }
 
-glm::ivec2 jul::Renderer::WorldToScreenScale(const glm::vec2& worldScale)
+glm::ivec2 bin::Renderer::WorldToScreenScale(const glm::vec2& worldScale)
 {
     const glm::vec2 worldSize = { m_OrthoSize * 2.0f * GetAspectRatio(), m_OrthoSize * 2.0f };
     const glm::ivec2 windowSize = GetWindowSize();
@@ -95,7 +94,7 @@ glm::ivec2 jul::Renderer::WorldToScreenScale(const glm::vec2& worldScale)
              -std::ceil(static_cast<float>(windowSize.y) / worldSize.y * worldScale.y) };
 }
 
-glm::ivec2 jul::Renderer::WorldToScreenPosition(const glm::vec2& worldPosition)
+glm::ivec2 bin::Renderer::WorldToScreenPosition(const glm::vec2& worldPosition)
 {
     const glm::ivec2 windowSize = GetWindowSize();
     const float aspectRatio = GetAspectRatio();
@@ -110,7 +109,7 @@ glm::ivec2 jul::Renderer::WorldToScreenPosition(const glm::vec2& worldPosition)
              std::round((1.0f - clipSpacePos.y) * 0.5f * static_cast<float>(windowSize.y)) };
 }
 
-glm::vec2 jul::Renderer::ScreenToWorldPosition(const glm::ivec2& screenPosition)
+glm::vec2 bin::Renderer::ScreenToWorldPosition(const glm::ivec2& screenPosition)
 {
 
     const glm::ivec2 windowSize = GetWindowSize();
