@@ -28,6 +28,7 @@ set(SOURCE_FILES
 
 add_executable(${TARGET_NAME}
     ${SOURCE_FILES}
+    src/Physics.h src/Physics.cpp
 
 )
 

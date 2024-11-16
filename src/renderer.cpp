@@ -50,7 +50,8 @@ void jul::Renderer::DrawBox(const glm::vec2& position, const glm::vec2& scale, c
     SDL_RenderFillRect(m_RendererPtr, &rect);
 }
 
-void jul::Renderer::DrawWireBox(const glm::vec2& position, const glm::vec2& scale, const SDL_Color& color)
+void jul::Renderer::DrawWireBox(const glm::vec2& position, const glm::vec2& scale, const glm::vec2&,
+                                const SDL_Color& color)
 {
     const glm::ivec2 screenPos = WorldToScreenPosition(position);
     const glm::ivec2 screenScale = WorldToScreenScale(scale);
@@ -89,7 +90,7 @@ glm::ivec2 jul::Renderer::WorldToScreenScale(const glm::vec2& worldScale)
 
     // Floats are not perfect, we use ceil as we prefere the pixel shown over cut off
     return { std::ceil(static_cast<float>(windowSize.x) / worldSize.x * worldScale.x),
-             std::ceil(static_cast<float>(windowSize.y) / worldSize.y * worldScale.y) };
+             -std::ceil(static_cast<float>(windowSize.y) / worldSize.y * worldScale.y) };
 }
 
 glm::ivec2 jul::Renderer::WorldToScreenPosition(const glm::vec2& worldPosition)

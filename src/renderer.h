@@ -27,7 +27,7 @@ namespace jul
         void DrawBox(const glm::vec2& position, const glm::vec2& scale,
                      const SDL_Color& color = { 255, 255, 255, 255 });
 
-        void DrawWireBox(const glm::vec2& position, const glm::vec2& scale,
+        void DrawWireBox(const glm::vec2& position, const glm::vec2& scale, const glm::vec2& pivot = { 0.5, 0.5 },
                          const SDL_Color& color = { 255, 255, 255, 255 });
 
         [[nodiscard]] glm::ivec2 GetWindowSize();
