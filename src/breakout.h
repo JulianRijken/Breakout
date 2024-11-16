@@ -20,7 +20,6 @@ namespace bout
     namespace layer
     {
         constexpr uint16_t Index(int index) { return 1 << index; }
-
         constexpr uint16_t ALL = 0xFFFF;
         constexpr uint16_t BRICK = Index(1);
         constexpr uint16_t PADDLE = Index(2);
@@ -44,8 +43,6 @@ namespace bout
 
     private:
         static constexpr float CAMERA_PADDING{ 2 };
-
-        float m_GameTime{};
 
         float m_ShakeTimer{};
 
