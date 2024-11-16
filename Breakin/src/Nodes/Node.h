@@ -14,7 +14,11 @@ namespace bin
         virtual void Update(){};
         virtual void FixedUpdate(){};
 
-        const glm::vec2& GetLocalPosition();
+        void SetLocalPosition(const glm::vec2& position);
+        void Translate(const glm::vec2& delta);
+
+        [[nodiscard]] const glm::vec2& GetWorldPosition();
+        [[nodiscard]] const glm::vec2& GetLocalPosition() const;
 
     private:
         glm::vec2 m_LocalPosition{};

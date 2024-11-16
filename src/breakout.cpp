@@ -9,7 +9,18 @@
 #include <SceneGraph.h>
 #include <SDL_mouse.h>
 
-bout::Breakout::Breakout() { bin::SceneGraph::GetInstance().AddNode<Paddle>(); }
+#include "Ball.h"
+
+bout::Breakout::Breakout()
+{
+    m_Camera = bin::SceneGraph::AddNode<bin::Camera>();
+    m_Camera->SetOrthoSize(10);
+    m_Camera->SetLocalPosition({ 0, 5 });
+
+    bin::SceneGraph::AddNode<Paddle>();
+
+    m_Ball = bin::SceneGraph::AddNode<Ball>();
+}
 
 void bout::Breakout::Update()
 {
@@ -18,9 +29,12 @@ void bout::Breakout::Update()
     SDL_GetMouseState(&mouseX, &mouseY);
 
 
-    auto& renderer = bin::Locator::Get<bin::Renderer>();
+    // const float time = bin::GameTime::GetElapsedTime();
+    // m_Camera->SetLocalPosition({ time, 0 });
+
+
     const glm::vec2 mousePosition = { mouseX, mouseY };
-    const glm::vec2 mousePositionWorld = renderer.ScreenToWorldPosition(mousePosition);
+    const glm::vec2 mousePositionWorld = m_Camera->ScreenToWorldPosition(mousePosition);
 
 
     m_paddleTargetPostion = std::clamp(mousePositionWorld.x, -10.0f, 10.0f);
@@ -34,8 +48,8 @@ void bout::Breakout::Draw() const
 {
     auto& renderer = bin::Locator::Get<bin::Renderer>();
 
-    const double time = bin::GameTime::GetElapsedTime();
-    constexpr double distance = 5;
+    const float time = bin::GameTime::GetElapsedTime();
+    constexpr float distance = 5;
     glm::vec2 pos = { std::cos(time), std::sin(time) };
     pos *= distance;
 
@@ -61,5 +75,5 @@ void bout::Breakout::Draw() const
     renderer.DrawWireBox({ 5, 5 }, { 5, 5 });
 
 
-    renderer.DrawBox({ m_PaddlePosition, 0 }, { 1, 1 });
+    renderer.DrawBox({ m_PaddlePosition, 0 }, { 1, 1 }, { 0.5f, 0.5f });
 }

@@ -3,8 +3,15 @@
 
 #include <Node.h>
 
+namespace bin
+{
+    class Camera;
+}
+
 namespace bout
 {
+    class Ball;
+
     class Breakout final : public bin::Node
     {
     public:
@@ -20,6 +27,9 @@ namespace bout
 
         float m_PaddlePosition{};
         float m_paddleTargetPostion{};
+
+        bin::Camera* m_Camera{};
+        bout::Ball* m_Ball{};
     };
 
 }  // namespace bin

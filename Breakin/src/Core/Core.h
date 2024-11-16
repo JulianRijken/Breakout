@@ -25,7 +25,7 @@ namespace bin
 
         void Run();
 
-        double m_Lag{ 0.0 };
+        float m_Lag{ 0.0 };
         bool m_IsApplicationQuitting{ false };
         SDL_Window* m_WindowPtr{ nullptr };
     };

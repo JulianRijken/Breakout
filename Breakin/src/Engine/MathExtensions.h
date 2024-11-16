@@ -11,7 +11,7 @@ namespace bin::math
 {
     // TODO: For the random stuff consider std::rand or random number generator
     //       this also to make it thread safe
-    template<typename Type = double>
+    template<typename Type = float>
         requires std::floating_point<Type>
     constexpr Type RandomValue()
     {

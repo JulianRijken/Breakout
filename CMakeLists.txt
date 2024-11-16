@@ -18,6 +18,7 @@ set(SOURCE_FILES
 
 add_executable(${TARGET_NAME}
     ${SOURCE_FILES}
+    src/Ball.h src/Ball.cpp
 )
 
 target_include_directories(${TARGET_NAME} PUBLIC

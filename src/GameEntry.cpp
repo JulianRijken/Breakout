@@ -1,3 +1,4 @@
+#include <Camera.h>
 #include <Core.h>
 #include <fmt/core.h>
 #include <SceneGraph.h>
@@ -6,6 +7,7 @@
 
 void bin::Core::GameEntry()
 {
-    bin::SceneGraph::GetInstance().AddNode<bout::Breakout>();
+    bin::SceneGraph::AddNode<bout::Breakout>();
+
     //
 }

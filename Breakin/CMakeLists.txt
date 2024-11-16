@@ -20,28 +20,37 @@ make_libs_available()
 
 # Adds the source files to the executible
 set(BREAKIN_SOURCE_FILES
-                                    ${SOURCE_DIR}/Main.cpp
-    ${SOURCE_DIR}/Core.h            ${SOURCE_DIR}/Core.cpp
-    ${SOURCE_DIR}/GameTime.h        ${SOURCE_DIR}/GameTime.cpp
-    ${SOURCE_DIR}/Renderer.h        ${SOURCE_DIR}/Renderer.cpp
-    ${SOURCE_DIR}/Locator.h
-    ${SOURCE_DIR}/MathExtensions.h
-    ${SOURCE_DIR}/Physics.h         ${SOURCE_DIR}/Physics.cpp
-    ${SOURCE_DIR}/Node.h            ${SOURCE_DIR}/Node.cpp
-    ${SOURCE_DIR}/SceneGraph.h      ${SOURCE_DIR}/SceneGraph.cpp
-    ${SOURCE_DIR}/Singleton.h
+
+    # Core
+                                            ${SOURCE_DIR}/Core/Main.cpp
+    ${SOURCE_DIR}/Core/Core.h               ${SOURCE_DIR}/Core/Core.cpp
+
+    # Engine
+    ${SOURCE_DIR}/Engine/GameTime.h         ${SOURCE_DIR}/Engine/GameTime.cpp
+    ${SOURCE_DIR}/Engine/Renderer.h         ${SOURCE_DIR}/Engine/Renderer.cpp
+    ${SOURCE_DIR}/Engine/Locator.h
+    ${SOURCE_DIR}/Engine/MathExtensions.h
+    ${SOURCE_DIR}/Engine/Physics.h          ${SOURCE_DIR}/Engine/Physics.cpp
+    ${SOURCE_DIR}/Engine/SceneGraph.h       ${SOURCE_DIR}/Engine/SceneGraph.cpp
+    ${SOURCE_DIR}/Engine/Singleton.h
+
+    # Nodes
+    ${SOURCE_DIR}/Nodes/Node.h              ${SOURCE_DIR}/Nodes/Node.cpp
+    ${SOURCE_DIR}/Nodes/BoxCollider.h       ${SOURCE_DIR}/Nodes/BoxCollider.cpp
+    ${SOURCE_DIR}/Nodes/Camera.h            ${SOURCE_DIR}/Nodes/Camera.cpp
 )
 
 add_library(${TARGET_NAME} STATIC
     ${BREAKIN_SOURCE_FILES}
-    src/BoxCollider.h src/BoxCollider.cpp
-    src/Camera.h src/Camera.cpp
 )
 
 
 # Include source directories
 target_include_directories(${TARGET_NAME} PUBLIC
     ${SOURCE_DIR}
+    ${SOURCE_DIR}/Core
+    ${SOURCE_DIR}/Nodes
+    ${SOURCE_DIR}/Engine
 )
 
 target_link_libraries(${TARGET_NAME} PUBLIC
