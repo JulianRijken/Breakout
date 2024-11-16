@@ -13,12 +13,22 @@ bout::Ball::Ball()
     m_BoxColliderPtr->SetParent(this);
 }
 
-void bout::Ball::SetHoldingBall(bool holding) { m_HoldingBall = holding; }
+void bout::Ball::HoldBall() { m_HoldingBall = true; }
+
+void bout::Ball::ShootBall()
+{
+    m_MoveDirection = { 0, 1 };
+    m_HoldingBall = false;
+}
 
 void bout::Ball::FixedUpdate()
 {
     if(m_HoldingBall)
         return;
+
+    // NOTE: We always normalize movement direction
+    m_MoveDirection = glm::normalize(m_MoveDirection);
+
 
     const glm::vec2 velocity = static_cast<glm::vec2>(m_MoveDirection) * m_MoveSpeed;
     Translate(velocity * static_cast<float>(bin::GameTime::GetFixedDeltaTime()));
@@ -46,17 +56,17 @@ void bout::Ball::HandleBallCollision()
 
         auto [didHit, manifold] = bin::Locator::Get<Physics>().DoesOverlap(collider, m_BoxColliderPtr);
 
-        const glm::vec2 normal = manifold.normal;
 
         if(didHit)
         {
             // Reflection formula w = v - 2 * dot(v, n)
+            const glm::vec2 normal = glm::normalize(static_cast<glm::vec2>(manifold.normal));
             const glm::vec2 normalizedDirection = glm::normalize(m_MoveDirection);
             const glm::vec2 reflectedDirection =
                 normalizedDirection - 2.0f * glm::dot(normalizedDirection, normal) * normal;
 
-            m_MoveDirection = reflectedDirection;
-            Translate(-normal * manifold.penetration);
+            m_MoveDirection = glm::round(reflectedDirection);
+            Translate(-(normal * manifold.penetration));
         }
     }
 }

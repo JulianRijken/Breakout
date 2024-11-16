@@ -26,14 +26,14 @@ bout::Breakout::Breakout() :
     ball->SetLocalPosition({ 0, 1 });
 
 
-    ball->SetParent(nullptr);
-    ball->SetHoldingBall(false);
+    ball->SetParent(m_PlayfieldPtr);
+    ball->ShootBall();
 
     m_Camera->SetOrthoSize(m_PlayfieldPtr->GetSize().y / 2 + CAMERA_PADDING);
     m_Camera->SetLocalPosition({ 0, 0 });
 }
 
-void bout::Breakout::Update()
+void bout::Breakout::FixedUpdate()
 {
     int mouseX{};
     int mouseY{};
@@ -41,13 +41,24 @@ void bout::Breakout::Update()
 
     const glm::vec2 mousePosition = { mouseX, mouseY };
     const glm::vec2 mousePositionWorld = m_Camera->ScreenToWorldPosition(mousePosition);
-
     m_PaddlePtr->SetPaddleTargetPosition(mousePositionWorld.x);
+}
 
-    // Testing
-    // const float time = bin::GameTime::GetElapsedTime();
-    // m_Camera->SetLocalPosition({ time, time });
-    // m_PlayfieldPtr->SetLocalPosition({ time, time });
+void bout::Breakout::Update()
+{
+    const float decayRate = 0.1f;
+
+    if(m_ShakeTimer < decayRate)
+    {
+        m_ShakeTimer += bin::GameTime::GetDeltaTime();
+        const float shakeStrength = 0.5f;
+
+        const glm::vec2 offset = { bin::math::RandomRange(-1.0f, 1.0f), bin::math::RandomRange(-1.0f, 1.0f) };
+        const float decay = std::exp(-m_ShakeTimer / decayRate);
+
+        const glm::vec2 cameraOffset = shakeStrength * offset * decay;
+        m_Camera->SetLocalPosition(cameraOffset);
+    }
 }
 
 void bout::Breakout::Draw()
@@ -65,3 +76,5 @@ void bout::Breakout::Draw()
     // renderer.DrawWireBox({ 0, 0 }, { 5, 5 });
     // renderer.DrawWireBox({ 5, 5 }, { 5, 5 });
 }
+
+void bout::Breakout::ShakeCamera() { m_ShakeTimer = 0.0f; }

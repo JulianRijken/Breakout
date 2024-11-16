@@ -15,7 +15,8 @@ namespace bout
     public:
         Ball();
 
-        void SetHoldingBall(bool holding);
+        void HoldBall();
+        void ShootBall();
 
     private:
         void FixedUpdate() override;
@@ -24,7 +25,7 @@ namespace bout
         void HandleBallCollision();
 
         // In Units a second
-        float m_MoveSpeed{ 10.0 };
+        float m_MoveSpeed{ 15.0 };
         bool m_HoldingBall{ true };
         glm::vec2 m_MoveDirection{ 1, 1 };
         bin::BoxCollider* m_BoxColliderPtr{};
