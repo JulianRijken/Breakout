@@ -21,6 +21,7 @@ namespace bout
         void Update() override;
         void Draw() override;
 
+
     private:
         static constexpr float CAMERA_PADDING{ 2 };
 

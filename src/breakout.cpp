@@ -26,6 +26,9 @@ bout::Breakout::Breakout() :
     ball->SetLocalPosition({ 0, 1 });
 
 
+    ball->SetParent(nullptr);
+    ball->SetHoldingBall(false);
+
     m_Camera->SetOrthoSize(m_PlayfieldPtr->GetSize().y / 2 + CAMERA_PADDING);
     m_Camera->SetLocalPosition({ 0, 0 });
 }

@@ -50,62 +50,13 @@ void bout::Ball::HandleBallCollision()
 
         if(didHit)
         {
-            const glm::vec2 normalizedDirection = glm::normalize(m_MoveDirection);
-            const glm::vec2 collisionNormal = glm::normalize(normal);
-
             // Reflection formula w = v - 2 * dot(v, n)
+            const glm::vec2 normalizedDirection = glm::normalize(m_MoveDirection);
             const glm::vec2 reflectedDirection =
-                normalizedDirection - 2.0f * glm::dot(normalizedDirection, collisionNormal) * collisionNormal;
+                normalizedDirection - 2.0f * glm::dot(normalizedDirection, normal) * normal;
 
-            // if(m_MoveDirection.x < )
-            // m_MoveDirection.x =
-
-
-            // Update direction to the reflected vector
             m_MoveDirection = reflectedDirection;
-
-            // Resolve penetration
             Translate(-normal * manifold.penetration);
         }
     }
-
-
-    // const auto& colliders = bin::Locator::Get<Physics>().GetColliders();
-
-    // for(const auto& collider : colliders)
-    // {
-    //     if(collider == m_BoxColliderPtr)
-    //         continue;
-
-    //     auto [didHit, manifold] = bin::Locator::Get<Physics>().DoesOverlap(collider, m_BoxColliderPtr);
-
-
-    //     if(didHit)
-    //     {
-    //         if(manifold.normal.y > 0)
-    //         {
-    //             m_MoveDirection.y = -1;
-    //             Translate({ 0, -manifold.penetration.y });
-    //         }
-
-    //         if(manifold.normal.y < 0)
-    //         {
-    //             m_MoveDirection.y = 1;
-    //             Translate({ 0, manifold.penetration.y });
-    //         }
-
-    //         if(manifold.normal.x > 0)
-    //         {
-    //             m_MoveDirection.x = -1;
-    //             Translate({ -manifold.penetration.x, 0 });
-    //         }
-
-
-    //         if(manifold.normal.x < 0)
-    //         {
-    //             m_MoveDirection.x = 1;
-    //             Translate({ manifold.penetration.x, 0 });
-    //         }
-    //     }
-    // }
 }
