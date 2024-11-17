@@ -22,8 +22,8 @@ bin::Core::Core()
 
     // Not stored as member variable as SDL might change the width or height
     constexpr const char* windowTitle = "Breakout - By Julian Rijken";
-    constexpr int windowWidth{ 1100 };
-    constexpr int windowHeight{ 900 };
+    constexpr int windowWidth{ 1920 };
+    constexpr int windowHeight{ 1080 };
 
     m_WindowPtr = SDL_CreateWindow(windowTitle,
                                    SDL_WINDOWPOS_CENTERED,
