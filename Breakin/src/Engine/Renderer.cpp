@@ -50,7 +50,7 @@ void bin::Renderer::DrawLine(const glm::vec2& from, const glm::vec2& to, const S
     SDL_RenderDrawLine(m_RendererPtr, fromScreen.x, fromScreen.y, toScreen.x, toScreen.y);
 }
 
-void bin::Renderer::DrawTexture(Texture* texture, const glm::vec2& position, const int pixelsPerUnit,
+void bin::Renderer::DrawTexture(Texture* texture, const glm::vec2& position, float pixelsPerUnit,
                                 const glm::vec2& pivot) const
 {
     assert(texture != nullptr && "Texture is null!");
@@ -60,7 +60,7 @@ void bin::Renderer::DrawTexture(Texture* texture, const glm::vec2& position, con
 
 
     const glm::ivec2 textureSize = texture->GetSize();
-    const glm::vec2 worldSize = static_cast<glm::vec2>(textureSize) / static_cast<float>(pixelsPerUnit);
+    const glm::vec2 worldSize = static_cast<glm::vec2>(textureSize) / pixelsPerUnit;
 
     const glm::vec2 offsetPosition = position - worldSize * pivot;
     const glm::ivec2 screenPos = camera->WorldToScreenPosition(offsetPosition);

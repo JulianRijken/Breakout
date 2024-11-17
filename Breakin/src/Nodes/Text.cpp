@@ -38,5 +38,6 @@ void bin::Text::Draw(const Renderer& renderer)
     if(m_Text.empty())
         m_TexturePtr = nullptr;
 
-    renderer.DrawTexture(m_TexturePtr.get(), GetWorldPosition(), m_FontPtr->GetSize() / m_Size, m_Alighnment);
+    renderer.DrawTexture(
+        m_TexturePtr.get(), GetWorldPosition(), static_cast<float>(m_FontPtr->GetSize()) / m_Size, m_Alighnment);
 }

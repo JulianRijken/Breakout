@@ -1,6 +1,8 @@
 #include "SceneGraph.h"
 
 #include <algorithm>
+#include <iterator>
+
 
 void bin::SceneGraph::UpdateAll() const
 {
