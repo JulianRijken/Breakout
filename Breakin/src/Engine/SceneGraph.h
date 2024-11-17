@@ -11,7 +11,6 @@
 
 namespace bin
 {
-
     class Renderer;
 
     class SceneGraph final : public Singleton<SceneGraph>
@@ -21,17 +20,18 @@ namespace bin
         void FixedUpdateAll() const;
         void DrawAll(const bin::Renderer& renderer) const;
 
+        void MoveAddedNodesToActiveNodes();
         void CleanupNodesSetToDestroy();
-        void Cleanup();
+        void Clear();
 
         template<typename NodeType, typename... Args>
             requires std::derived_from<NodeType, Node>
         static NodeType& AddNode(Args&&... args)
         {
-            auto& addedNode =
-                GetInstance().m_Nodes.emplace_back(std::make_unique<NodeType>(std::forward<Args>(args)...));
+            auto& addedNodes =
+                GetInstance().m_AddedNodes.emplace_back(std::make_unique<NodeType>(std::forward<Args>(args)...));
 
-            return *static_cast<NodeType*>(addedNode.get());
+            return *static_cast<NodeType*>(addedNodes.get());
         }
 
         // Reruns camera with the highest priority
@@ -45,11 +45,12 @@ namespace bin
         bool m_BestCameraDiry{ false };
         Camera* m_BestCamera{ nullptr };
 
-        std::vector<std::unique_ptr<Node>> m_Nodes{};
+        // There is a seperation because
+        // added nodes can only update the next frame
+        std::vector<std::unique_ptr<Node>> m_AddedNodes{};   // Nodes that set to spawn
+        std::vector<std::unique_ptr<Node>> m_ActiveNodes{};  // Nodes that are active in the scene
         std::unordered_set<Camera*> m_Cameras{};
     };
 
 }  // namespace bin
-
-
 #endif  // SCENE_H

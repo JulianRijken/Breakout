@@ -17,6 +17,7 @@
 #include "Ball.h"
 #include "HUD.h"
 #include "Playfield.h"
+#include "Scenes.h"
 
 bout::Breakout::Breakout() :
     m_CameraPtr(&bin::SceneGraph::AddNode<bin::Camera>()),

@@ -21,10 +21,12 @@ set(SOURCE_FILES
     ${SOURCE_DIR}/Prefabs.h         ${SOURCE_DIR}/Prefabs.cpp
     ${SOURCE_DIR}/HUD.h             ${SOURCE_DIR}/HUD.cpp
     ${SOURCE_DIR}/GameStats.h       ${SOURCE_DIR}/GameStats.cpp
+    ${SOURCE_DIR}/Scenes.h          ${SOURCE_DIR}/Scenes.cpp
 )
 
 add_executable(${TARGET_NAME}
     ${SOURCE_FILES}
+
 )
 
 target_include_directories(${TARGET_NAME} PUBLIC

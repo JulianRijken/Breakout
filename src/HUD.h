@@ -11,7 +11,6 @@ namespace bin
 
 namespace bout
 {
-
     class GameStats;
 
     class HUD final : public bin::Node, public bin::IEventListener

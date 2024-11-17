@@ -64,6 +64,9 @@ void bin::Core::RunOneFrame()
     GameTime::Increment();
     m_Lag += GameTime::GetDeltaTime();
 
+    bin::SceneGraph::GetInstance().MoveAddedNodesToActiveNodes();
+
+
     SDL_Event sdlEvent;
     while(SDL_PollEvent(&sdlEvent))
     {
@@ -95,7 +98,7 @@ void bin::Core::RunOneFrame()
 bin::Core::~Core()
 {
     Resources::Cleanup();
-    SceneGraph::GetInstance().Cleanup();
+    SceneGraph::GetInstance().Clear();
     Locator::Release<Renderer>();
     Locator::Release<Physics>();
 

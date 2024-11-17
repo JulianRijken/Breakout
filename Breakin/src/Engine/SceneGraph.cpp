@@ -4,42 +4,55 @@
 
 void bin::SceneGraph::UpdateAll() const
 {
-    for(auto& node : m_Nodes)
+    for(const auto& node : m_ActiveNodes)
         node->Update();
 }
 
 void bin::SceneGraph::FixedUpdateAll() const
 {
-    for(auto& node : m_Nodes)
+    for(const auto& node : m_ActiveNodes)
         node->FixedUpdate();
 }
 
 void bin::SceneGraph::DrawAll(const bin::Renderer& renderer) const
 {
-    for(auto& node : m_Nodes)
+    for(const auto& node : m_ActiveNodes)
         node->Draw(renderer);
+}
+
+void bin::SceneGraph::MoveAddedNodesToActiveNodes()
+{
+    if(m_AddedNodes.empty())
+        return;
+
+    std::move(m_AddedNodes.begin(), m_AddedNodes.end(), std::back_inserter(m_ActiveNodes));
+    m_AddedNodes.clear();
 }
 
 void bin::SceneGraph::CleanupNodesSetToDestroy()
 {
     // Propagate all nodes marked for destroy
-    for(const auto& node : m_Nodes)
+    for(const auto& node : m_ActiveNodes)
         if(node->IsMarkedForDestroy())
             if(not node->m_GettingDestroyed)
                 node->PropagateDestroy();
 
-    for(const auto& node : m_Nodes)
+    for(const auto& node : m_ActiveNodes)
         if(node->m_GettingDestroyed)
             node->ClearFromSceneGraph();
 
-    for(auto iterator = m_Nodes.begin(); iterator != m_Nodes.end();)
+    for(auto iterator = m_ActiveNodes.begin(); iterator != m_ActiveNodes.end();)
         if((*iterator)->m_GettingDestroyed)
-            iterator = m_Nodes.erase(iterator);
+            iterator = m_ActiveNodes.erase(iterator);
         else
             ++iterator;
 }
 
-void bin::SceneGraph::Cleanup() { m_Nodes.clear(); }
+void bin::SceneGraph::Clear()
+{
+    MoveAddedNodesToActiveNodes();
+    m_ActiveNodes.clear();
+}
 
 
 bin::Camera* bin::SceneGraph::GetBestCamera()
