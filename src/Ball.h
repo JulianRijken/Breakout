@@ -28,6 +28,7 @@ namespace bout
         void Draw(const bin::Renderer& renderer) override;
 
         void OnHitWall();
+        void OnBallUnderMap();
 
         void MoveBall();
         void HandleBallCollision();

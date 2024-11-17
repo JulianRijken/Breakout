@@ -44,6 +44,7 @@ namespace bout
 
     class Playfield;
     class Paddle;
+    class Ball;
 
     class Breakout final : public bin::Node, public bin::IEventListener
     {

@@ -29,6 +29,10 @@ void bout::Ball::FixedUpdate()
         return;
 
     MoveBall();
+
+    constexpr float minPosition = 15.0f;
+    if(GetLocalPosition().y < -minPosition)
+        OnBallUnderMap();
 }
 
 void bout::Ball::Draw(const bin::Renderer& renderer)
@@ -41,7 +45,7 @@ void bout::Ball::HoldBall() { m_HoldingBall = true; }
 
 void bout::Ball::ShootBall()
 {
-    m_MoveDirection = { 0, 1 };
+    m_MoveDirection = { bin::math::RandomRange(-1.0f, 1.0f), 1 };
     m_HoldingBall = false;
 }
 
@@ -50,6 +54,8 @@ void bout::Ball::OnHitWall()
     m_TimeSinceHit = 0;
     bin::MessageQueue::Broadcast(bout::MessageType::OnWallHit);
 }
+
+void bout::Ball::OnBallUnderMap() { MarkForDestroy(); }
 
 void bout::Ball::MoveBall()
 {
@@ -82,9 +88,6 @@ void bout::Ball::MoveBall()
     Translate(velocity * static_cast<float>(bin::GameTime::GetFixedDeltaTime()));
 
     HandleBallCollision();
-
-    if(GetLocalPosition().y < -15)
-        SetLocalPosition({ 0, 0 });
 }
 
 void bout::Ball::HandleBallCollision()

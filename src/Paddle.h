@@ -5,19 +5,28 @@
 
 namespace bout
 {
+    class Ball;
+
     class Paddle final : public bin::Node
     {
     public:
         Paddle();
         void SetPaddleTargetPosition(float targetPosition);
 
+        void GetBallReady();
+        void FireBall();
+
+        [[nodiscard]] bool IsHoldingBall() const;
+
     private:
         void FixedUpdate() override;
         void Draw(const bin::Renderer& renderer) override;
 
+
         static constexpr float MOVE_DURATION = 0.1f;
         static constexpr float MAX_MOVE_DISTANCE = 11;
 
+        bout::Ball* m_HoldingBallPtr{};
         float m_PaddlePosition{};
         float m_PaddleTargetPosition{};
     };

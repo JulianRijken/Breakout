@@ -1,7 +1,6 @@
 #include "Node.h"
 
 #include <algorithm>
-#include <iostream>
 
 void bin::Node::SetLocalPosition(const glm::vec2& position)
 {

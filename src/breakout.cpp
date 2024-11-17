@@ -18,7 +18,6 @@
 #include "Ball.h"
 #include "HUD.h"
 #include "Playfield.h"
-#include "Scenes.h"
 
 bout::Breakout::Breakout() :
     m_CameraPtr(&bin::SceneGraph::AddNode<bin::Camera>()),
@@ -28,24 +27,8 @@ bout::Breakout::Breakout() :
     m_PaddlePtr->SetParent(m_PlayfieldPtr);
     m_PaddlePtr->SetLocalPosition({ 0, -m_PlayfieldPtr->GetSize().y / 2.0f });
 
-
     auto& hud = bin::SceneGraph::AddNode<HUD>(m_GameStats);
     hud.SetParent(this);
-
-    auto& ball = bin::SceneGraph::AddNode<Ball>();
-    ball.SetParent(m_PaddlePtr);
-    ball.SetLocalPosition({ 0, 1 });
-
-    ball.ShootBall();
-    ball.SetParent(m_PlayfieldPtr);
-
-
-    // auto& ball2 = bin::SceneGraph::AddNode<Ball>();
-    // ball2.SetParent(m_PlayfieldPtr);
-    // ball2.ShootBall();
-
-    // ball.SetParent(m_PlayfieldPtr);
-    // ball.ShootBall();
 
     m_CameraPtr->SetOrthoSize(m_PlayfieldPtr->GetSize().y / 2 + CAMERA_PADDING);
     m_CameraPtr->SetLocalPosition({ 0, 0 });
@@ -88,4 +71,9 @@ void bout::Breakout::OnFireBallInput(const bin::InputContext& context)
 {
     if(context.state != bin::ButtonState::Down)
         return;
+
+    if(m_PaddlePtr->IsHoldingBall())
+        m_PaddlePtr->FireBall();
+    else
+        m_PaddlePtr->GetBallReady();
 }
