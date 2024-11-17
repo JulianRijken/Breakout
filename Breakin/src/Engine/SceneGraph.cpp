@@ -39,7 +39,7 @@ void bin::SceneGraph::CleanupNodesSetToDestroy()
             ++iterator;
 }
 
-void bin::SceneGraph::ClearAllNodes() { m_Nodes.clear(); }
+void bin::SceneGraph::Cleanup() { m_Nodes.clear(); }
 
 
 bin::Camera* bin::SceneGraph::GetBestCamera()

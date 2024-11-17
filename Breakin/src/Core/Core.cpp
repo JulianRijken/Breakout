@@ -12,6 +12,7 @@
 #include "MessageQueue.h"
 #include "Physics.h"
 #include "Renderer.h"
+#include "Resources.h"
 #include "SceneGraph.h"
 
 bin::Core::Core()
@@ -33,6 +34,7 @@ bin::Core::Core()
 
     Locator::Provide<Renderer>(m_WindowPtr);
     Locator::Provide<Physics>();
+    Resources::Initialize();
 
     GameEntry();
     Run();
@@ -77,16 +79,23 @@ void bin::Core::RunOneFrame()
         bin::SceneGraph::GetInstance().FixedUpdateAll();
     }
 
+    // Message Dispatch
     bin::MessageQueue::Dispatch();
+
+    // Update
     bin::SceneGraph::GetInstance().UpdateAll();
+
+    // Render
     Locator::Get<Renderer>().Render();
 
+    // Cleanup SceneGraph
     bin::SceneGraph::GetInstance().CleanupNodesSetToDestroy();
 }
 
 bin::Core::~Core()
 {
-    SceneGraph::GetInstance().ClearAllNodes();
+    Resources::Cleanup();
+    SceneGraph::GetInstance().Cleanup();
     Locator::Release<Renderer>();
     Locator::Release<Physics>();
 

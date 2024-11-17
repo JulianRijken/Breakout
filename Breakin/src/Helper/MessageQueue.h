@@ -40,7 +40,7 @@ namespace bin
         template<typename ObjectType>
         static void RemoveListenerInstance(ObjectType* object)
         {
-            std::erase_if(g_MessageListeners, [=](const auto& other) { return other.second.first == object; });
+            std::erase_if(g_MessageListeners, [object](const auto& other) { return other.second.first == object; });
         }
 
         static void Dispatch();

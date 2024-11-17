@@ -2,14 +2,20 @@
 #define RENDERER_H
 
 #include <SDL_pixels.h>
+
 #include <glm/vec2.hpp>
+
 #include "Locator.h"
 
 struct SDL_Renderer;
 struct SDL_Window;
+struct SDL_Surface;
 
 namespace bin
 {
+
+    class Texture;
+
     class Renderer final : public bin::Service
     {
     public:
@@ -20,6 +26,9 @@ namespace bin
         void SetClearColor(const SDL_Color& color);
         void DrawLine(const glm::vec2& from, const glm::vec2& to, const SDL_Color& color = { 255, 255, 255, 255 }) const;
 
+        void DrawTexture(Texture* texture, const glm::vec2& position, const int pixelsPerUnit,
+                         const glm::vec2& pivot) const;
+
         void DrawBox(const glm::vec2& position, const glm::vec2& scale, const glm::vec2& pivot = { 0.5, 0.5 },
                      const SDL_Color& color = { 255, 255, 255, 255 }) const;
 
@@ -28,6 +37,7 @@ namespace bin
 
         [[nodiscard]] static glm::ivec2 GetWindowSize();
         [[nodiscard]] static float GetAspectRatio();
+        [[nodiscard]] std::unique_ptr<Texture> CreateTextureFromSurface(SDL_Surface* surface);
 
     private:
         void DrawUnitGrid() const;

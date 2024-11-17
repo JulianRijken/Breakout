@@ -1,6 +1,7 @@
 #include "Brick.h"
 
 #include <BoxCollider.h>
+#include <MessageQueue.h>
 #include <Renderer.h>
 #include <SceneGraph.h>
 
@@ -11,9 +12,9 @@ bout::Brick::Brick(int pointsWorth, const glm::vec2& brickSize, const SDL_Color&
     m_BrickSize(brickSize),
     m_BrickColor(brickColor)
 {
-    auto& boxCollider = bin::SceneGraph::AddNode<bin::BoxCollider>(m_BrickSize, bout::layer::BRICK);
+    auto& boxCollider = bin::SceneGraph::AddNode<bin::BoxCollider>(m_BrickSize, bout::collisionLayer::BRICK);
     boxCollider.SetParent(this);
-    boxCollider.m_OnHit.AddListener(this, &bout::Brick::OnHit);
+    boxCollider.m_OnHit.AddListener(this, &Brick::OnHit);
 }
 
 void bout::Brick::Break()
@@ -22,6 +23,7 @@ void bout::Brick::Break()
         return;
 
     m_Broken = true;
+    bin::MessageQueue::Broadcast(MessageType::OnBrickBreak, { m_PointsWorth });
 
     // TODO: Use m_Broken to keep brick alive while destroying collider
     MarkForDestroy();

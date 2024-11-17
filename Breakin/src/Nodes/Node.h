@@ -6,7 +6,6 @@
 
 namespace bin
 {
-
     class Renderer;
     class Node
     {

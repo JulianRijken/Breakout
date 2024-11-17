@@ -102,7 +102,7 @@ void bout::Ball::HandleBallCollision()
         {
             const glm::vec2 normal = glm::normalize(static_cast<glm::vec2>(manifold.normal));
 
-            if(collider->CompareLayers(bout::layer::PADDLE))
+            if(collider->CompareLayers(bout::collisionLayer::PADDLE))
             {
                 const glm::vec2 paddleDirection = GetWorldPosition() - collider->GetWorldPosition();
                 m_MoveDirection = paddleDirection;

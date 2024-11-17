@@ -1,16 +1,21 @@
 #include "Breakout.h"
 
 #include <fmt/core.h>
+#include <Font.h>
 #include <GameTime.h>
 #include <Locator.h>
 #include <MathExtensions.h>
 #include <MessageQueue.h>
 #include <Paddle.h>
 #include <Renderer.h>
+#include <Resources.h>
 #include <SceneGraph.h>
 #include <SDL_mouse.h>
+#include <Text.h>
+#include <Texture.h>
 
 #include "Ball.h"
+#include "HUD.h"
 #include "Playfield.h"
 
 bout::Breakout::Breakout() :
@@ -22,9 +27,16 @@ bout::Breakout::Breakout() :
     m_PaddlePtr->SetLocalPosition({ 0, -m_PlayfieldPtr->GetSize().y / 2.0f });
 
 
+    auto& hud = bin::SceneGraph::AddNode<HUD>(m_GameStats);
+    hud.SetParent(this);
+
     auto& ball = bin::SceneGraph::AddNode<Ball>();
     ball.SetParent(m_PaddlePtr);
     ball.SetLocalPosition({ 0, 1 });
+
+    ball.ShootBall();
+    ball.SetParent(m_PlayfieldPtr);
+
 
     // auto& ball2 = bin::SceneGraph::AddNode<Ball>();
     // ball2.SetParent(m_PlayfieldPtr);
@@ -63,22 +75,6 @@ void bout::Breakout::Update()
 
     const glm::vec2 cameraOffset = shakeStrength * offset * decay;
     m_CameraPtr->SetLocalPosition(cameraOffset);
-}
-
-void bout::Breakout::Draw(const bin::Renderer&)
-{
-    // const float time = bin::GameTime::GetElapsedTime();
-    // constexpr float distance = 5;
-    // glm::vec2 pos = { std::cos(time), std::sin(time) };
-    // pos *= distance;
-
-    // renderer.DrawLine({ 0, 0 }, pos);
-
-    // renderer.DrawLine({ -5, 0 }, { 5, 0 }, { 217, 64, 237, 255 });
-    // renderer.DrawLine({ 0, -5 }, { 0, 5 }, { 217, 64, 237, 255 });
-
-    // renderer.DrawWireBox({ 0, 0 }, { 5, 5 });
-    // renderer.DrawWireBox({ 5, 5 }, { 5, 5 });
 }
 
 void bout::Breakout::OnWallHitMessage(const bin::Message& /*unused*/) { ShakeCamera(); }

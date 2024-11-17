@@ -22,7 +22,7 @@ namespace bin
         void DrawAll(const bin::Renderer& renderer) const;
 
         void CleanupNodesSetToDestroy();
-        void ClearAllNodes();
+        void Cleanup();
 
         template<typename NodeType, typename... Args>
             requires std::derived_from<NodeType, Node>

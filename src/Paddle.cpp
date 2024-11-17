@@ -13,7 +13,7 @@
 
 bout::Paddle::Paddle()
 {
-    auto& boxColliderPtr = bin::SceneGraph::AddNode<bin::BoxCollider>(glm::vec2{ 2, 0.5f }, bout::layer::PADDLE);
+    auto& boxColliderPtr = bin::SceneGraph::AddNode<bin::BoxCollider>(glm::vec2{ 2, 0.5f }, bout::collisionLayer::PADDLE);
     boxColliderPtr.SetParent(this);
 }
 

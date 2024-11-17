@@ -3,6 +3,9 @@
 
 #include <Node.h>
 
+#include "GameStats.h"
+
+
 namespace bin
 {
     struct Message;
@@ -11,13 +14,19 @@ namespace bin
 
 namespace bout
 {
-
     enum class MessageType
     {
         OnWallHit,
+        OnPaddleHit,
+
+        // arg[0] = int pointsWorth
+        OnBrickBreak,
+
+        // arg[0] = int score
+        OnScoreChange
     };
 
-    namespace layer
+    namespace collisionLayer
     {
         constexpr uint16_t Index(int index) { return 1 << index; }
         constexpr uint16_t ALL = 0xFFFF;
@@ -36,19 +45,18 @@ namespace bout
 
         void FixedUpdate() override;
         void Update() override;
-        void Draw(const bin::Renderer& renderer) override;
 
         void OnWallHitMessage(const bin::Message& message);
         void ShakeCamera();
 
     private:
         static constexpr float CAMERA_PADDING{ 2 };
-
         float m_ShakeTimer{};
 
         bin::Camera* m_CameraPtr{};
-        bout::Playfield* m_PlayfieldPtr{};
-        bout::Paddle* m_PaddlePtr{};
+        Playfield* m_PlayfieldPtr{};
+        Paddle* m_PaddlePtr{};
+        GameStats m_GameStats{};
     };
 
 }  // namespace bin

@@ -22,30 +22,36 @@ make_libs_available()
 set(BREAKIN_SOURCE_FILES
 
     # Core
-                                            ${SOURCE_DIR}/Core/Main.cpp
-    ${SOURCE_DIR}/Core/Core.h               ${SOURCE_DIR}/Core/Core.cpp
+                                                ${SOURCE_DIR}/Core/Main.cpp
+    ${SOURCE_DIR}/Core/Core.h                   ${SOURCE_DIR}/Core/Core.cpp
 
     # Engine
-    ${SOURCE_DIR}/Engine/GameTime.h         ${SOURCE_DIR}/Engine/GameTime.cpp
-    ${SOURCE_DIR}/Engine/Renderer.h         ${SOURCE_DIR}/Engine/Renderer.cpp
-    ${SOURCE_DIR}/Engine/Physics.h          ${SOURCE_DIR}/Engine/Physics.cpp
-    ${SOURCE_DIR}/Engine/SceneGraph.h       ${SOURCE_DIR}/Engine/SceneGraph.cpp
+    ${SOURCE_DIR}/Engine/GameTime.h             ${SOURCE_DIR}/Engine/GameTime.cpp
+    ${SOURCE_DIR}/Engine/Renderer.h             ${SOURCE_DIR}/Engine/Renderer.cpp
+    ${SOURCE_DIR}/Engine/Physics.h              ${SOURCE_DIR}/Engine/Physics.cpp
+    ${SOURCE_DIR}/Engine/SceneGraph.h           ${SOURCE_DIR}/Engine/SceneGraph.cpp
+
+    # Resources
+    ${SOURCE_DIR}/Engine/Resources/Font.h       ${SOURCE_DIR}/Engine/Resources/Font.cpp
+    ${SOURCE_DIR}/Engine/Resources/Texture.h    ${SOURCE_DIR}/Engine/Resources/Texture.cpp
+    ${SOURCE_DIR}/Engine/Resources/Resources.h  ${SOURCE_DIR}/Engine/Resources/Resources.cpp
 
     # Nodes
-    ${SOURCE_DIR}/Nodes/Node.h              ${SOURCE_DIR}/Nodes/Node.cpp
-    ${SOURCE_DIR}/Nodes/BoxCollider.h       ${SOURCE_DIR}/Nodes/BoxCollider.cpp
-    ${SOURCE_DIR}/Nodes/Camera.h            ${SOURCE_DIR}/Nodes/Camera.cpp
+    ${SOURCE_DIR}/Nodes/Node.h                  ${SOURCE_DIR}/Nodes/Node.cpp
+    ${SOURCE_DIR}/Nodes/BoxCollider.h           ${SOURCE_DIR}/Nodes/BoxCollider.cpp
+    ${SOURCE_DIR}/Nodes/Camera.h                ${SOURCE_DIR}/Nodes/Camera.cpp
 
     # Helper
     ${SOURCE_DIR}/Helper/Event.h
     ${SOURCE_DIR}/Helper/Locator.h
     ${SOURCE_DIR}/Helper/MathExtensions.h
-    ${SOURCE_DIR}/Helper/MessageQueue.h     ${SOURCE_DIR}/Helper/MessageQueue.cpp
+    ${SOURCE_DIR}/Helper/MessageQueue.h         ${SOURCE_DIR}/Helper/MessageQueue.cpp
     ${SOURCE_DIR}/Helper/Singleton.h
 )
 
 add_library(${TARGET_NAME} STATIC
     ${BREAKIN_SOURCE_FILES}
+    src/Nodes/Text.h src/Nodes/Text.cpp
 )
 
 
@@ -55,6 +61,7 @@ target_include_directories(${TARGET_NAME} PUBLIC
     ${SOURCE_DIR}/Core
     ${SOURCE_DIR}/Nodes
     ${SOURCE_DIR}/Engine
+    ${SOURCE_DIR}/Engine/Resources
     ${SOURCE_DIR}/Helper
 )
 
@@ -109,4 +116,18 @@ if(WIN32)
     set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${TARGET_NAME})
     # Fix working directory for visual studio
     set_target_properties(${TARGET_NAME} PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "$<TARGET_FILE_DIR:${TARGET_NAME}>")
+endif()
+
+if(NOT EMSCRIPTEN)
+    # Make sure the asset folder get's copyed or linked correctly
+    if(WIN32)
+        set(SYMLINK_COMMAND copy_directory)
+    else()
+        set(SYMLINK_COMMAND create_symlink)
+    endif()
+
+    add_custom_command(TARGET ${TARGET_NAME} PRE_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E ${SYMLINK_COMMAND}
+                    "${CMAKE_SOURCE_DIR}/Assets"
+                    "${CMAKE_BINARY_DIR}/Assets")
 endif()

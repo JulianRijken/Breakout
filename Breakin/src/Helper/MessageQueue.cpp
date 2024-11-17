@@ -10,7 +10,6 @@ void bin::MessageQueue::Dispatch()
         g_Messages.pop();
 
         auto listenersIterator = g_MessageListeners.equal_range(message.id);
-
         for(auto it = listenersIterator.first; it != listenersIterator.second; ++it)
             it->second.second(message);
     }

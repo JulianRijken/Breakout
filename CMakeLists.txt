@@ -17,18 +17,23 @@ set(SOURCE_FILES
     ${SOURCE_DIR}/Playfield.h       ${SOURCE_DIR}/Playfield.cpp
     ${SOURCE_DIR}/Brick.h           ${SOURCE_DIR}/Brick.cpp
     ${SOURCE_DIR}/Trail.h           ${SOURCE_DIR}/Trail.cpp
-
+    ${SOURCE_DIR}/HUD.h             ${SOURCE_DIR}/HUD.cpp
+    ${SOURCE_DIR}/Prefabs.h         ${SOURCE_DIR}/Prefabs.cpp
+    ${SOURCE_DIR}/HUD.h             ${SOURCE_DIR}/HUD.cpp
+    ${SOURCE_DIR}/GameStats.h       ${SOURCE_DIR}/GameStats.cpp
 )
 
 add_executable(${TARGET_NAME}
     ${SOURCE_FILES}
-    src/Prefabs.h src/Prefabs.cpp
 )
 
 target_include_directories(${TARGET_NAME} PUBLIC
     ${SOURCE_DIR}
 )
 
+
+add_compile_options(-fsanitize=address)
+add_link_options(-fsanitize=address)
 
 # enable c++20 features
 target_compile_features(${TARGET_NAME} PUBLIC cxx_std_20)
