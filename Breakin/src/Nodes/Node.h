@@ -6,6 +6,8 @@
 
 namespace bin
 {
+
+    class Renderer;
     class Node
     {
         friend class SceneGraph;
@@ -19,8 +21,7 @@ namespace bin
         Node& operator=(Node&&) = delete;
         Node& operator=(const Node&) = delete;
 
-
-        virtual void Draw(){}
+        virtual void Draw(const bin::Renderer& /*unused*/) {}
         virtual void Update(){}
         virtual void FixedUpdate(){}
 

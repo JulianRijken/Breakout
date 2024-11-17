@@ -1,6 +1,8 @@
 #ifndef MATHEXTENSIONS_H
 #define MATHEXTENSIONS_H
 
+#include <SDL_pixels.h>
+
 #include <algorithm>
 #include <glm/exponential.hpp>
 #include <glm/gtc/quaternion.hpp>
@@ -92,6 +94,21 @@ namespace bin::math
     {
         return ClampLoop(value, static_cast<Type>(0), static_cast<Type>(1));
     };
+
+    template<typename Type, typename TimeType>
+    Type Lerp(const Type& a, const Type& b, TimeType t)
+    {
+        return std::lerp(a, b, t);
+    }
+
+    template<typename TimeType>
+    SDL_Color Lerp(const SDL_Color& a, const SDL_Color& b, TimeType t)
+    {
+        return { static_cast<Uint8>(std::lerp(a.r, b.r, t)),
+                 static_cast<Uint8>(std::lerp(a.g, b.g, t)),
+                 static_cast<Uint8>(std::lerp(a.b, b.b, t)),
+                 static_cast<Uint8>(std::lerp(a.a, b.a, t)) };
+    }
 
     template<typename Type>
     Type LerpSmooth(const Type& a, const Type& b, double duration, double deltaTime)

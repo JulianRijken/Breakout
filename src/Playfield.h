@@ -14,7 +14,7 @@ namespace bout
         [[nodiscard]] const glm::vec2& GetSize() const;
 
     private:
-        void Draw() override;
+        void Draw(const bin::Renderer& renderer) override;
 
         glm::vec2 m_Size{};
     };

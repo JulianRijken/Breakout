@@ -14,37 +14,41 @@
 #include "Playfield.h"
 
 bout::Breakout::Breakout() :
-    m_Camera(bin::SceneGraph::AddNode<bin::Camera>()),
-    m_PlayfieldPtr(bin::SceneGraph::AddNode<Playfield>(glm::vec2{ 24, 22 })),
-    m_PaddlePtr(bin::SceneGraph::AddNode<Paddle>())
+    m_CameraPtr(&bin::SceneGraph::AddNode<bin::Camera>()),
+    m_PlayfieldPtr(&bin::SceneGraph::AddNode<Playfield>(glm::vec2{ 24, 22 })),
+    m_PaddlePtr(&bin::SceneGraph::AddNode<Paddle>())
 {
     m_PaddlePtr->SetParent(m_PlayfieldPtr);
     m_PaddlePtr->SetLocalPosition({ 0, -m_PlayfieldPtr->GetSize().y / 2.0f });
 
 
-    auto* ball = bin::SceneGraph::AddNode<Ball>();
-    ball->SetParent(m_PaddlePtr);
-    ball->SetLocalPosition({ 0, 1 });
+    auto& ball = bin::SceneGraph::AddNode<Ball>();
+    ball.SetParent(m_PaddlePtr);
+    ball.SetLocalPosition({ 0, 1 });
 
+    // auto& ball2 = bin::SceneGraph::AddNode<Ball>();
+    // ball2.SetParent(m_PlayfieldPtr);
+    // ball2.ShootBall();
 
-    ball->SetParent(m_PlayfieldPtr);
-    ball->ShootBall();
+    // ball.SetParent(m_PlayfieldPtr);
+    // ball.ShootBall();
 
-    m_Camera->SetOrthoSize(m_PlayfieldPtr->GetSize().y / 2 + CAMERA_PADDING);
-    m_Camera->SetLocalPosition({ 0, 0 });
+    m_CameraPtr->SetOrthoSize(m_PlayfieldPtr->GetSize().y / 2 + CAMERA_PADDING);
+    m_CameraPtr->SetLocalPosition({ 0, 0 });
 
     bin::MessageQueue::AddListener(MessageType::OnWallHit, this, &Breakout::OnWallHitMessage);
 }
 
 void bout::Breakout::FixedUpdate()
 {
-    int mouseX{};
-    int mouseY{};
-    SDL_GetMouseState(&mouseX, &mouseY);
+    glm::ivec2 mousePosition{};
+    SDL_GetMouseState(&mousePosition.x, &mousePosition.y);
 
-    const glm::vec2 mousePosition = { mouseX, mouseY };
-    const glm::vec2 mousePositionWorld = m_Camera->ScreenToWorldPosition(mousePosition);
+    const glm::vec2 mousePositionWorld = m_CameraPtr->ScreenToWorldPosition(mousePosition);
     m_PaddlePtr->SetPaddleTargetPosition(mousePositionWorld.x);
+
+    constexpr glm::vec2 mouseMovePlayfieldStrenght{ -0.05f, -0.02f };
+    m_PlayfieldPtr->SetLocalPosition(mousePositionWorld * mouseMovePlayfieldStrenght);
 }
 
 void bout::Breakout::Update()
@@ -58,10 +62,10 @@ void bout::Breakout::Update()
     const float decay = std::exp(-m_ShakeTimer / decayRate);
 
     const glm::vec2 cameraOffset = shakeStrength * offset * decay;
-    m_Camera->SetLocalPosition(cameraOffset);
+    m_CameraPtr->SetLocalPosition(cameraOffset);
 }
 
-void bout::Breakout::Draw()
+void bout::Breakout::Draw(const bin::Renderer&)
 {
     // const float time = bin::GameTime::GetElapsedTime();
     // constexpr float distance = 5;

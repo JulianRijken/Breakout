@@ -1,7 +1,11 @@
 #ifndef BALL_H
 #define BALL_H
 
+#include <SDL_pixels.h>
+#include <Trail.h>
+
 #include "Node.h"
+
 
 namespace bin
 {
@@ -19,19 +23,25 @@ namespace bout
         void ShootBall();
 
     private:
+        void Update() override;
         void FixedUpdate() override;
-        void Draw() override;
+        void Draw(const bin::Renderer& renderer) override;
 
         void OnHitWall();
 
+        void MoveBall();
         void HandleBallCollision();
+        void UpdateBallColor();
 
         // In Units a second
-        float m_MoveSpeed{ 25.0 };
+        float m_MoveSpeed{ 20.0 };
+        float m_TimeSinceHit{ 0.0f };
 
         bool m_HoldingBall{ true };
+        bout::Trail* m_TrailPtr{};
         glm::vec2 m_MoveDirection{ 1, 1 };
         bin::BoxCollider* m_BoxColliderPtr{};
+        SDL_Color m_BallCollor{};
     };
 }  // namespace bout
 #endif  // BALL_H

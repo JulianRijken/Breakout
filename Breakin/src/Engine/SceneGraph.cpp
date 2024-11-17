@@ -14,10 +14,10 @@ void bin::SceneGraph::FixedUpdateAll() const
         node->FixedUpdate();
 }
 
-void bin::SceneGraph::DrawAll() const
+void bin::SceneGraph::DrawAll(const bin::Renderer& renderer) const
 {
     for(auto& node : m_Nodes)
-        node->Draw();
+        node->Draw(renderer);
 }
 
 void bin::SceneGraph::CleanupNodesSetToDestroy()

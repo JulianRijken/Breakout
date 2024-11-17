@@ -13,8 +13,8 @@
 
 bout::Paddle::Paddle()
 {
-    auto* boxColliderPtr = bin::SceneGraph::AddNode<bin::BoxCollider>(glm::vec2{ 2, 0.5f }, bout::layer::PADDLE);
-    boxColliderPtr->SetParent(this);
+    auto& boxColliderPtr = bin::SceneGraph::AddNode<bin::BoxCollider>(glm::vec2{ 2, 0.5f }, bout::layer::PADDLE);
+    boxColliderPtr.SetParent(this);
 }
 
 void bout::Paddle::SetPaddleTargetPosition(float targetPosition)
@@ -30,8 +30,7 @@ void bout::Paddle::FixedUpdate()
     SetLocalPosition({ m_PaddlePosition, GetLocalPosition().y });
 }
 
-void bout::Paddle::Draw()
+void bout::Paddle::Draw(const bin::Renderer& renderer)
 {
-    auto& renderer = bin::Locator::Get<bin::Renderer>();
     renderer.DrawBox({ GetWorldPosition() }, { 2, 0.5 }, { 0.5f, 0.5f });
 }

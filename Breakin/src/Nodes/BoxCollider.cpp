@@ -16,9 +16,7 @@ const glm::vec2& bin::BoxCollider::GetSize() const { return m_Size; }
 
 bool bin::BoxCollider::CompareLayers(uint16_t layers) const { return layers & m_Layers; }
 
-void bin::BoxCollider::Draw()
+void bin::BoxCollider::Draw(const Renderer& renderer)
 {
-    const auto& renderer = bin::Locator::Get<bin::Renderer>();
     renderer.DrawBox(GetWorldPosition(), m_Size, { 0.5f, 0.5f }, { 89, 247, 115, 125 });
-    renderer.DrawWireBox(GetWorldPosition(), m_Size, { 0.5f, 0.5f }, { 255, 255, 255, 150 });
 }

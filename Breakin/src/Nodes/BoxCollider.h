@@ -26,7 +26,7 @@ namespace bin
         bool CompareLayers(uint16_t layers) const;
 
     private:
-        void Draw() override;
+        void Draw(const bin::Renderer& renderer) override;
 
         uint16_t m_Layers;
         glm::vec2 m_Size;

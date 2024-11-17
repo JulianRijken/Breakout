@@ -36,7 +36,7 @@ namespace bout
 
         void FixedUpdate() override;
         void Update() override;
-        void Draw() override;
+        void Draw(const bin::Renderer& renderer) override;
 
         void OnWallHitMessage(const bin::Message& message);
         void ShakeCamera();
@@ -46,7 +46,7 @@ namespace bout
 
         float m_ShakeTimer{};
 
-        bin::Camera* m_Camera{};
+        bin::Camera* m_CameraPtr{};
         bout::Playfield* m_PlayfieldPtr{};
         bout::Paddle* m_PaddlePtr{};
     };

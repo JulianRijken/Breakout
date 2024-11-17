@@ -22,6 +22,7 @@ set(SOURCE_FILES
 
 add_executable(${TARGET_NAME}
     ${SOURCE_FILES}
+    src/Prefabs.h src/Prefabs.cpp
 )
 
 target_include_directories(${TARGET_NAME} PUBLIC

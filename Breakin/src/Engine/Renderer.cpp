@@ -27,8 +27,8 @@ void bin::Renderer::Render() const
     // We can't draw without a camera
     if(SceneGraph::GetInstance().GetBestCamera() != nullptr)
     {
-        // DrawUnitGrid();
-        bin::SceneGraph::GetInstance().DrawAll();
+        DrawUnitGrid();
+        bin::SceneGraph::GetInstance().DrawAll(*this);
     }
 
     SDL_RenderPresent(m_RendererPtr);
@@ -80,19 +80,19 @@ void bin::Renderer::DrawWireBox(const glm::vec2& position, const glm::vec2& scal
     SDL_RenderDrawRect(m_RendererPtr, &rect);
 }
 
-glm::ivec2 bin::Renderer::GetWindowSize() const
+glm::ivec2 bin::Renderer::GetWindowSize()
 {
     // TODO: These values could be stored and only updated when the window changes
     //       Function encaptulation provided for this in the future
 
     int width{};
     int height{};
-    SDL_GetWindowSize(m_WindowPtr, &width, &height);
+    SDL_GetWindowSize(Locator::Get<Renderer>().m_WindowPtr, &width, &height);
 
     return { width, height };
 }
 
-float bin::Renderer::GetAspectRatio() const
+float bin::Renderer::GetAspectRatio()
 {
     // TODO: These values could be stored and only updated when the window changes
     //       Function encaptulation provided for this in the future
@@ -101,7 +101,7 @@ float bin::Renderer::GetAspectRatio() const
     return static_cast<float>(windowSize.x) / static_cast<float>(windowSize.y);
 }
 
-void bin::Renderer::DrawUnitGrid()
+void bin::Renderer::DrawUnitGrid() const
 {
     Camera* camera = SceneGraph::GetInstance().GetBestCamera();
     assert(camera && "Camera is null, you are probably drawing outside of Draw()");

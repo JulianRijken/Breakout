@@ -11,24 +11,27 @@
 
 namespace bin
 {
+
+    class Renderer;
+
     class SceneGraph final : public Singleton<SceneGraph>
     {
     public:
         void UpdateAll() const;
         void FixedUpdateAll() const;
-        void DrawAll() const;
+        void DrawAll(const bin::Renderer& renderer) const;
 
         void CleanupNodesSetToDestroy();
         void ClearAllNodes();
 
         template<typename NodeType, typename... Args>
             requires std::derived_from<NodeType, Node>
-        static NodeType* AddNode(Args&&... args)
+        static NodeType& AddNode(Args&&... args)
         {
             auto& addedNode =
                 GetInstance().m_Nodes.emplace_back(std::make_unique<NodeType>(std::forward<Args>(args)...));
 
-            return static_cast<NodeType*>(addedNode.get());
+            return *static_cast<NodeType*>(addedNode.get());
         }
 
         // Reruns camera with the highest priority

@@ -26,11 +26,11 @@ namespace bin
         void DrawWireBox(const glm::vec2& position, const glm::vec2& scale, const glm::vec2& pivot = { 0.5, 0.5 },
                          const SDL_Color& color = { 255, 255, 255, 255 }) const;
 
-        [[nodiscard]] glm::ivec2 GetWindowSize() const;
-        [[nodiscard]] float GetAspectRatio() const;
+        [[nodiscard]] static glm::ivec2 GetWindowSize();
+        [[nodiscard]] static float GetAspectRatio();
 
     private:
-        void DrawUnitGrid();
+        void DrawUnitGrid() const;
 
         SDL_Renderer* m_RendererPtr{};
         SDL_Window* m_WindowPtr{};

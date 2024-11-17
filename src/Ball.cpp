@@ -3,6 +3,7 @@
 #include <BoxCollider.h>
 #include <fmt/core.h>
 #include <GameTime.h>
+#include <MathExtensions.h>
 #include <MessageQueue.h>
 #include <Physics.h>
 #include <Renderer.h>
@@ -13,12 +14,28 @@
 
 bout::Ball::Ball()
 {
-    m_BoxColliderPtr = bin::SceneGraph::AddNode<bin::BoxCollider>(glm::vec2{ 0.5f, 0.5f });
+    m_BoxColliderPtr = &bin::SceneGraph::AddNode<bin::BoxCollider>(glm::vec2{ 0.5f, 0.5f });
     m_BoxColliderPtr->SetParent(this);
 
-    const auto trailPtr = bin::SceneGraph::AddNode<bout::Trail>();
-    trailPtr->SetParent(this);
+    m_TrailPtr = &bin::SceneGraph::AddNode<bout::Trail>();
+    m_TrailPtr->SetParent(this);
 }
+
+void bout::Ball::Update() { UpdateBallColor(); }
+
+void bout::Ball::FixedUpdate()
+{
+    if(m_HoldingBall)
+        return;
+
+    MoveBall();
+}
+
+void bout::Ball::Draw(const bin::Renderer& renderer)
+{
+    renderer.DrawBox(GetWorldPosition(), { 0.5f, 0.5f }, { 0.5f, 0.5f }, m_BallCollor);
+}
+
 
 void bout::Ball::HoldBall() { m_HoldingBall = true; }
 
@@ -28,11 +45,14 @@ void bout::Ball::ShootBall()
     m_HoldingBall = false;
 }
 
-void bout::Ball::FixedUpdate()
+void bout::Ball::OnHitWall()
 {
-    if(m_HoldingBall)
-        return;
+    m_TimeSinceHit = 0;
+    bin::MessageQueue::Broadcast(bout::MessageType::OnWallHit);
+}
 
+void bout::Ball::MoveBall()
+{
     // NOTE: We always normalize movement direction
     m_MoveDirection = glm::normalize(m_MoveDirection);
 
@@ -51,7 +71,14 @@ void bout::Ball::FixedUpdate()
         m_MoveDirection.x = -minDirection;
 
 
-    const glm::vec2 velocity = static_cast<glm::vec2>(m_MoveDirection) * m_MoveSpeed;
+    constexpr float hitMoveSpeedIncreaseEffect = 13.0;
+    constexpr float hitMoveSpeedIncreaseDuration = 0.4f;
+
+
+    const float hitMoveSpeedIncrease =
+        bin::math::Clamp01(1.0f - m_TimeSinceHit / hitMoveSpeedIncreaseDuration) * hitMoveSpeedIncreaseEffect;
+
+    const glm::vec2 velocity = static_cast<glm::vec2>(m_MoveDirection) * (m_MoveSpeed + hitMoveSpeedIncrease);
     Translate(velocity * static_cast<float>(bin::GameTime::GetFixedDeltaTime()));
 
     HandleBallCollision();
@@ -59,14 +86,6 @@ void bout::Ball::FixedUpdate()
     if(GetLocalPosition().y < -15)
         SetLocalPosition({ 0, 0 });
 }
-
-void bout::Ball::Draw()
-{
-    const auto& renderer = bin::Locator::Get<bin::Renderer>();
-    renderer.DrawBox(GetWorldPosition(), { 0.5f, 0.5f }, { 0.5f, 0.5f });
-}
-
-void bout::Ball::OnHitWall() { bin::MessageQueue::Broadcast(bout::MessageType::OnWallHit); }
 
 void bout::Ball::HandleBallCollision()
 {
@@ -103,4 +122,17 @@ void bout::Ball::HandleBallCollision()
             collider->m_OnHit.Invoke();
         }
     }
+}
+
+void bout::Ball::UpdateBallColor()
+{
+    m_TimeSinceHit += bin::GameTime::GetDeltaTime();
+
+    constexpr float hitTimeDuration{ 0.2f };
+    constexpr SDL_Color hitColor{ 255, 0, 0, 255 };
+    constexpr SDL_Color normalColor{ 200, 200, 255, 255 };
+
+    const float colorStrenght = bin::math::Clamp01(m_TimeSinceHit / hitTimeDuration);
+    m_BallCollor = bin::math::Lerp(hitColor, normalColor, colorStrenght);
+    m_TrailPtr->SetTrailColor(m_BallCollor);
 }
