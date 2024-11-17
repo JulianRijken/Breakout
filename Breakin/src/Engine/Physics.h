@@ -6,7 +6,7 @@
 
 #include "BoxCollider.h"
 
-struct Manifold
+struct Manifold final
 {
     glm::vec2 penetration;
     glm::ivec2 normal;

@@ -8,6 +8,8 @@
 
 namespace bin
 {
+
+    struct InputContext;
     struct Message;
     class Camera;
 }
@@ -26,6 +28,11 @@ namespace bout
         OnScoreChange
     };
 
+    enum class InputActionName
+    {
+        FireBall
+    };
+
     namespace collisionLayer
     {
         constexpr uint16_t Index(int index) { return 1 << index; }
@@ -38,7 +45,7 @@ namespace bout
     class Playfield;
     class Paddle;
 
-    class Breakout final : public bin::Node
+    class Breakout final : public bin::Node, public bin::IEventListener
     {
     public:
         Breakout();
@@ -50,6 +57,8 @@ namespace bout
         void ShakeCamera();
 
     private:
+        void OnFireBallInput(const bin::InputContext& context);
+
         static constexpr float CAMERA_PADDING{ 2 };
         float m_ShakeTimer{};
 

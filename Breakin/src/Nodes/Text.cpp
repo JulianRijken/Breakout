@@ -3,10 +3,11 @@
 #include "Renderer.h"
 #include "Texture.h"
 
-bin::Text::Text(const std::string& text, Font* font, glm::vec2 alighnment, SDL_Color color) :
+bin::Text::Text(const std::string& text, Font* font, glm::vec2 alighnment, float size, SDL_Color color) :
     m_Color(color),
     m_Text(text),
     m_Alighnment(alighnment),
+    m_Size(size),
     m_FontPtr(font)
 {
     UpdateTextTexture();
@@ -37,6 +38,5 @@ void bin::Text::Draw(const Renderer& renderer)
     if(m_Text.empty())
         m_TexturePtr = nullptr;
 
-    renderer.DrawTexture(m_TexturePtr.get(), { 0, -5 }, 8, m_Alighnment);
-    // renderer,
+    renderer.DrawTexture(m_TexturePtr.get(), GetWorldPosition(), m_FontPtr->GetSize() / m_Size, m_Alighnment);
 }

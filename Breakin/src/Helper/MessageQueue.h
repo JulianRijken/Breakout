@@ -8,7 +8,7 @@
 
 namespace bin
 {
-    struct Message
+    struct Message final
     {
         int id;
         std::vector<std::any> args;

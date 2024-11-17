@@ -71,12 +71,6 @@ void bin::Renderer::DrawTexture(Texture* texture, const glm::vec2& position, con
     const SDL_Rect srcRect = { 0, 0, textureSize.x, textureSize.y };
 
     SDL_RenderCopy(m_RendererPtr, texture->GetSDLTexture(), &srcRect, &destRect);
-
-
-    // const SDL_Rect destRect = { 100, 100, 100, 100 };
-    // const SDL_Rect srcRect = { 0, 0, textureSize.x, textureSize.y };
-
-    // SDL_RenderCopy(m_RendererPtr, texture->GetSDLTexture(), &srcRect, &destRect);
 }
 
 void bin::Renderer::DrawBox(const glm::vec2& position, const glm::vec2& scale, const glm::vec2& pivot,

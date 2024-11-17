@@ -9,6 +9,7 @@
 #include <stdexcept>
 
 #include "GameTime.h"
+#include "Input.h"
 #include "MessageQueue.h"
 #include "Physics.h"
 #include "Renderer.h"
@@ -66,15 +67,7 @@ void bin::Core::RunOneFrame()
 
     bin::SceneGraph::GetInstance().MoveAddedNodesToActiveNodes();
 
-
-    SDL_Event sdlEvent;
-    while(SDL_PollEvent(&sdlEvent))
-    {
-        if(sdlEvent.type == SDL_QUIT)
-            m_IsApplicationQuitting = true;
-
-        // TODO: Handle input
-    }
+    bin::Input::GetInstance().ProcessInput(m_IsApplicationQuitting);
 
     while(m_Lag >= bin::GameTime::GetFixedDeltaTime())
     {

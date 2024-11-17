@@ -3,6 +3,7 @@
 #include <fmt/core.h>
 #include <Font.h>
 #include <GameTime.h>
+#include <Input.h>
 #include <Locator.h>
 #include <MathExtensions.h>
 #include <MessageQueue.h>
@@ -50,6 +51,7 @@ bout::Breakout::Breakout() :
     m_CameraPtr->SetLocalPosition({ 0, 0 });
 
     bin::MessageQueue::AddListener(MessageType::OnWallHit, this, &Breakout::OnWallHitMessage);
+    bin::Input::Bind(InputActionName::FireBall, this, &Breakout::OnFireBallInput);
 }
 
 void bout::Breakout::FixedUpdate()
@@ -81,3 +83,9 @@ void bout::Breakout::Update()
 void bout::Breakout::OnWallHitMessage(const bin::Message& /*unused*/) { ShakeCamera(); }
 
 void bout::Breakout::ShakeCamera() { m_ShakeTimer = 0.0f; }
+
+void bout::Breakout::OnFireBallInput(const bin::InputContext& context)
+{
+    if(context.state != bin::ButtonState::Down)
+        return;
+}
