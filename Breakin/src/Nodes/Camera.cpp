@@ -15,7 +15,7 @@ void bin::Camera::SetOrthoSize(float orthoSize) { m_OrthoSize = std::max(0.0f, o
 glm::ivec2 bin::Camera::WorldToScreenScale(const glm::vec2& worldScale) const
 {
     const glm::vec2 worldSize = GetViewWorldSize();
-    const glm::ivec2 windowSize = bin::Renderer::GetWindowSize();
+    const glm::ivec2 windowSize = bin::Renderer::GetWindowSizeClamped();
 
     // Floats are not perfect, we use ceil as we prefer the pixel shown over cut off
     return { std::ceil(static_cast<float>(windowSize.x) / worldSize.x * worldScale.x),
@@ -24,7 +24,7 @@ glm::ivec2 bin::Camera::WorldToScreenScale(const glm::vec2& worldScale) const
 
 glm::ivec2 bin::Camera::WorldToScreenPosition(const glm::vec2& worldPosition) const
 {
-    const glm::ivec2 windowSize = bin::Renderer::GetWindowSize();
+    const glm::ivec2 windowSize = bin::Renderer::GetWindowSizeClamped();
     const glm::vec4 clipSpacePos = GetViewProjectionMatrix() * glm::vec4(worldPosition, 0.0f, 1.0f);
 
     // We chose to round when it comes to positions
@@ -34,7 +34,7 @@ glm::ivec2 bin::Camera::WorldToScreenPosition(const glm::vec2& worldPosition) co
 
 glm::vec2 bin::Camera::ScreenToWorldPosition(const glm::ivec2& screenPosition) const
 {
-    const glm::ivec2 windowSize = bin::Renderer::GetWindowSize();
+    const glm::ivec2 windowSize = bin::Renderer::GetWindowSizeClamped();
 
     glm::vec2 ndc;
     ndc.x = 2.0f * static_cast<float>(screenPosition.x) / static_cast<float>(windowSize.x) - 1.0f;
@@ -47,7 +47,7 @@ glm::vec2 bin::Camera::ScreenToWorldPosition(const glm::ivec2& screenPosition) c
 
 glm::mat4 bin::Camera::GetViewProjectionMatrix() const
 {
-    const float aspectRatio = bin::Renderer::GetAspectRatio();
+    const float aspectRatio = bin::Renderer::GetAspectRatioClamped();
 
     const glm::mat4 projection =
         glm::ortho(-m_OrthoSize * aspectRatio, m_OrthoSize * aspectRatio, -m_OrthoSize, m_OrthoSize, -1.0f, 1.0f);
@@ -59,5 +59,5 @@ glm::mat4 bin::Camera::GetViewProjectionMatrix() const
 
 glm::vec2 bin::Camera::GetViewWorldSize() const
 {
-    return { m_OrthoSize * 2.0f * bin::Renderer::GetAspectRatio(), m_OrthoSize * 2.0f };
+    return { m_OrthoSize * 2.0f * bin::Renderer::GetAspectRatioClamped(), m_OrthoSize * 2.0f };
 }

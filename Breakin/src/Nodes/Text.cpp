@@ -24,13 +24,19 @@ void bin::Text::SetText(const std::string& text)
 
 void bin::Text::UpdateTextTexture()
 {
-    SDL_Surface* surface = TTF_RenderText_Solid(m_FontPtr->GetFont(), m_Text.c_str(), m_Color);
+    SDL_Surface* surface = TTF_RenderText_Blended(m_FontPtr->GetFont(), m_Text.c_str(), m_Color);
     if(surface == nullptr)
         throw std::runtime_error(std::string("Failed to create surface: ") + SDL_GetError());
 
     auto& renderer = bin::Locator::Get<Renderer>();
-    m_TexturePtr = renderer.CreateTextureFromSurface(surface);
+
+    auto* texture = SDL_CreateTextureFromSurface(renderer.GetSDLRenderer(), surface);
     SDL_FreeSurface(surface);
+
+    if(texture == nullptr)
+        throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
+
+    m_TexturePtr = std::make_unique<bin::Texture>(texture);
 }
 
 void bin::Text::Draw(const Renderer& renderer)

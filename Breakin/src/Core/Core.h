@@ -25,7 +25,8 @@ namespace bin
         // Is implemented by the game
         void GameEntry();
 
-        void Run();
+        // We are Breakin' and Entering!
+        void Enter();
 
         float m_Lag{ 0.0 };
         bool m_IsApplicationQuitting{ false };

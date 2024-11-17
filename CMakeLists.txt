@@ -7,6 +7,8 @@ add_subdirectory(Breakin)
 set(TARGET_NAME Breakout)
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
+option(USE_ASAN "Use ASAN" FALSE)
+
 
 # Adds the source files to the executible
 set(SOURCE_FILES
@@ -32,9 +34,16 @@ target_include_directories(${TARGET_NAME} PUBLIC
     ${SOURCE_DIR}
 )
 
+if(USE_ASAN)
+    if(WIN32)
+        target_compile_options(${TARGET_NAME} PUBLIC /fsanitize=address)
+        target_link_options(${TARGET_NAME} PUBLIC /fsanitize=address)
+    else()
+        target_compile_options(${TARGET_NAME} PUBLIC -fsanitize=address)
+        target_link_options(${TARGET_NAME} PUBLIC -fsanitize=address)
+    endif()
+endif()
 
-add_compile_options(-fsanitize=address)
-add_link_options(-fsanitize=address)
 
 # enable c++20 features
 target_compile_features(${TARGET_NAME} PUBLIC cxx_std_20)

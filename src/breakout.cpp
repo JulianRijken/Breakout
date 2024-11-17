@@ -37,6 +37,8 @@ bout::Breakout::Breakout() :
     bin::Input::Bind(InputActionName::ForceRestart, this, &Breakout::OnForceRestartInput);
 }
 
+bout::Breakout::~Breakout() { bin::MessageQueue::RemoveListenerInstance(this); }
+
 void bout::Breakout::FixedUpdate()
 {
     glm::ivec2 mousePosition{};

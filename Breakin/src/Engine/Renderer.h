@@ -37,7 +37,13 @@ namespace bin
 
         [[nodiscard]] static glm::ivec2 GetWindowSize();
         [[nodiscard]] static float GetAspectRatio();
-        [[nodiscard]] std::unique_ptr<Texture> CreateTextureFromSurface(SDL_Surface* surface);
+
+        [[nodiscard]] static glm::ivec2 GetWindowSizeClamped();
+        [[nodiscard]] static float GetAspectRatioClamped();
+
+
+        [[nodiscard]] SDL_Renderer* GetSDLRenderer();
+
 
     private:
         void DrawUnitGrid() const;

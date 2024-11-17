@@ -26,19 +26,15 @@ bin::Core::Core()
     constexpr int windowWidth{ 1280 };
     constexpr int windowHeight{ 720 };
 
-    m_WindowPtr = SDL_CreateWindow(windowTitle,
-                                   SDL_WINDOWPOS_CENTERED,
-                                   SDL_WINDOWPOS_CENTERED,
-                                   windowWidth,
-                                   windowHeight,
-                                   SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+    m_WindowPtr = SDL_CreateWindow(
+        windowTitle, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowWidth, windowHeight, SDL_WINDOW_RESIZABLE);
 
     Locator::Provide<Renderer>(m_WindowPtr);
     Locator::Provide<Physics>();
     Resources::Initialize();
 
     GameEntry();
-    Run();
+    Enter();
 }
 
 
@@ -49,7 +45,7 @@ void LoopCallback(void* arg) { static_cast<bin::Core*>(arg)->RunOneFrame(); }
 #endif
 
 
-void bin::Core::Run()
+void bin::Core::Enter()
 {
 #ifdef __EMSCRIPTEN__
     emscripten_set_main_loop_arg(&LoopCallback, this, 0, true);

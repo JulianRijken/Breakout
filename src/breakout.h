@@ -58,6 +58,7 @@ namespace bout
     {
     public:
         Breakout();
+        ~Breakout() override;
 
         void FixedUpdate() override;
         void Update() override;

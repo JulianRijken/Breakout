@@ -26,6 +26,7 @@ void bin::Renderer::Render() const
     SDL_SetRenderDrawColor(m_RendererPtr, m_ClearColor.r, m_ClearColor.g, m_ClearColor.b, m_ClearColor.a);
     SDL_RenderClear(m_RendererPtr);
 
+
     // We can't draw without a camera
     if(SceneGraph::GetInstance().GetBestCamera() != nullptr)
     {
@@ -122,14 +123,29 @@ float bin::Renderer::GetAspectRatio()
     // TODO: These values could be stored and only updated when the window changes
     //       Function encaptulation provided for this in the future
 
-    auto windowSize = GetWindowSize();
+    glm::ivec2 windowSize = GetWindowSize();
     return static_cast<float>(windowSize.x) / static_cast<float>(windowSize.y);
 }
 
-std::unique_ptr<bin::Texture> bin::Renderer::CreateTextureFromSurface(SDL_Surface* surface)
+glm::ivec2 bin::Renderer::GetWindowSizeClamped()
 {
-    return std::make_unique<bin::Texture>(SDL_CreateTextureFromSurface(m_RendererPtr, surface));
+    glm::vec2 windowSize = GetWindowSize();
+
+    if(windowSize.y > windowSize.x)
+        windowSize.y = windowSize.x;
+
+    return windowSize;
 }
+
+float bin::Renderer::GetAspectRatioClamped()
+{
+    glm::ivec2 windowSize = GetWindowSizeClamped();
+    return static_cast<float>(windowSize.x) / static_cast<float>(windowSize.y);
+}
+
+
+SDL_Renderer* bin::Renderer::GetSDLRenderer() { return m_RendererPtr; }
+
 
 void bin::Renderer::DrawUnitGrid() const
 {
