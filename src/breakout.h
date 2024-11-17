@@ -30,8 +30,16 @@ namespace bout
 
     enum class InputActionName
     {
+        ForceRestart,
         FireBall
     };
+
+    enum class SceneName
+    {
+        Game,
+        MainMenu
+    };
+
 
     namespace collisionLayer
     {
@@ -59,6 +67,7 @@ namespace bout
 
     private:
         void OnFireBallInput(const bin::InputContext& context);
+        void OnForceRestartInput(const bin::InputContext& context);
 
         static constexpr float CAMERA_PADDING{ 2 };
         float m_ShakeTimer{};

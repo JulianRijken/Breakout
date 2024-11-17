@@ -48,7 +48,19 @@ void bin::SceneGraph::CleanupNodesSetToDestroy()
             ++iterator;
 }
 
-void bin::SceneGraph::Clear()
+void bin::SceneGraph::LoadScenesSetToLoad()
+{
+    if(m_SceneToLoad < 0)
+        return;
+
+    ClearScene();
+
+    // Call functions to load scene
+    m_SceneBinds[m_SceneToLoad]();
+    m_SceneToLoad = -1;
+}
+
+void bin::SceneGraph::ClearScene()
 {
     MoveAddedNodesToActiveNodes();
     m_ActiveNodes.clear();
@@ -83,3 +95,4 @@ void bin::SceneGraph::RemoveCamera(Camera* camera)
     m_BestCameraDiry = true;
     m_Cameras.erase(camera);
 }
+

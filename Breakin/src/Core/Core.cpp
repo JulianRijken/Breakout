@@ -23,8 +23,8 @@ bin::Core::Core()
 
     // Not stored as member variable as SDL might change the width or height
     constexpr const char* windowTitle = "Breakout - By Julian Rijken";
-    constexpr int windowWidth{ 1920 };
-    constexpr int windowHeight{ 1080 };
+    constexpr int windowWidth{ 1280 };
+    constexpr int windowHeight{ 720 };
 
     m_WindowPtr = SDL_CreateWindow(windowTitle,
                                    SDL_WINDOWPOS_CENTERED,
@@ -84,14 +84,18 @@ void bin::Core::RunOneFrame()
     // Render
     Locator::Get<Renderer>().Render();
 
+
     // Cleanup SceneGraph
     bin::SceneGraph::GetInstance().CleanupNodesSetToDestroy();
+
+    // Load Scene set to load for next frame
+    bin::SceneGraph::GetInstance().LoadScenesSetToLoad();
 }
 
 bin::Core::~Core()
 {
     Resources::Cleanup();
-    SceneGraph::GetInstance().Clear();
+    SceneGraph::GetInstance().ClearScene();
     Locator::Release<Renderer>();
     Locator::Release<Physics>();
 

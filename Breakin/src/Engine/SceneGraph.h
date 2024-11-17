@@ -1,7 +1,9 @@
 #ifndef SCENE_H
 #define SCENE_H
 
+#include <functional>
 #include <memory>
+#include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
@@ -22,7 +24,8 @@ namespace bin
 
         void MoveAddedNodesToActiveNodes();
         void CleanupNodesSetToDestroy();
-        void Clear();
+        void LoadScenesSetToLoad();
+        void ClearScene();
 
         template<typename NodeType, typename... Args>
             requires std::derived_from<NodeType, Node>
@@ -33,6 +36,25 @@ namespace bin
 
             return *static_cast<NodeType*>(addedNodes.get());
         }
+
+        template<typename SceneName>
+        static void BindScene(SceneName sceneName, std::function<void()>&& function)
+        {
+            int sceneId = static_cast<int>(sceneName);
+            assert(not GetInstance().m_SceneBinds.contains(sceneId) && "Scene Alread Bound");
+
+            GetInstance().m_SceneBinds[sceneId] = std::move(function);
+        }
+
+        template<typename SceneName>
+        static void LoadScene(SceneName sceneName)
+        {
+            int sceneId = static_cast<int>(sceneName);
+            assert(GetInstance().m_SceneBinds.contains(sceneId) && "Scene Not Bound");
+
+            GetInstance().m_SceneToLoad = sceneId;
+        }
+
 
         // Reruns camera with the highest priority
         // Can be nullptr
@@ -50,6 +72,10 @@ namespace bin
         std::vector<std::unique_ptr<Node>> m_AddedNodes{};   // Nodes that set to spawn
         std::vector<std::unique_ptr<Node>> m_ActiveNodes{};  // Nodes that are active in the scene
         std::unordered_set<Camera*> m_Cameras{};
+
+        // Scene loading is handled here as it allow for loading at the end of the frame
+        int m_SceneToLoad{ -1 };  // -1 Indicating no scene to load
+        std::unordered_map<int, std::function<void()>> m_SceneBinds{};
     };
 
 }  // namespace bin

@@ -66,7 +66,10 @@ namespace bin
         template<typename ActionName>
         static void AddInputAction(ActionName actionName, const InputAction& inputAction)
         {
-            GetInstance().m_InputActions.emplace(static_cast<int>(actionName), inputAction);
+            int actionIndex = static_cast<int>(actionName);
+            assert(not GetInstance().m_InputActions.contains(actionIndex) && "Input Action Already Bound");
+
+            GetInstance().m_InputActions.emplace(actionIndex, inputAction);
         }
 
         template<typename ActionName, typename... Args>
@@ -74,6 +77,7 @@ namespace bin
         {
             int actionIndex = static_cast<int>(actionName);
             assert(GetInstance().m_InputActions.contains(actionIndex) && "Action Does Not Exist");
+
             auto& bind =
                 GetInstance().m_Binds.emplace_back(std::make_unique<InputBinding>(std::forward<Args>(args)...));
             bind->inputActionPtr = &GetInstance().m_InputActions[actionIndex];

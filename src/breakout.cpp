@@ -15,7 +15,6 @@
 #include <Text.h>
 #include <Texture.h>
 
-#include "Ball.h"
 #include "HUD.h"
 #include "Playfield.h"
 
@@ -35,6 +34,7 @@ bout::Breakout::Breakout() :
 
     bin::MessageQueue::AddListener(MessageType::OnWallHit, this, &Breakout::OnWallHitMessage);
     bin::Input::Bind(InputActionName::FireBall, this, &Breakout::OnFireBallInput);
+    bin::Input::Bind(InputActionName::ForceRestart, this, &Breakout::OnForceRestartInput);
 }
 
 void bout::Breakout::FixedUpdate()
@@ -45,8 +45,11 @@ void bout::Breakout::FixedUpdate()
     const glm::vec2 mousePositionWorld = m_CameraPtr->ScreenToWorldPosition(mousePosition);
     m_PaddlePtr->SetPaddleTargetPosition(mousePositionWorld.x);
 
-    constexpr glm::vec2 mouseMovePlayfieldStrenght{ -0.05f, -0.02f };
-    m_PlayfieldPtr->SetLocalPosition(mousePositionWorld * mouseMovePlayfieldStrenght);
+    constexpr glm::vec2 mouseMovePlayfieldStrenght{ -0.02f, -0.02f };
+    constexpr float paddleMovePlayfieldStrenght{ -0.04f };
+    glm::vec2 mouseOffset{ mousePositionWorld * mouseMovePlayfieldStrenght };
+    glm::vec2 paddleOffset{ m_PaddlePtr->GetLocalPosition().x * paddleMovePlayfieldStrenght, 0 };
+    m_PlayfieldPtr->SetLocalPosition(mouseOffset + paddleOffset);
 }
 
 void bout::Breakout::Update()
@@ -76,4 +79,12 @@ void bout::Breakout::OnFireBallInput(const bin::InputContext& context)
         m_PaddlePtr->FireBall();
     else
         m_PaddlePtr->GetBallReady();
+}
+
+void bout::Breakout::OnForceRestartInput(const bin::InputContext& context)
+{
+    if(context.state != bin::ButtonState::Down)
+        return;
+
+    bin::SceneGraph::LoadScene(SceneName::Game);
 }

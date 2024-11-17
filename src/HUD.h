@@ -22,6 +22,7 @@ namespace bout
         void OnScoreChanged(int score);
 
         bin::Text* m_ScoreText{};
+        bin::Text* m_BallsLeftText{};
     };
 }  // namespace bout
 
