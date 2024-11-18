@@ -2,9 +2,11 @@
 #define Resources_H
 
 #include <filesystem>
+#include <iostream>
 #include <map>
 
 #include "Font.h"
+
 
 namespace bin
 {
@@ -19,9 +21,31 @@ namespace bin
         static const std::filesystem::path& GetAssetsPath();
 
         // Can be null
-        [[nodiscard]] static Font* GetFont(int id);
+        template<typename FontName>
+        [[nodiscard]] static Font* GetFont(FontName fontName)
+        {
+            int fontIndex = static_cast<int>(fontName);
+            if(g_FontPtrs.contains(fontIndex))
+                return g_FontPtrs.at(fontIndex).get();
 
-        static void LoadFont(int id, const std::string& filePath, int size);
+            return nullptr;
+        }
+
+        template<typename FontName>
+        static void LoadFont(FontName fontName, const std::string& filePath, int size)
+        {
+            if(size <= 0)
+                throw std::runtime_error("Font size must be greater than 0");
+
+            int fontIndex = static_cast<int>(fontName);
+
+            if(g_FontPtrs.contains(fontIndex))
+                throw std::runtime_error("Font ID already loaded: " + std::to_string(fontIndex));
+
+
+            const auto fullPath = g_AssetPath / filePath;
+            g_FontPtrs.emplace(fontIndex, std::make_unique<Font>(fullPath.string(), size));
+        }
 
     private:
         static void ConfigurePath();

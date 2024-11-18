@@ -5,7 +5,7 @@
 #include <Renderer.h>
 #include <SceneGraph.h>
 
-#include "Breakout.h"
+#include "GlobalSettings.h"
 
 bout::Brick::Brick(int pointsWorth, const glm::vec2& brickSize, const SDL_Color& brickColor) :
     m_PointsWorth(pointsWorth),

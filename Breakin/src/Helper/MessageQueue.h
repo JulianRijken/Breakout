@@ -21,14 +21,14 @@ namespace bin
     public:
         static void Broadcast(const Message& message);
 
-        template<typename MessageType>
-        static void Broadcast(MessageType messageType, std::vector<std::any>&& args = {})
+        template<typename MessageName>
+        static void Broadcast(MessageName messageType, std::vector<std::any>&& args = {})
         {
             g_Messages.push({ static_cast<int>(messageType), std::move(args) });
         }
 
-        template<typename ObjectType, typename MessageType>
-        static void AddListener(MessageType eventType, ObjectType* object,
+        template<typename ObjectType, typename MessageName>
+        static void AddListener(MessageName eventType, ObjectType* object,
                                 void (ObjectType::*memberFunction)(const Message&))
         {
             g_MessageListeners.insert({

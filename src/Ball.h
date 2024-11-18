@@ -6,7 +6,6 @@
 
 #include "Node.h"
 
-
 namespace bin
 {
     class BoxCollider;

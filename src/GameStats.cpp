@@ -1,6 +1,6 @@
 #include "GameStats.h"
 
-#include "Breakout.h"
+#include "GlobalSettings.h"
 #include "MessageQueue.h"
 
 bout::GameStats::GameStats()

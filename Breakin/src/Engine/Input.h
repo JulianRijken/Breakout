@@ -31,11 +31,11 @@ namespace bin
     // The the action linking seperating the action and the keys
     struct InputAction final
     {
-        std::vector<SDL_Scancode> keyboardButtons;
-        std::vector<SDL_GameControllerButton> controllerButtons;
+        std::vector<SDL_Scancode> keyboardButtons{};
+        bool leftMouseButton{};
+        bool rightMouseButton{};
 
         [[nodiscard]] bool HasKeyboardKey(SDL_Scancode compareKey) const;
-        [[nodiscard]] bool HasControllerButton(SDL_GameControllerButton compareButton) const;
     };
 
     // A binding between an Input action and an event
@@ -49,8 +49,6 @@ namespace bin
 
         InputAction* inputActionPtr{};
         bin::Event<const InputContext&> inputEvent{};
-
-        [[nodiscard]] bool TryExecuteKeyboard(ButtonState buttonState, SDL_Scancode compareKey);
     };
 
     class Input final : public bin::Singleton<Input>
@@ -83,10 +81,14 @@ namespace bin
             bind->inputActionPtr = &GetInstance().m_InputActions[actionIndex];
         }
 
+        static glm::ivec2 GetMousePosition();
+        static Uint32 GetMouseState();
+
+
         void ProcessInput(bool& shouldQuit);
 
     private:
-        [[nodiscard]] bool HandleKeyboardEvent(const SDL_Event& event);
+        [[nodiscard]] bool HandleEvents(const SDL_Event& event);
 
         std::unordered_map<int, InputAction> m_InputActions{};
         std::vector<std::unique_ptr<InputBinding>> m_Binds{};

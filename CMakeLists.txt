@@ -27,6 +27,8 @@ set(SOURCE_FILES
 
 add_executable(${TARGET_NAME}
     ${SOURCE_FILES}
+    src/MainMenu.h src/MainMenu.cpp
+    src/GlobalSettings.h src/GlobalSettings.cpp
 
 )
 

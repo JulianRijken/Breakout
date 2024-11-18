@@ -9,7 +9,7 @@
 #include <Renderer.h>
 #include <SceneGraph.h>
 
-#include "Breakout.h"
+#include "GlobalSettings.h"
 #include "Trail.h"
 
 bout::Ball::Ball()

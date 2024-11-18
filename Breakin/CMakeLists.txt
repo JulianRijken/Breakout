@@ -53,6 +53,7 @@ add_library(${TARGET_NAME} STATIC
     ${BREAKIN_SOURCE_FILES}
     src/Nodes/Text.h src/Nodes/Text.cpp
     src/Engine/Input.h src/Engine/Input.cpp
+    src/Nodes/Button.h src/Nodes/Button.cpp
 )
 
 

@@ -9,7 +9,7 @@
 
 #include "Ball.h"
 #include "BoxCollider.h"
-#include "Breakout.h"
+#include "GlobalSettings.h"
 
 
 bout::Paddle::Paddle()

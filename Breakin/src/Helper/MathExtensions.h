@@ -95,6 +95,30 @@ namespace bin::math
         return ClampLoop(value, static_cast<Type>(0), static_cast<Type>(1));
     };
 
+    constexpr glm::bvec2 AABB(const glm::vec2& aPos, const glm::vec2& aSize, const glm::vec2& bPos,
+                              const glm::vec2& bSize)
+    {
+        const glm::vec2 posA = aPos;
+        const glm::vec2 posB = bPos;
+        const glm::vec2 sizeA = aSize;
+        const glm::vec2 sizeB = bSize;
+
+        const glm::vec2 minA = posA - sizeA * 0.5f;
+        const glm::vec2 maxA = posA + sizeA * 0.5f;
+        const glm::vec2 minB = posB - sizeB * 0.5f;
+        const glm::vec2 maxB = posB + sizeB * 0.5f;
+
+        return { (minA.x <= maxB.x) and (maxA.x >= minB.x), (minA.y <= maxB.y) and (maxA.y >= minB.y) };
+    }
+
+    constexpr bool ABB(const glm::vec2& aPos, const glm::vec2& bPos, const glm::vec2& bSize)
+    {
+        const glm::vec2 minB = bPos - bSize * 0.5f;
+        const glm::vec2 maxB = bPos + bSize * 0.5f;
+
+        return (aPos.x >= minB.x && aPos.x <= maxB.x) and (aPos.y >= minB.y && aPos.y <= maxB.y);
+    }
+
     template<typename Type, typename TimeType>
     Type Lerp(const Type& a, const Type& b, TimeType t)
     {

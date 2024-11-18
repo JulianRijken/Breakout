@@ -2,6 +2,8 @@
 
 #include <glm/common.hpp>
 
+#include "MathExtensions.h"
+
 
 void Physics::RegisterCollider(bin::BoxCollider* boxCollider) { m_Colliders.insert(boxCollider); }
 
@@ -19,12 +21,12 @@ std::pair<bool, Manifold> Physics::DoesOverlap(bin::BoxCollider* a, bin::BoxColl
     const glm::vec2 minB = posB - sizeB * 0.5f;
     const glm::vec2 maxB = posB + sizeB * 0.5f;
 
-    const bool overlapX = (minA.x <= maxB.x) and (maxA.x >= minB.x);
-    const bool overlapY = (minA.y <= maxB.y) and (maxA.y >= minB.y);
+    const glm::bvec2 overlap =
+        bin::math::AABB(a->GetWorldPosition(), a->GetSize(), b->GetWorldPosition(), b->GetSize());
 
     Manifold m{};
 
-    if(overlapX and overlapY)
+    if(overlap.x and overlap.y)
     {
         m.penetration = glm::min(maxA - minB, maxB - minA);
 

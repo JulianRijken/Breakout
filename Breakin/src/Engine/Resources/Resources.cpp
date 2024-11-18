@@ -3,8 +3,6 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 
-#include <iostream>
-
 void bin::Resources::Initialize()
 {
     ConfigurePath();
@@ -21,27 +19,6 @@ void bin::Resources::Cleanup()
 
 const std::filesystem::path& bin::Resources::GetAssetsPath() { return g_AssetPath; }
 
-bin::Font* bin::Resources::GetFont(int id)
-{
-    if(g_FontPtrs.contains(id))
-        return g_FontPtrs.at(id).get();
-
-    std::cerr << "Getting not loaded Font: " << id << std::endl;
-    return nullptr;
-}
-
-void bin::Resources::LoadFont(int id, const std::string& filePath, int size)
-{
-    if(size <= 0)
-        throw std::runtime_error("Font size must be greater than 0");
-
-    if(g_FontPtrs.contains(id))
-        throw std::runtime_error("Font ID already loaded: " + std::to_string(id));
-
-
-    const auto fullPath = g_AssetPath / filePath;
-    g_FontPtrs.emplace(id, std::make_unique<Font>(fullPath.string(), size));
-}
 
 void bin::Resources::ConfigurePath()
 {

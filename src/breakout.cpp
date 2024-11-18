@@ -15,6 +15,7 @@
 #include <Text.h>
 #include <Texture.h>
 
+#include "GlobalSettings.h"
 #include "HUD.h"
 #include "Playfield.h"
 
@@ -41,10 +42,7 @@ bout::Breakout::~Breakout() { bin::MessageQueue::RemoveListenerInstance(this); }
 
 void bout::Breakout::FixedUpdate()
 {
-    glm::ivec2 mousePosition{};
-    SDL_GetMouseState(&mousePosition.x, &mousePosition.y);
-
-    const glm::vec2 mousePositionWorld = m_CameraPtr->ScreenToWorldPosition(mousePosition);
+    const glm::vec2 mousePositionWorld = m_CameraPtr->ScreenToWorldPosition(bin::Input::GetMousePosition());
     m_PaddlePtr->SetPaddleTargetPosition(mousePositionWorld.x);
 
     constexpr glm::vec2 mouseMovePlayfieldStrenght{ -0.02f, -0.02f };

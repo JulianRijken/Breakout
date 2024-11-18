@@ -67,8 +67,8 @@ void bin::Renderer::DrawTexture(Texture* texture, const glm::vec2& position, flo
     const glm::ivec2 screenPos = camera->WorldToScreenPosition(offsetPosition);
     const glm::ivec2 screenScale = camera->WorldToScreenScale(worldSize);
 
-
-    const SDL_Rect destRect = { screenPos.x, screenPos.y, screenScale.x, -screenScale.y };
+    // We have to do  screenPos.y + screenScale.y because the rect has to go from top left
+    const SDL_Rect destRect = { screenPos.x, screenPos.y + screenScale.y, screenScale.x, -screenScale.y };
     const SDL_Rect srcRect = { 0, 0, textureSize.x, textureSize.y };
 
     SDL_RenderCopy(m_RendererPtr, texture->GetSDLTexture(), &srcRect, &destRect);
