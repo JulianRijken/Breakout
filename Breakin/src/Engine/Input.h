@@ -24,11 +24,11 @@ namespace bin
     struct InputContext final
     {
         // Abstracted to allow for future changes
-        // Like passing the value of a gamepad trigger
+        // Like passing the value of a gameplay trigger
         ButtonState state;
     };
 
-    // The the action linking seperating the action and the keys
+    // The action linking separating the action and the keys
     struct InputAction final
     {
         std::vector<SDL_Scancode> keyboardButtons{};
@@ -55,6 +55,7 @@ namespace bin
     {
     public:
         Input() = default;
+        ~Input() override = default;
 
         Input(Input&& other) = delete;
         Input(const Input& other) = delete;

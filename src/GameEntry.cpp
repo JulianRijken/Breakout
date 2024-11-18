@@ -11,7 +11,7 @@
 
 void bin::Core::GameEntry()
 {
-    bin::Resources::LoadFont(0, "Fonts/NES_Font.ttf", 8);
+    bin::Resources::LoadFont(bout::FontName::NES_Font, "Fonts/NES_Font.ttf", 8);
     bin::Input::AddInputAction(bout::InputActionName::FireBall, { { SDL_SCANCODE_SPACE }, true });
     bin::Input::AddInputAction(bout::InputActionName::ForceRestart, { { SDL_SCANCODE_R } });
 
