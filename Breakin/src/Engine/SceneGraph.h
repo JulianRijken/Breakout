@@ -17,16 +17,11 @@ namespace bin
 
     class SceneGraph final : public Singleton<SceneGraph>
     {
+        friend class Core;
+        friend class Camera;
+        friend class Renderer;
+
     public:
-        void UpdateAll() const;
-        void FixedUpdateAll() const;
-        void DrawAll(const bin::Renderer& renderer) const;
-
-        void MoveAddedNodesToActiveNodes();
-        void CleanupNodesSetToDestroy();
-        void ActivateSceneSetToLoad();
-        void ClearScene();
-
         template<typename NodeType, typename... Args>
             requires std::derived_from<NodeType, Node>
         static NodeType& AddNode(Args&&... args)
@@ -60,10 +55,19 @@ namespace bin
         // Can be nullptr
         [[nodiscard]] Camera* GetBestCamera();
 
+    private:
         void AddCamera(Camera* camera);
         void RemoveCamera(Camera* camera);
+        void UpdateAll() const;
+        void FixedUpdateAll() const;
+        void DrawAll(const bin::Renderer& renderer) const;
 
-    private:
+        void MoveAddedNodesToActiveNodes();
+        void CleanupNodesSetToDestroy();
+        void ActivateSceneSetToLoad();
+        void ClearScene();
+
+
         bool m_BestCameraDiry{ false };
         Camera* m_BestCamera{ nullptr };
 
