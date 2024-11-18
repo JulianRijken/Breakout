@@ -27,9 +27,9 @@ bout::MainMenu::MainMenu()
 
     auto& quitButton = prefabs::TextButton({ 10, 2 }, "QUIT", *this);
     quitButton.SetLocalPosition({ 0, -2 });
-    startButton.m_OnPress.AddListener(this, &MainMenu::OnQuitButtonPress);
+    quitButton.m_OnPress.AddListener(this, &MainMenu::OnQuitButtonPress);
 }
 
 void bout::MainMenu::OnStartButtonPress() { bin::SceneGraph::LoadScene(SceneName::Game); }
 
-void bout::MainMenu::OnQuitButtonPress() {}
+void bout::MainMenu::OnQuitButtonPress() { SDL_Quit(); }

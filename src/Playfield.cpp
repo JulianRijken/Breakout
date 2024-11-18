@@ -1,10 +1,10 @@
 #include "Playfield.h"
 
-#include <Brick.h>
 #include <Renderer.h>
 #include <SceneGraph.h>
 
 #include "BoxCollider.h"
+#include "Brick.h"
 #include "Prefabs.h"
 
 
@@ -27,24 +27,33 @@ bout::Playfield::Playfield(const glm::vec2& size) :
 
             spawnPositon.x = centerdIndexX * (brickPadding.x + brickSize.x);
 
+            Brick* brickSpawned{ nullptr };
+
             switch(y)
             {
                 case 0:
-                    bout::prefabs::BlueBrick(brickSize, *this).SetLocalPosition(spawnPositon);
+                    brickSpawned = &bout::prefabs::BlueBrick(brickSize, *this);
                     break;
                 case 1:
-                    bout::prefabs::GreenBrick(brickSize, *this).SetLocalPosition(spawnPositon);
+                    brickSpawned = &bout::prefabs::GreenBrick(brickSize, *this);
                     break;
                 case 2:
-                    bout::prefabs::YellowBrick(brickSize, *this).SetLocalPosition(spawnPositon);
+                    brickSpawned = &bout::prefabs::YellowBrick(brickSize, *this);
                     break;
                 case 3:
-                    bout::prefabs::OrangeBrick(brickSize, *this).SetLocalPosition(spawnPositon);
+                    brickSpawned = &bout::prefabs::OrangeBrick(brickSize, *this);
                     break;
                 case 4:
-                    bout::prefabs::RedBrick(brickSize, *this).SetLocalPosition(spawnPositon);
+                    brickSpawned = &bout::prefabs::RedBrick(brickSize, *this);
                     break;
             }
+
+            assert(brickSpawned != nullptr && "Brick does not exist");
+
+
+            brickSpawned->SetLocalPosition(spawnPositon);
+            brickSpawned->m_OnDestroyedEvent.AddListener(this, &Playfield::OnBrickDestroyedEvent);
+            m_Bricks.insert(brickSpawned);
         }
     }
 
@@ -70,3 +79,5 @@ void bout::Playfield::Draw(const bin::Renderer&)
 {
     // renderer.DrawWireBox(GetLocalPosition(), m_Size, { 0.5f, 0.5f }, { 217, 64, 237, 255 });
 }
+
+void bout::Playfield::OnBrickDestroyedEvent(Node& brick) { m_Bricks.erase(static_cast<Brick*>(&brick)); }

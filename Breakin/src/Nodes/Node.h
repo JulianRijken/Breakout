@@ -1,6 +1,8 @@
 #ifndef NODE_H
 #define NODE_H
 
+#include <Event.h>
+
 #include <glm/vec2.hpp>
 #include <unordered_set>
 
@@ -13,8 +15,8 @@ namespace bin
 
     public:
         Node() = default;
-        virtual ~Node() = default;
-       
+        virtual ~Node();
+
         Node(Node&&) = delete;
         Node(const Node&) = delete;
         Node& operator=(Node&&) = delete;
@@ -36,6 +38,8 @@ namespace bin
         [[nodiscard]] bool IsChild(Node* checkChildPtr) const;
         [[nodiscard]] bool IsMarkedForDestroy() const;
 
+        bin::Event<Node&> m_OnDestroyedEvent;
+
     private:
         void UpdateWorldPosition();
         void PropagateDestroy();
@@ -47,6 +51,7 @@ namespace bin
 
         bool m_MarkedForDestroy{ false };  // Marked by the user does not propagate
         bool m_GettingDestroyed{ false };  // Used by the SceneGraph
+
         Node* m_ParentPtr{ nullptr };
         std::unordered_set<Node*> m_ChildPtrs{};
     };

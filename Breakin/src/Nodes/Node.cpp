@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+bin::Node::~Node() { m_OnDestroyedEvent.Invoke(*this); }
+
 void bin::Node::SetLocalPosition(const glm::vec2& position)
 {
     if(m_LocalPosition == position)

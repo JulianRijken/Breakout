@@ -10,14 +10,19 @@ namespace bin
     class Button;
 }  // namespace bin
 
-namespace bout::prefabs
+namespace bout
 {
-    bin::Node& BlueBrick(const glm::vec2& size, bin::Node& parent);
-    bin::Node& GreenBrick(const glm::vec2& size, bin::Node& parent);
-    bin::Node& YellowBrick(const glm::vec2& size, bin::Node& parent);
-    bin::Node& OrangeBrick(const glm::vec2& size, bin::Node& parent);
-    bin::Node& RedBrick(const glm::vec2& size, bin::Node& parent);
+    class Brick;
 
-    bin::Button& TextButton(const glm::vec2& size, const std::string& text, bin::Node& parent);
-}  // namespace bout::prefabs
+    namespace prefabs
+    {
+        bout::Brick& BlueBrick(const glm::vec2& size, bin::Node& parent);
+        bout::Brick& GreenBrick(const glm::vec2& size, bin::Node& parent);
+        bout::Brick& YellowBrick(const glm::vec2& size, bin::Node& parent);
+        bout::Brick& OrangeBrick(const glm::vec2& size, bin::Node& parent);
+        bout::Brick& RedBrick(const glm::vec2& size, bin::Node& parent);
+
+        bin::Button& TextButton(const glm::vec2& size, const std::string& text, bin::Node& parent);
+    }  // namespace prefabs
+}  // namespace bout
 #endif  // PREFABS_H

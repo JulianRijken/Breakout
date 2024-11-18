@@ -3,9 +3,13 @@
 
 #include <Node.h>
 
+#include <unordered_set>
+
 namespace bout
 {
-    class Playfield final : public bin::Node
+    class Brick;
+
+    class Playfield final : public bin::Node, public bin::IEventListener
     {
 
     public:
@@ -15,8 +19,10 @@ namespace bout
 
     private:
         void Draw(const bin::Renderer& renderer) override;
+        void OnBrickDestroyedEvent(Node& brick);
 
         glm::vec2 m_Size{};
+        std::unordered_set<Brick*> m_Bricks{};
     };
 }  // namespace bout
 
