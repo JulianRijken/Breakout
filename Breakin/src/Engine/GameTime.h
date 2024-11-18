@@ -5,15 +5,17 @@ namespace bin
 {
     class GameTime final
     {
-    public:
-        static void Increment();
+        friend class Core;
 
+    public:
         [[nodiscard]] static float GetDeltaTime();
         [[nodiscard]] static float GetUnscaledDeltaTime();
         [[nodiscard]] static float GetFixedDeltaTime();
         [[nodiscard]] static float GetElapsedTime();
 
     private:
+        static void IncrementFrame();
+
         inline static constexpr float MAX_DELTA_TIME{ 1.0f / 30.0f };
         inline static float g_FixedDeltaTime{ 1.0f / 120.0f };
 

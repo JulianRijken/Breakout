@@ -5,6 +5,7 @@
 #include <SDL_render.h>
 #include <SDL_ttf.h>
 
+#include <iostream>
 #include <stdexcept>
 
 #include "Camera.h"
@@ -23,21 +24,22 @@ bin::Renderer::Renderer(SDL_Window* windowPtr) :
 
 void bin::Renderer::Render() const
 {
-    SDL_SetRenderDrawColor(m_RendererPtr, m_ClearColor.r, m_ClearColor.g, m_ClearColor.b, m_ClearColor.a);
+    Camera* camera = SceneGraph::GetInstance().GetBestCamera();
+    if(camera == nullptr)
+    {
+        std::cerr << "Scene has no camera" << std::endl;
+        return;
+    }
+
+    SDL_SetRenderDrawColor(
+        m_RendererPtr, camera->m_ClearColor.r, camera->m_ClearColor.g, camera->m_ClearColor.b, camera->m_ClearColor.a);
     SDL_RenderClear(m_RendererPtr);
 
-
-    // We can't draw without a camera
-    if(SceneGraph::GetInstance().GetBestCamera() != nullptr)
-    {
-        DrawUnitGrid();
-        bin::SceneGraph::GetInstance().DrawAll(*this);
-    }
+    DrawUnitGrid();
+    bin::SceneGraph::GetInstance().DrawAll(*this);
 
     SDL_RenderPresent(m_RendererPtr);
 }
-
-void bin::Renderer::SetClearColor(const SDL_Color& color) { m_ClearColor = color; }
 
 void bin::Renderer::DrawLine(const glm::vec2& from, const glm::vec2& to, const SDL_Color& color) const
 {
@@ -143,8 +145,10 @@ float bin::Renderer::GetAspectRatioClamped()
     return static_cast<float>(windowSize.x) / static_cast<float>(windowSize.y);
 }
 
-
-SDL_Renderer* bin::Renderer::GetSDLRenderer() { return m_RendererPtr; }
+SDL_Texture* bin::Renderer::CreateTextureFromSurface(SDL_Surface* surface)
+{
+    return SDL_CreateTextureFromSurface(Locator::Get<Renderer>().m_RendererPtr, surface);
+}
 
 
 void bin::Renderer::DrawUnitGrid() const

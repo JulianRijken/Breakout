@@ -3,16 +3,16 @@
 #include <algorithm>
 #include <chrono>
 
-void bin::GameTime::Increment()
+void bin::GameTime::IncrementFrame()
 {
-    static std::chrono::time_point<std::chrono::high_resolution_clock> g_LastTime{
+    static std::chrono::time_point<std::chrono::high_resolution_clock> s_LastTime{
         std::chrono::high_resolution_clock::now()
     };
 
     // Calculate delta time
     const auto currentTime = std::chrono::high_resolution_clock::now();
-    g_DeltaTime = std::min(MAX_DELTA_TIME, std::chrono::duration<float>(currentTime - g_LastTime).count());
-    g_LastTime = currentTime;
+    g_DeltaTime = std::min(MAX_DELTA_TIME, std::chrono::duration<float>(currentTime - s_LastTime).count());
+    s_LastTime = currentTime;
 
     // Update elapsed time
     g_ElapsedTime += GetDeltaTime();

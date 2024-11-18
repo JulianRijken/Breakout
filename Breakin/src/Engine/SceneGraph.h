@@ -24,7 +24,7 @@ namespace bin
 
         void MoveAddedNodesToActiveNodes();
         void CleanupNodesSetToDestroy();
-        void LoadScenesSetToLoad();
+        void ActivateSceneSetToLoad();
         void ClearScene();
 
         template<typename NodeType, typename... Args>

@@ -17,9 +17,12 @@ namespace bout
 
         [[nodiscard]] const glm::vec2& GetSize() const;
 
+        bin::Event<> m_OnFieldCleared{};
+
     private:
         void Draw(const bin::Renderer& renderer) override;
         void OnBrickDestroyedEvent(Node& brick);
+        void OnPlayfieldCleared();
 
         glm::vec2 m_Size{};
         std::unordered_set<Brick*> m_Bricks{};

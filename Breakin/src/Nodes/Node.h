@@ -38,11 +38,11 @@ namespace bin
         [[nodiscard]] bool IsChild(Node* checkChildPtr) const;
         [[nodiscard]] bool IsMarkedForDestroy() const;
 
-        bin::Event<Node&> m_OnDestroyedEvent;
+        bin::Event<Node&> m_OnDestroyedEvent{};
 
     private:
         void UpdateWorldPosition();
-        void PropagateDestroy();
+        void PropagateGettingDestroyed();
         void ClearFromSceneGraph();
 
         bool m_IsPositionDirty{ true };

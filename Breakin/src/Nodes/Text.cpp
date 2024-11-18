@@ -28,9 +28,7 @@ void bin::Text::UpdateTextTexture()
     if(surface == nullptr)
         throw std::runtime_error(std::string("Failed to create surface: ") + SDL_GetError());
 
-    auto& renderer = bin::Locator::Get<Renderer>();
-
-    auto* texture = SDL_CreateTextureFromSurface(renderer.GetSDLRenderer(), surface);
+    auto* texture = bin::Locator::Get<Renderer>().CreateTextureFromSurface(surface);
     SDL_FreeSurface(surface);
 
     if(texture == nullptr)

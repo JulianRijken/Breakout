@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-bin::Node::~Node() { m_OnDestroyedEvent.Invoke(*this); }
+bin::Node::~Node() { assert(m_GettingDestroyed && "Node destructor called before destory"); }
 
 void bin::Node::SetLocalPosition(const glm::vec2& position)
 {
@@ -78,12 +78,16 @@ void bin::Node::SetParent(Node* newParentPtr, bool worldPositionStays)
 
 void bin::Node::MarkForDestroy(bool destroy) { m_MarkedForDestroy = destroy; }
 
-void bin::Node::PropagateDestroy()
+void bin::Node::PropagateGettingDestroyed()
 {
+    if(m_GettingDestroyed)
+        return;
+
     m_GettingDestroyed = true;
+    m_OnDestroyedEvent.Invoke(*this);
 
     for(Node* child : m_ChildPtrs)
-        child->PropagateDestroy();
+        child->PropagateGettingDestroyed();
 }
 
 void bin::Node::ClearFromSceneGraph()

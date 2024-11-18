@@ -10,6 +10,7 @@
 struct SDL_Renderer;
 struct SDL_Window;
 struct SDL_Surface;
+struct SDL_Texture;
 
 namespace bin
 {
@@ -18,13 +19,13 @@ namespace bin
 
     class Renderer final : public bin::Service
     {
+        friend class Core;
+
     public:
         explicit Renderer(SDL_Window* windowPtr);
 
-        void Render() const;
-
-        void SetClearColor(const SDL_Color& color);
-        void DrawLine(const glm::vec2& from, const glm::vec2& to, const SDL_Color& color = { 255, 255, 255, 255 }) const;
+        void DrawLine(const glm::vec2& from, const glm::vec2& to,
+                      const SDL_Color& color = { 255, 255, 255, 255 }) const;
 
         void DrawTexture(Texture* texture, const glm::vec2& position, float pixelsPerUnit,
                          const glm::vec2& pivot) const;
@@ -41,16 +42,14 @@ namespace bin
         [[nodiscard]] static glm::ivec2 GetWindowSizeClamped();
         [[nodiscard]] static float GetAspectRatioClamped();
 
-
-        [[nodiscard]] SDL_Renderer* GetSDLRenderer();
-
+        [[nodiscard]] static SDL_Texture* CreateTextureFromSurface(SDL_Surface* surface);
 
     private:
+        void Render() const;
         void DrawUnitGrid() const;
 
         SDL_Renderer* m_RendererPtr{};
         SDL_Window* m_WindowPtr{};
-        SDL_Color m_ClearColor{ 25, 25, 25, 0 };
     };
 }  // namespace bin
 #endif  // RENDERER_H

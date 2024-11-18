@@ -58,13 +58,21 @@ void bin::Core::Enter()
 
 void bin::Core::RunOneFrame()
 {
-    GameTime::Increment();
+    // Game Time
+    GameTime::IncrementFrame();
     m_Lag += GameTime::GetDeltaTime();
 
+    // Cleanup SceneGraph
+    bin::SceneGraph::GetInstance().CleanupNodesSetToDestroy();
+    // Load Scene set to load for next frame
+    bin::SceneGraph::GetInstance().ActivateSceneSetToLoad();
+    // Move added nodes
     bin::SceneGraph::GetInstance().MoveAddedNodesToActiveNodes();
 
+    // Input
     bin::Input::GetInstance().ProcessInput(m_IsApplicationQuitting);
 
+    // Fixed Update Loop
     while(m_Lag >= bin::GameTime::GetFixedDeltaTime())
     {
         m_Lag -= bin::GameTime::GetFixedDeltaTime();
@@ -79,13 +87,6 @@ void bin::Core::RunOneFrame()
 
     // Render
     Locator::Get<Renderer>().Render();
-
-
-    // Cleanup SceneGraph
-    bin::SceneGraph::GetInstance().CleanupNodesSetToDestroy();
-
-    // Load Scene set to load for next frame
-    bin::SceneGraph::GetInstance().LoadScenesSetToLoad();
 }
 
 bin::Core::~Core()

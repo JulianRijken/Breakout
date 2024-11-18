@@ -33,6 +33,7 @@ bout::Breakout::Breakout() :
     m_CameraPtr->SetOrthoSize(m_PlayfieldPtr->GetSize().y / 2 + CAMERA_PADDING);
     m_CameraPtr->SetLocalPosition({ 0, 0 });
 
+    m_PlayfieldPtr->m_OnFieldCleared.AddListener(this, &Breakout::OnPlayfieldClearedEvent);
     bin::MessageQueue::AddListener(MessageType::OnWallHit, this, &Breakout::OnWallHitMessage);
     bin::Input::Bind(InputActionName::FireBall, this, &Breakout::OnFireBallInput);
     bin::Input::Bind(InputActionName::ForceRestart, this, &Breakout::OnForceRestartInput);
@@ -88,3 +89,5 @@ void bout::Breakout::OnForceRestartInput(const bin::InputContext& context)
 
     bin::SceneGraph::LoadScene(SceneName::Game);
 }
+
+void bout::Breakout::OnPlayfieldClearedEvent() {}

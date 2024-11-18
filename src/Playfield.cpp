@@ -1,5 +1,6 @@
 #include "Playfield.h"
 
+#include <fmt/core.h>
 #include <Renderer.h>
 #include <SceneGraph.h>
 
@@ -80,4 +81,15 @@ void bout::Playfield::Draw(const bin::Renderer&)
     // renderer.DrawWireBox(GetLocalPosition(), m_Size, { 0.5f, 0.5f }, { 217, 64, 237, 255 });
 }
 
-void bout::Playfield::OnBrickDestroyedEvent(Node& brick) { m_Bricks.erase(static_cast<Brick*>(&brick)); }
+void bout::Playfield::OnBrickDestroyedEvent(Node& brick)
+{
+    auto* brickPtr = dynamic_cast<Brick*>(&brick);
+    assert(brickPtr != nullptr);
+
+    m_Bricks.erase(brickPtr);
+
+    if(m_Bricks.empty())
+        OnPlayfieldCleared();
+}
+
+void bout::Playfield::OnPlayfieldCleared() { m_OnFieldCleared.Invoke(); }

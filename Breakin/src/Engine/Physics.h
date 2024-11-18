@@ -14,14 +14,17 @@ struct Manifold final
 
 class Physics final : public bin::Service
 {
-public:
-    void RegisterCollider(bin::BoxCollider* boxCollider);
-    void UnregisterCollider(bin::BoxCollider* boxCollider);
+    friend class bin::BoxCollider;
 
+public:
     [[nodiscard]] std::pair<bool, Manifold> DoesOverlap(bin::BoxCollider* a, bin::BoxCollider* b);
     [[nodiscard]] const std::unordered_set<bin::BoxCollider*>& GetColliders() const;
 
 private:
+    void RegisterCollider(bin::BoxCollider* boxCollider);
+    void UnregisterCollider(bin::BoxCollider* boxCollider);
+
+
     std::unordered_set<bin::BoxCollider*> m_Colliders{};
 };
 

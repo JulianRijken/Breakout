@@ -21,9 +21,9 @@ namespace bin
 
         [[nodiscard]] const glm::vec2& GetSize() const;
 
-        bin::Event<> m_OnHit{};
-
         bool CompareLayers(uint16_t layers) const;
+
+        bin::Event<> m_OnHit{};
 
     private:
         void Draw(const bin::Renderer& renderer) override;

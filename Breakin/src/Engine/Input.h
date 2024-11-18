@@ -53,6 +53,8 @@ namespace bin
 
     class Input final : public bin::Singleton<Input>
     {
+        friend class Core;
+
     public:
         Input() = default;
         ~Input() override = default;
@@ -85,11 +87,8 @@ namespace bin
         static glm::ivec2 GetMousePosition();
         static Uint32 GetMouseState();
 
-
-        void ProcessInput(bool& shouldQuit);
-
     private:
-        [[nodiscard]] bool HandleEvents(const SDL_Event& event);
+        void ProcessInput(bool& shouldQuit);
 
         std::unordered_map<int, InputAction> m_InputActions{};
         std::vector<std::unique_ptr<InputBinding>> m_Binds{};

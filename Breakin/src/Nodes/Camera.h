@@ -1,11 +1,13 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "Node.h"
+#include <SDL_pixels.h>
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
+
+#include "Node.h"
 
 namespace bin
 {
@@ -31,7 +33,8 @@ namespace bin
         [[nodiscard]] glm::mat4 GetViewProjectionMatrix() const;
         [[nodiscard]] glm::vec2 GetViewWorldSize() const;
 
-        int m_Priority{ 0 };  // NOLINT - C.131: Avoid trivial getters and setters
+        SDL_Color m_ClearColor{ 25, 25, 25, 0 };  // / NOLINT - C.131: Avoid trivial getters and setters
+        int m_Priority{ 0 };                      // NOLINT - C.131: Avoid trivial getters and setters
 
         // Allows for sorting the camera by priority
         bool operator<(const Camera& other) const { return m_Priority < other.m_Priority; }

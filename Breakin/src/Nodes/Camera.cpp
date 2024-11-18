@@ -1,8 +1,8 @@
 #include "Camera.h"
 
+#include "Locator.h"
 #include "Renderer.h"
 #include "SceneGraph.h"
-#include "Locator.h"
 
 bin::Camera::Camera() { bin::SceneGraph::GetInstance().AddCamera(this); }
 
@@ -61,3 +61,4 @@ glm::vec2 bin::Camera::GetViewWorldSize() const
 {
     return { m_OrthoSize * 2.0f * bin::Renderer::GetAspectRatioClamped(), m_OrthoSize * 2.0f };
 }
+
