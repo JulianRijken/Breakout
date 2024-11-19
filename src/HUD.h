@@ -3,6 +3,8 @@
 
 #include <Event.h>
 #include <Node.h>
+#include <SDL_pixels.h>
+
 
 namespace bin
 {
@@ -26,7 +28,6 @@ namespace bout
         HUD& operator=(HUD&&) = delete;
         HUD& operator=(const HUD&) = delete;
 
-
     private:
         void OnScoreChanged(int score);
         void OnBallsLeftChanged(int ballsLeft);
@@ -34,6 +35,10 @@ namespace bout
         void OnBallLaunchedMessage(const bin::Message& message);
         void OnBallSpawnedMessage(const bin::Message& message);
 
+        static constexpr SDL_Color FULL_BALLS_COLOR{ 200, 200, 200, 255 };
+        static constexpr SDL_Color NO_BALLS_COLOR{ 255, 50, 50, 255 };
+        static constexpr float LAUNCH_BALL_TEXT_SIZE{ 0.8f };
+        static constexpr float LAUNCH_BALL_TEXT_SHOW_DURATION{ 0.5f };
 
         bin::Text* m_ScoreText{};
         bin::Text* m_BallsLeftText{};

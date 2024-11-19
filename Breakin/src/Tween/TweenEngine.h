@@ -21,7 +21,7 @@ namespace bin
         static void Start(const Tween& tween, Node& target);
 
     private:
-        void Update();
+        static void Update();
         std::vector<std::unique_ptr<TweenInstance>> m_TweenInstances{};
     };
 

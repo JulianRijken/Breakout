@@ -17,6 +17,8 @@ namespace bin
              SDL_Color color = { 255, 255, 255, 255 });
 
         void SetText(const std::string& text);
+        void SetSize(float size);
+        void SetColor(const SDL_Color& color);
 
     private:
         void UpdateTextTexture();

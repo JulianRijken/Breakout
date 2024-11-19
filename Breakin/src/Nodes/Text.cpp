@@ -22,6 +22,14 @@ void bin::Text::SetText(const std::string& text)
     UpdateTextTexture();
 }
 
+void bin::Text::SetSize(float size) { m_Size = std::max(0.0f, size); }
+
+void bin::Text::SetColor(const SDL_Color& color)
+{
+    UpdateTextTexture();
+    m_Color = color;
+}
+
 void bin::Text::UpdateTextTexture()
 {
     if(m_Text.empty())

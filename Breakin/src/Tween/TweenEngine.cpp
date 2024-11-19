@@ -7,17 +7,19 @@
 
 void bin::TweenEngine::Update()
 {
+    TweenEngine& instace = GetInstance();
+
     // Loops over all tween instances
     // Erases if decommisioned
     // Keeps track of original size incase of tweens starting during the loop
-    size_t originalSize = m_TweenInstances.size();
+    size_t originalSize = instace.m_TweenInstances.size();
     for(size_t index = 0; index < originalSize;)
     {
-        auto& instance = m_TweenInstances[index];
+        auto& instance = instace.m_TweenInstances[index];
 
         if(instance->IsDecommisioned())
         {
-            m_TweenInstances.erase(m_TweenInstances.begin() + index);
+            instace.m_TweenInstances.erase(instace.m_TweenInstances.begin() + index);
             --originalSize;
         }
         else

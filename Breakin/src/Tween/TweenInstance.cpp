@@ -36,7 +36,7 @@ void bin::TweenInstance::Update()
         return;
     }
 
-    const double deltaTime = m_Tween.igunoreTimeScale ? GameTime::GetUnscaledDeltaTime() : GameTime::GetDeltaTime();
+    const float deltaTime = m_Tween.igunoreTimeScale ? GameTime::GetUnscaledDeltaTime() : GameTime::GetDeltaTime();
 
     if(m_IsHalting)
     {
@@ -69,9 +69,9 @@ void bin::TweenInstance::Update()
     }
 
 
-    const double alpha = m_Time / m_Tween.duration;
-    const double easedTime = easeFunction::Evaluate(alpha, m_Tween.easeType);
-    const double interpolatedValue = std::lerp(m_Tween.from, m_Tween.to, easedTime);
+    const float alpha = m_Time / m_Tween.duration;
+    const float easedTime = easeFunction::Evaluate(alpha, m_Tween.easeType);
+    const float interpolatedValue = std::lerp(m_Tween.from, m_Tween.to, easedTime);
 
     if(m_Tween.onUpdate)
         m_Tween.onUpdate(interpolatedValue);

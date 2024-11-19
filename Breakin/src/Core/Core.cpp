@@ -1,10 +1,9 @@
 #include "Core.h"
 
 #define SDL_MAIN_HANDLED
-#include <SDL.h>
-
 #include <fmt/core.h>
 #include <fmt/format.h>
+#include <SDL.h>
 
 #include <stdexcept>
 
@@ -15,6 +14,7 @@
 #include "Renderer.h"
 #include "Resources.h"
 #include "SceneGraph.h"
+#include "TweenEngine.h"
 
 bin::Core::Core()
 {
@@ -78,11 +78,14 @@ void bin::Core::IncrementFrame()
         SceneGraph::GetInstance().FixedUpdateAll();
     }
 
+    // Update Scene Graph
+    SceneGraph::GetInstance().UpdateAll();
+
     // Message Dispatch
     MessageQueue::Dispatch();
 
-    // Update
-    SceneGraph::GetInstance().UpdateAll();
+    // Update Tweens
+    TweenEngine::Update();
 
     // Render
     Locator::Get<Renderer>().Render();
