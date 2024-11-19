@@ -5,7 +5,17 @@
 
 bout::GameStats::GameStats()
 {
-    bin::MessageQueue::AddListener(MessageType::OnBrickBreak, this, &GameStats::OnBrickBreakMessage);
+    bin::MessageQueue::AddListener(MessageType::BrickBreak, this, &GameStats::OnBrickBreakMessage);
+}
+
+bool bout::GameStats::HasBallsLeft() const { return m_BallsLeft > 0; }
+
+void bout::GameStats::RemoveBall()
+{
+    assert(HasBallsLeft() && "Trying to remove ball with no balls left");
+
+    m_BallsLeft--;
+    m_OnBallsLeftChanged.Invoke(m_BallsLeft);
 }
 
 void bout::GameStats::OnBrickBreakMessage(const bin::Message& message)

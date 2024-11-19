@@ -19,7 +19,9 @@ namespace bout
         Ball();
 
         void HoldBall();
-        void ShootBall();
+        void LaunchBall();
+
+        bin::Event<> m_OnBallLostEvent{};
 
     private:
         void Update() override;

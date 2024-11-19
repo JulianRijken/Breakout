@@ -13,6 +13,14 @@ void bin::Node::SetLocalPosition(const glm::vec2& position)
     SetPositionDirty();
 }
 
+void bin::Node::SetWorldPosition(const glm::vec2& position)
+{
+    if(m_ParentPtr == nullptr)
+        SetLocalPosition(position);
+    else
+        SetLocalPosition(position - m_ParentPtr->GetWorldPosition());
+}
+
 void bin::Node::Translate(const glm::vec2& delta) { SetLocalPosition(m_LocalPosition + delta); }
 
 void bin::Node::SetPositionDirty()

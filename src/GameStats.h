@@ -21,12 +21,17 @@ namespace bout
         GameStats& operator=(GameStats&&) = delete;
         GameStats& operator=(const GameStats&) = delete;
 
-        void OnBrickBreakMessage(const bin::Message& message);
+        [[nodiscard]] bool HasBallsLeft() const;
+        void RemoveBall();
 
         bin::Event<int> m_OnScoreChanged{};
+        bin::Event<int> m_OnBallsLeftChanged{};
 
     private:
-        int m_Score{};
+        void OnBrickBreakMessage(const bin::Message& message);
+
+        int m_BallsLeft{ 5 };
+        int m_Score{ 0 };
     };
 }  // namespace bout
 #endif  // GAMESTATS_H

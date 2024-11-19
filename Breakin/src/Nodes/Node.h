@@ -27,8 +27,8 @@ namespace bin
         virtual void FixedUpdate(){}
 
         void SetLocalPosition(const glm::vec2& position);
+        void SetWorldPosition(const glm::vec2& position);
         void Translate(const glm::vec2& delta);
-        void SetPositionDirty();
 
         void SetParent(Node* newParentPtr, bool worldPositionStays = true);
         void MarkForDestroy(bool destroy = true);
@@ -41,6 +41,7 @@ namespace bin
         bin::Event<Node&> m_OnDestroyedEvent{};
 
     private:
+        void SetPositionDirty();
         void UpdateWorldPosition();
         void PropagateGettingDestroyed();
         void ClearFromSceneGraph();

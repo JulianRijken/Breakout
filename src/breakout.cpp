@@ -8,6 +8,7 @@
 #include <SceneGraph.h>
 #include <Text.h>
 
+#include "Ball.h"
 #include "GlobalSettings.h"
 #include "HUD.h"
 #include "Playfield.h"
@@ -26,8 +27,10 @@ bout::Breakout::Breakout() :
     m_CameraPtr->SetOrthoSize(m_PlayfieldPtr->GetSize().y / 2 + CAMERA_PADDING);
     m_CameraPtr->SetLocalPosition({ 0, 0 });
 
+    TySpawnBall();
+
     m_PlayfieldPtr->m_OnFieldCleared.AddListener(this, &Breakout::OnPlayfieldClearedEvent);
-    bin::MessageQueue::AddListener(MessageType::OnWallHit, this, &Breakout::OnWallHitMessage);
+    bin::MessageQueue::AddListener(MessageType::BallCollided, this, &Breakout::OnWallHitMessage);
     bin::Input::Bind(InputActionName::FireBall, this, &Breakout::OnFireBallInput);
     bin::Input::Bind(InputActionName::ForceRestart, this, &Breakout::OnForceRestartInput);
 }
@@ -63,17 +66,41 @@ void bout::Breakout::Update()
 
 void bout::Breakout::OnWallHitMessage(const bin::Message& /*unused*/) { ShakeCamera(); }
 
+void bout::Breakout::OnBallLostEvent()
+{
+    if(m_GameStats.HasBallsLeft())
+        TySpawnBall();
+    else
+        OnGameOver();
+}
+
+void bout::Breakout::TySpawnBall()
+{
+    if(m_PaddlePtr->IsHoldingBall())
+        return;
+
+    auto& ball = bin::SceneGraph::AddNode<Ball>();
+    m_PaddlePtr->HoldBall(ball);
+    m_GameStats.RemoveBall();
+
+    // NOTE: We use a OnBallLost instead of on destroyed
+    //       this is because if we do on destroyed we get in to a
+    //       destroy and create loop
+    ball.m_OnBallLostEvent.AddListener(this, &Breakout::OnBallLostEvent);
+
+    bin::MessageQueue::Broadcast(MessageType::BallSpawned);
+}
+
 void bout::Breakout::ShakeCamera() { m_ShakeTimer = 0.0f; }
+
+void bout::Breakout::OnGameOver() { bin::SceneGraph::LoadScene(SceneName::MainMenu); }
 
 void bout::Breakout::OnFireBallInput(const bin::InputContext& context)
 {
     if(context.state != bin::ButtonState::Down)
         return;
 
-    if(m_PaddlePtr->IsHoldingBall())
-        m_PaddlePtr->FireBall();
-    else
-        m_PaddlePtr->GetBallReady();
+    m_PaddlePtr->TryLaunchBall(*m_PlayfieldPtr);
 }
 
 void bout::Breakout::OnForceRestartInput(const bin::InputContext& context)
@@ -81,7 +108,7 @@ void bout::Breakout::OnForceRestartInput(const bin::InputContext& context)
     if(context.state != bin::ButtonState::Down)
         return;
 
-    bin::SceneGraph::LoadScene(SceneName::Game);
+    bin::SceneGraph::LoadScene(SceneName::MainMenu);
 }
 
-void bout::Breakout::OnPlayfieldClearedEvent() {}
+void bout::Breakout::OnPlayfieldClearedEvent() { OnGameOver(); }

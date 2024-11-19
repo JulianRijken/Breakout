@@ -7,14 +7,13 @@ namespace bout
 {
     enum class MessageType
     {
-        OnWallHit,
-        OnPaddleHit,
+        BallCollided,
 
         // arg[0] = int pointsWorth
-        OnBrickBreak,
+        BrickBreak,
 
-        // arg[0] = int score
-        OnScoreChange
+        BallSpawned,
+        BallLaunched
     };
 
     enum class InputActionName

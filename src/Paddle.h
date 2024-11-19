@@ -13,8 +13,8 @@ namespace bout
         Paddle();
         void SetPaddleTargetPosition(float targetPosition);
 
-        void GetBallReady();
-        void FireBall();
+        void HoldBall(bout::Ball& ball);
+        void TryLaunchBall(Node& parent);
 
         [[nodiscard]] bool IsHoldingBall() const;
 

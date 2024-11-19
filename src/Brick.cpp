@@ -5,7 +5,10 @@
 #include <Renderer.h>
 #include <SceneGraph.h>
 
+#include "Ball.h"
 #include "GlobalSettings.h"
+#include "MathExtensions.h"
+
 
 bout::Brick::Brick(int pointsWorth, const glm::vec2& brickSize, const SDL_Color& brickColor) :
     m_PointsWorth(pointsWorth),
@@ -23,7 +26,18 @@ void bout::Brick::Break()
         return;
 
     m_Broken = true;
-    bin::MessageQueue::Broadcast(MessageType::OnBrickBreak, { m_PointsWorth });
+    bin::MessageQueue::Broadcast(MessageType::BrickBreak, { m_PointsWorth });
+
+    // TODO: Allow bricks to spawn balls when the destroy
+    //       Needs tweening becuase it needs to hold the ball for a sec
+    //       and only after that release it slowly
+    //       so the ball also needs a different function that shoot
+    // if(bin::math::RandomValue() > 0.9f)
+    // {
+    //     auto& ball = bin::SceneGraph::AddNode<Ball>();
+    //     ball.SetWorldPosition(GetWorldPosition());
+    //     ball.ShootBall();
+    // }
 
     // TODO: Use m_Broken to keep brick alive while destroying collider
     MarkForDestroy();

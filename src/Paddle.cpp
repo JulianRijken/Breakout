@@ -2,6 +2,7 @@
 
 #include <GameTime.h>
 #include <MathExtensions.h>
+#include <MessageQueue.h>
 #include <Renderer.h>
 #include <SceneGraph.h>
 
@@ -23,20 +24,25 @@ void bout::Paddle::SetPaddleTargetPosition(float targetPosition)
     m_PaddleTargetPosition = std::clamp(targetPosition, -MAX_MOVE_DISTANCE, MAX_MOVE_DISTANCE);
 }
 
-void bout::Paddle::GetBallReady()
+void bout::Paddle::HoldBall(bout::Ball& ball)
 {
     assert(m_HoldingBallPtr == nullptr && "Trying to get a ball ready when there is still one");
 
-    m_HoldingBallPtr = &bin::SceneGraph::AddNode<Ball>();
+    m_HoldingBallPtr = &ball;
     m_HoldingBallPtr->SetParent(this);
     m_HoldingBallPtr->SetLocalPosition({ 0, 1 });
 }
 
-void bout::Paddle::FireBall()
+void bout::Paddle::TryLaunchBall(Node& parent)
 {
-    m_HoldingBallPtr->SetParent(nullptr);
-    m_HoldingBallPtr->ShootBall();
+    if(not IsHoldingBall())
+        return;
+
+    m_HoldingBallPtr->SetParent(&parent);
+    m_HoldingBallPtr->LaunchBall();
     m_HoldingBallPtr = nullptr;
+
+    bin::MessageQueue::Broadcast(MessageType::BallLaunched);
 }
 
 bool bout::Paddle::IsHoldingBall() const { return m_HoldingBallPtr != nullptr; }

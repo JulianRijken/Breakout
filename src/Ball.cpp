@@ -42,7 +42,7 @@ void bout::Ball::Draw(const bin::Renderer& renderer)
 
 void bout::Ball::HoldBall() { m_HoldingBall = true; }
 
-void bout::Ball::ShootBall()
+void bout::Ball::LaunchBall()
 {
     m_MoveDirection = { bin::math::RandomRange(-1.0f, 1.0f), 1 };
     m_HoldingBall = false;
@@ -51,10 +51,14 @@ void bout::Ball::ShootBall()
 void bout::Ball::OnHitWall()
 {
     m_TimeSinceHit = 0;
-    bin::MessageQueue::Broadcast(bout::MessageType::OnWallHit);
+    bin::MessageQueue::Broadcast(bout::MessageType::BallCollided);
 }
 
-void bout::Ball::OnBallUnderMap() { MarkForDestroy(); }
+void bout::Ball::OnBallUnderMap()
+{
+    m_OnBallLostEvent.Invoke();
+    MarkForDestroy();
+}
 
 void bout::Ball::MoveBall()
 {

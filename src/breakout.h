@@ -32,11 +32,18 @@ namespace bout
         void Update() override;
 
     private:
-        void ShakeCamera();
-        void OnWallHitMessage(const bin::Message& message);
         void OnFireBallInput(const bin::InputContext& context);
         void OnForceRestartInput(const bin::InputContext& context);
+
+        void OnWallHitMessage(const bin::Message& message);
+
+        void OnBallLostEvent();
         void OnPlayfieldClearedEvent();
+
+        void TySpawnBall();
+        void ShakeCamera();
+
+        void OnGameOver();
 
         static constexpr float CAMERA_PADDING{ 2 };
         float m_ShakeTimer{};
