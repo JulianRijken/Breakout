@@ -5,11 +5,15 @@
 
 #include <unordered_set>
 
+namespace bin
+{
+    class Sprite;
+}
+
 namespace bout
 {
-
-    class Wall;
     class Brick;
+    class Wall;
 
     class Playfield final : public bin::Node, public bin::IEventListener
     {
@@ -22,15 +26,19 @@ namespace bout
         bin::Event<> m_OnFieldCleared{};
 
     private:
+        void LateUpdate() override;
+
         void OnBrickDestroyedEvent(Node& brick);
         void OnPlayfieldCleared();
 
         static constexpr float WALL_WIDTH = 50.0f;
 
+        bin::Sprite* m_LeftWallSpritePtr{};
+        bin::Sprite* m_RightWallSpritePtr{};
+        Wall* m_TopWallPtr{};
 
-        Wall* m_TopWall{};
         glm::vec2 m_Size{};
-        std::unordered_set<Brick*> m_Bricks{};
+        std::unordered_set<Brick*> m_BrickPtrs{};
     };
 }  // namespace bout
 

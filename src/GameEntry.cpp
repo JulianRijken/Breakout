@@ -71,5 +71,5 @@ void bin::Core::GameEntry()
                          bin::SceneGraph::LoadScene(bout::SceneName::MainMenu);
                      });
 
-    bin::SceneGraph::LoadScene(bout::SceneName::Testing);
+    bin::SceneGraph::LoadScene(bout::SceneName::Game);
 }

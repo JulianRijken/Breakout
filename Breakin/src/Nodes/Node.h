@@ -31,6 +31,16 @@ namespace bin
 
         virtual void FixedUpdate() {}
 
+        template<typename Type>
+        Type* GetFirstChildNodeOfType() const
+        {
+            for(auto* childPtr : m_ChildPtrs)
+                if(auto castedChildPtr = dynamic_cast<Type*>(childPtr))
+                    return castedChildPtr;
+
+            return nullptr;
+        }
+
         void Translate(const glm::vec2& delta);
 
         void SetLocalPosition(const glm::vec2& position);
@@ -61,8 +71,8 @@ namespace bin
         bool m_UseAbsoluteAngle{};     // / NOLINT - C.131: Avoid trivial getters and setters
         bool m_UseAbsoluteScale{};     // / NOLINT - C.131: Avoid trivial getters and setters
 
-
         bin::Event<Node&> m_OnDestroyedEvent{};
+
 
     private:
         void PropegateDirtyTransform();

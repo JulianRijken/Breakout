@@ -3,9 +3,11 @@
 #include <Renderer.h>
 #include <SceneGraph.h>
 
-#include "BoxCollider.h"
+#include <iostream>
+
 #include "Brick.h"
 #include "Prefabs.h"
+#include "Sprite.h"
 #include "Wall.h"
 
 
@@ -53,7 +55,7 @@ bout::Playfield::Playfield(const glm::vec2& size) :
 
             brickSpawned->SetLocalPosition(spawnPosition);
             brickSpawned->m_OnDestroyedEvent.AddListener(this, &Playfield::OnBrickDestroyedEvent);
-            m_Bricks.insert(brickSpawned);
+            m_BrickPtrs.insert(brickSpawned);
         }
     }
 
@@ -61,29 +63,51 @@ bout::Playfield::Playfield(const glm::vec2& size) :
     rightWall.SetParent(this);
     rightWall.SetLocalScale({ WALL_WIDTH, m_Size.y + WALL_WIDTH * 2 });
     rightWall.SetLocalPosition({ m_Size.x / 2.0f + WALL_WIDTH / 2.0f, 0 });
-
+    m_RightWallSpritePtr = rightWall.GetFirstChildNodeOfType<bin::Sprite>();
 
     auto& leftWall = bin::SceneGraph::AddNode<Wall>(glm::vec2{ -1, 0 });
     leftWall.SetParent(this);
     leftWall.SetLocalScale({ WALL_WIDTH, m_Size.y + WALL_WIDTH * 2 });
     leftWall.SetLocalPosition({ -m_Size.x / 2.0f - WALL_WIDTH / 2.0f, 0 });
+    m_LeftWallSpritePtr = leftWall.GetFirstChildNodeOfType<bin::Sprite>();
 
-    auto& topWall = bin::SceneGraph::AddNode<Wall>(glm::vec2{ 0, 1 });
-    topWall.SetParent(this);
-    topWall.SetLocalPosition({ 0, m_Size.y / 2.0f + WALL_WIDTH / 2.0f });
-    topWall.SetLocalScale({ m_Size.x, WALL_WIDTH });
+    m_TopWallPtr = &bin::SceneGraph::AddNode<Wall>(glm::vec2{ 0, 1 });
+    m_TopWallPtr->SetParent(this);
+    m_TopWallPtr->SetLocalPosition({ 0, m_Size.y / 2.0f + WALL_WIDTH / 2.0f });
+    m_TopWallPtr->SetLocalScale({ m_Size.x, WALL_WIDTH });
 }
 
 const glm::vec2& bout::Playfield::GetSize() const { return m_Size; }
+
+void bout::Playfield::LateUpdate()
+{
+    // This is probably the most hacky thing the bout project...
+    // So the top wall needs to scale exactly to match the side walls!
+    // Yes all this is needed because I want transparenty and
+    // my gf does not want a gap in the walls :(
+
+    const float leftWallPosition =
+        m_LeftWallSpritePtr->GetWorldPosition().x + m_LeftWallSpritePtr->GetWorldScale().x / 2.0f;
+    const float rightWallPosition =
+        m_RightWallSpritePtr->GetWorldPosition().x - m_RightWallSpritePtr->GetWorldScale().x / 2.0f;
+
+    const float center = std::lerp(leftWallPosition, rightWallPosition, 0.5f);
+
+    const float dist = rightWallPosition - leftWallPosition;
+    std::cout << dist << std::endl;
+
+    m_TopWallPtr->SetLocalScale({ dist, WALL_WIDTH });
+    m_TopWallPtr->SetWorldPosition({ center, m_TopWallPtr->GetWorldPosition().y });
+}
 
 void bout::Playfield::OnBrickDestroyedEvent(Node& brick)
 {
     auto* brickPtr = dynamic_cast<Brick*>(&brick);
     assert(brickPtr != nullptr);
 
-    m_Bricks.erase(brickPtr);
+    m_BrickPtrs.erase(brickPtr);
 
-    if(m_Bricks.empty())
+    if(m_BrickPtrs.empty())
         OnPlayfieldCleared();
 }
 
