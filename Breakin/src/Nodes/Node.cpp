@@ -9,7 +9,6 @@ bin::Node::~Node() { assert(m_GettingDestroyed && "Node destructor called before
 
 void bin::Node::Translate(const glm::vec2& delta) { SetLocalPosition(m_LocalPosition + delta); }
 
-
 void bin::Node::SetLocalPosition(const glm::vec2& position)
 {
     if(m_LocalPosition == position)
@@ -36,7 +35,6 @@ void bin::Node::SetLocalScale(const glm::vec2& scale)
     m_LocalScale = scale;
     PropegateDirtyTransform();
 }
-
 
 void bin::Node::SetWorldPosition(const glm::vec2& position)
 {
@@ -68,6 +66,13 @@ float bin::Node::GetLocalAngle() const { return m_LocalAngle; }
 
 const glm::vec2& bin::Node::GetLocalScale() const { return m_LocalScale; }
 
+const glm::mat3x3& bin::Node::GetWorldMatrix()
+{
+    if(m_TransformDirty)
+        UpdateWorldTransform();
+
+    return m_WorldTransformationMatrix;
+}
 
 const glm::vec2& bin::Node::GetWorldPosition()
 {
@@ -92,7 +97,6 @@ const glm::vec2& bin::Node::GetWorldScale()
 
     return m_WorldScale;
 }
-
 
 bool bin::Node::IsChild(Node* checkChildPtr) const
 {
@@ -127,19 +131,9 @@ void bin::Node::UpdateWorldTransform()
     }
     else
     {
-        auto localTransformationMatrix = glm::mat3x3(1.0f);
-        localTransformationMatrix = glm::translate(localTransformationMatrix, m_LocalPosition);
-        localTransformationMatrix = glm::rotate(localTransformationMatrix, glm::radians(m_LocalAngle));
-        localTransformationMatrix = glm::scale(localTransformationMatrix, m_LocalScale);
-
-        const auto worldTransformationMatrix = m_ParentPtr->m_WorldTransformationMatrix * localTransformationMatrix;
-
-        m_WorldPosition = glm::vec2(worldTransformationMatrix[2][0], worldTransformationMatrix[2][1]);
-        m_WorldAngle = glm::degrees(std::atan2(worldTransformationMatrix[0][1], worldTransformationMatrix[0][0]));
-        m_WorldScale = glm::vec2(
-            glm::length(glm::vec2(worldTransformationMatrix[0][0], worldTransformationMatrix[0][1])),  // X scale
-            glm::length(glm::vec2(worldTransformationMatrix[1][0], worldTransformationMatrix[1][1]))   // Y scale
-        );
+        m_WorldPosition = glm::vec2(m_ParentPtr->GetWorldMatrix() * glm::vec3(m_LocalPosition, 1.0f));
+        m_WorldAngle = m_ParentPtr->GetWorldAngle() * m_LocalAngle;
+        m_WorldScale = m_ParentPtr->GetWorldScale() * m_LocalScale;
     }
 
     m_WorldTransformationMatrix = glm::mat3x3(1.0f);
@@ -149,7 +143,6 @@ void bin::Node::UpdateWorldTransform()
 
     m_TransformDirty = false;
 }
-
 
 void bin::Node::SetParent(Node* newParentPtr, bool worldPositionStays)
 {
@@ -208,4 +201,3 @@ void bin::Node::ClearFromSceneGraph()
 
     m_ChildPtrs.clear();
 }
-

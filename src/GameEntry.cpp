@@ -43,8 +43,10 @@ void bin::Core::GameEntry()
                                                    .onUpdate =
                                                        [&spriteOne, &spriteTwo](float value)
                                                    {
+                                                       spriteOne.SetLocalScale({ value, value });
                                                        spriteOne.SetLocalPosition({ value, value });
-                                                       spriteTwo.SetLocalPosition({ -value, value });
+                                                       spriteTwo.SetLocalPosition({ -value * 2, -value * 2 });
+                                                       spriteTwo.SetLocalAngle(value * 360.0f);
                                                    } },
                                        spriteOne);
                                });

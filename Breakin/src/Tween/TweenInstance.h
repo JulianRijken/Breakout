@@ -24,7 +24,7 @@ namespace bin
         bool m_IsHalting{ false };
         bool m_IsDecommissioned{ false };
         bool m_HasReachedEnd{ false };
-        double m_Time{ 0 };
+        float m_Time{ 0 };
 
         Node* m_Target{ nullptr };
         Tween m_Tween;

@@ -61,7 +61,7 @@ void bin::TweenInstance::Update()
 
     // Yes, deltatime can go below 0
     // when we change time scale :)
-    m_Time = std::max(0.0, m_Time);
+    m_Time = std::max(0.0f, m_Time);
 
     if(m_Time >= m_Tween.duration)
     {
@@ -70,13 +70,13 @@ void bin::TweenInstance::Update()
     }
 
 
-    const float alpha = m_Time / m_Tween.duration;
+    const float alpha = bin::math::Clamp01(m_Time / m_Tween.duration);
     const float easedTime = easeFunction::Evaluate(alpha, m_Tween.easeType);
     const float interpolatedValue = std::lerp(m_Tween.from, m_Tween.to, easedTime);
 
 
     if(m_Tween.onUpdate)
-        m_Tween.onUpdate(bin::math::Clamp01(interpolatedValue));
+        m_Tween.onUpdate(interpolatedValue);
 
     if(m_HasReachedEnd)
     {

@@ -44,6 +44,7 @@ namespace bin
         [[nodiscard]] float GetLocalAngle() const;
         [[nodiscard]] const glm::vec2& GetLocalScale() const;
 
+        [[nodiscard]] const glm::mat3x3& GetWorldMatrix();
         [[nodiscard]] const glm::vec2& GetWorldPosition();
         [[nodiscard]] float GetWorldAngle();
         [[nodiscard]] const glm::vec2& GetWorldScale();
