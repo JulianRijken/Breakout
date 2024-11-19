@@ -35,7 +35,7 @@ namespace bin
         template<typename SceneName>
         static void BindScene(SceneName sceneName, std::function<void()>&& function)
         {
-            int sceneId = static_cast<int>(sceneName);
+            const int sceneId = static_cast<int>(sceneName);
             assert(not GetInstance().m_SceneBinds.contains(sceneId) && "Scene Alread Bound");
 
             GetInstance().m_SceneBinds[sceneId] = std::move(function);
@@ -44,7 +44,7 @@ namespace bin
         template<typename SceneName>
         static void LoadScene(SceneName sceneName)
         {
-            int sceneId = static_cast<int>(sceneName);
+            const int sceneId = static_cast<int>(sceneName);
             assert(GetInstance().m_SceneBinds.contains(sceneId) && "Scene Not Bound");
 
             GetInstance().m_SceneToLoad = sceneId;
@@ -68,10 +68,10 @@ namespace bin
         void ClearScene();
 
 
-        bool m_BestCameraDiry{ false };
+        bool m_BestCameraDirty{ false };
         Camera* m_BestCamera{ nullptr };
 
-        // There is a seperation because
+        // There is a separation because
         // added nodes can only update the next frame
         std::vector<std::unique_ptr<Node>> m_AddedNodes{};   // Nodes that set to spawn
         std::vector<std::unique_ptr<Node>> m_ActiveNodes{};  // Nodes that are active in the scene

@@ -30,6 +30,6 @@ bout::HUD::HUD(GameStats& gameStats)
 
 void bout::HUD::OnScoreChanged(int score)
 {
-    std::string text = fmt::format("SCORE {}", score);
+    const std::string text = fmt::format("SCORE {}", score);
     m_ScoreText->SetText(text);
 }

@@ -3,7 +3,6 @@
 #include <SDL.h>
 #include <SDL_pixels.h>
 #include <SDL_render.h>
-#include <SDL_ttf.h>
 
 #include <iostream>
 #include <stdexcept>
@@ -24,7 +23,7 @@ bin::Renderer::Renderer(SDL_Window* windowPtr) :
 
 void bin::Renderer::Render() const
 {
-    Camera* camera = SceneGraph::GetInstance().GetBestCamera();
+    const Camera* camera = SceneGraph::GetInstance().GetBestCamera();
     if(camera == nullptr)
     {
         std::cerr << "Scene has no camera" << std::endl;
@@ -53,7 +52,7 @@ void bin::Renderer::DrawLine(const glm::vec2& from, const glm::vec2& to, const S
     SDL_RenderDrawLine(m_RendererPtr, fromScreen.x, fromScreen.y, toScreen.x, toScreen.y);
 }
 
-void bin::Renderer::DrawTexture(Texture* texture, const glm::vec2& position, float pixelsPerUnit,
+void bin::Renderer::DrawTexture(const Texture* texture, const glm::vec2& position, float pixelsPerUnit,
                                 const glm::vec2& pivot) const
 {
     assert(texture != nullptr && "Texture is null!");
@@ -111,7 +110,7 @@ void bin::Renderer::DrawWireBox(const glm::vec2& position, const glm::vec2& scal
 glm::ivec2 bin::Renderer::GetWindowSize()
 {
     // TODO: These values could be stored and only updated when the window changes
-    //       Function encaptulation provided for this in the future
+    //       Function encapsulation provided for this in the future
 
     int width{};
     int height{};
@@ -123,9 +122,9 @@ glm::ivec2 bin::Renderer::GetWindowSize()
 float bin::Renderer::GetAspectRatio()
 {
     // TODO: These values could be stored and only updated when the window changes
-    //       Function encaptulation provided for this in the future
+    //       Function encapsulation provided for this in the future
 
-    glm::ivec2 windowSize = GetWindowSize();
+    const glm::ivec2 windowSize = GetWindowSize();
     return static_cast<float>(windowSize.x) / static_cast<float>(windowSize.y);
 }
 
@@ -141,7 +140,7 @@ glm::ivec2 bin::Renderer::GetWindowSizeClamped()
 
 float bin::Renderer::GetAspectRatioClamped()
 {
-    glm::ivec2 windowSize = GetWindowSizeClamped();
+    const glm::ivec2 windowSize = GetWindowSizeClamped();
     return static_cast<float>(windowSize.x) / static_cast<float>(windowSize.y);
 }
 

@@ -1,7 +1,6 @@
 #include "Ball.h"
 
 #include <BoxCollider.h>
-#include <fmt/core.h>
 #include <GameTime.h>
 #include <MathExtensions.h>
 #include <MessageQueue.h>
@@ -37,7 +36,7 @@ void bout::Ball::FixedUpdate()
 
 void bout::Ball::Draw(const bin::Renderer& renderer)
 {
-    renderer.DrawBox(GetWorldPosition(), { 0.5f, 0.5f }, { 0.5f, 0.5f }, m_BallCollor);
+    renderer.DrawBox(GetWorldPosition(), { 0.5f, 0.5f }, { 0.5f, 0.5f }, m_BallColor);
 }
 
 
@@ -99,7 +98,7 @@ void bout::Ball::HandleBallCollision()
         if(collider == m_BoxColliderPtr)
             continue;
 
-        auto [didHit, manifold] = bin::Locator::Get<Physics>().DoesOverlap(collider, m_BoxColliderPtr);
+        auto [didHit, manifold] = Physics::DoesOverlap(collider, m_BoxColliderPtr);
 
         if(didHit)
         {
@@ -135,7 +134,7 @@ void bout::Ball::UpdateBallColor()
     constexpr SDL_Color hitColor{ 255, 0, 0, 255 };
     constexpr SDL_Color normalColor{ 200, 200, 255, 255 };
 
-    const float colorStrenght = bin::math::Clamp01(m_TimeSinceHit / hitTimeDuration);
-    m_BallCollor = bin::math::Lerp(hitColor, normalColor, colorStrenght);
-    m_TrailPtr->SetTrailColor(m_BallCollor);
+    const float colorStrength = bin::math::Clamp01(m_TimeSinceHit / hitTimeDuration);
+    m_BallColor = bin::math::Lerp(hitColor, normalColor, colorStrength);
+    m_TrailPtr->SetTrailColor(m_BallColor);
 }

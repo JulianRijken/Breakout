@@ -10,7 +10,7 @@ bout::GameStats::GameStats()
 
 void bout::GameStats::OnBrickBreakMessage(const bin::Message& message)
 {
-    auto pointsWorth = std::any_cast<int>(message.args[0]);
+    const auto pointsWorth = std::any_cast<int>(message.args[0]);
     m_Score += pointsWorth;
     m_OnScoreChanged.Invoke(m_Score);
 }

@@ -3,8 +3,6 @@
 #include <Input.h>
 #include <SDL_mouse.h>
 
-#include <iostream>
-
 #include "MathExtensions.h"
 #include "Renderer.h"
 #include "SceneGraph.h"

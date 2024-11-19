@@ -7,7 +7,7 @@
 
 namespace bin
 {
-    // Simple RAII wrapper fro TTF_Font
+    // Simple RAII wrapper for TTF_Font
     class Font final
     {
     public:

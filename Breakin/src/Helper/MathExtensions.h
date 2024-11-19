@@ -6,7 +6,6 @@
 #include <algorithm>
 #include <glm/exponential.hpp>
 #include <glm/gtc/quaternion.hpp>
-#include <glm/vec3.hpp>
 #include <numbers>
 
 namespace bin::math
@@ -52,7 +51,7 @@ namespace bin::math
     }
 
     template<typename Type>
-    constexpr const Type& Clamp01(const Type& value)
+    constexpr Type Clamp01(const Type& value)
     {
         return std::clamp(value, static_cast<Type>(0), static_cast<Type>(1));
     };

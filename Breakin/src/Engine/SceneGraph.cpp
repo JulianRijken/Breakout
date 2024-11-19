@@ -27,7 +27,7 @@ void bin::SceneGraph::MoveAddedNodesToActiveNodes()
     if(m_AddedNodes.empty())
         return;
 
-    std::move(m_AddedNodes.begin(), m_AddedNodes.end(), std::back_inserter(m_ActiveNodes));
+    std::ranges::move(m_AddedNodes, std::back_inserter(m_ActiveNodes));
     m_AddedNodes.clear();
 }
 
@@ -38,8 +38,8 @@ void bin::SceneGraph::CleanupNodesSetToDestroy()
     // Nodes are first marked for destroy and then actually set getting destroyed
     //
     // Marked For Destroy -> Can be changed during the update and does not
-    //                       tell the children. This is becuase you might un parent
-    //                       as soon as you mark something for desroy.
+    //                       tell the children. This is because you might un parent
+    //                       as soon as you mark something for destroy.
     //
     // Getting Destroyed -> We go over all nodes again and go down the tree to set them
     //                      all to getting destroyed
@@ -50,7 +50,7 @@ void bin::SceneGraph::CleanupNodesSetToDestroy()
             node->PropagateGettingDestroyed();
 
     // 2. The nodes get removed from the graph
-    //    This is after the destroy event so the event can still use the parent and childs
+    //    This is after the destroy event so the event can still use the parent and children
     for(const auto& node : m_ActiveNodes)
         if(node->m_GettingDestroyed)
             node->ClearFromSceneGraph();
@@ -94,7 +94,7 @@ void bin::SceneGraph::ClearScene()
 
 bin::Camera* bin::SceneGraph::GetBestCamera()
 {
-    if(m_BestCameraDiry)
+    if(m_BestCameraDirty)
     {
         const auto bestCameraIt = std::ranges::max_element(m_Cameras);
 
@@ -103,7 +103,7 @@ bin::Camera* bin::SceneGraph::GetBestCamera()
         else
             m_BestCamera = nullptr;
 
-        m_BestCameraDiry = false;
+        m_BestCameraDirty = false;
     }
 
     return m_BestCamera;
@@ -111,13 +111,13 @@ bin::Camera* bin::SceneGraph::GetBestCamera()
 
 void bin::SceneGraph::AddCamera(Camera* camera)
 {
-    m_BestCameraDiry = true;
+    m_BestCameraDirty = true;
     m_Cameras.insert(camera);
 }
 
 void bin::SceneGraph::RemoveCamera(Camera* camera)
 {
-    m_BestCameraDiry = true;
+    m_BestCameraDirty = true;
     m_Cameras.erase(camera);
 }
 

@@ -1,10 +1,10 @@
 #include "Core.h"
 
+#define SDL_MAIN_HANDLED
+#include <SDL.h>
+
 #include <fmt/core.h>
 #include <fmt/format.h>
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_ttf.h>
 
 #include <stdexcept>
 
@@ -18,7 +18,7 @@
 
 bin::Core::Core()
 {
-    if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER) != 0)
+    if(SDL_Init(SDL_INIT_VIDEO) != 0)
         throw std::runtime_error(fmt::format("SDL_Init Error: {}", SDL_GetError()));
 
     // Not stored as member variable as SDL might change the width or height
@@ -34,56 +34,55 @@ bin::Core::Core()
     Resources::Initialize();
 
     GameEntry();
-    Enter();
+    Run();
 }
 
 
 #ifdef __EMSCRIPTEN__
 #include "emscripten.h"
-
-void LoopCallback(void* arg) { static_cast<bin::Core*>(arg)->RunOneFrame(); }
+void LoopCallback(void* arg) { static_cast<bin::Core*>(arg)->IncrementFrame(); }
 #endif
 
 
-void bin::Core::Enter()
+void bin::Core::Run()
 {
 #ifdef __EMSCRIPTEN__
     emscripten_set_main_loop_arg(&LoopCallback, this, 0, true);
 #else
 
     while(not m_IsApplicationQuitting)
-        RunOneFrame();
+        IncrementFrame();
 #endif
 }
 
-void bin::Core::RunOneFrame()
+void bin::Core::IncrementFrame()
 {
     // Game Time
     GameTime::IncrementFrame();
     m_Lag += GameTime::GetDeltaTime();
 
     // Cleanup SceneGraph
-    bin::SceneGraph::GetInstance().CleanupNodesSetToDestroy();
+    SceneGraph::GetInstance().CleanupNodesSetToDestroy();
     // Load Scene set to load for next frame
-    bin::SceneGraph::GetInstance().ActivateSceneSetToLoad();
+    SceneGraph::GetInstance().ActivateSceneSetToLoad();
     // Move added nodes
-    bin::SceneGraph::GetInstance().MoveAddedNodesToActiveNodes();
+    SceneGraph::GetInstance().MoveAddedNodesToActiveNodes();
 
     // Input
-    bin::Input::GetInstance().ProcessInput(m_IsApplicationQuitting);
+    Input::GetInstance().ProcessInput(m_IsApplicationQuitting);
 
     // Fixed Update Loop
-    while(m_Lag >= bin::GameTime::GetFixedDeltaTime())
+    while(m_Lag >= GameTime::GetFixedDeltaTime())
     {
-        m_Lag -= bin::GameTime::GetFixedDeltaTime();
-        bin::SceneGraph::GetInstance().FixedUpdateAll();
+        m_Lag -= GameTime::GetFixedDeltaTime();
+        SceneGraph::GetInstance().FixedUpdateAll();
     }
 
     // Message Dispatch
-    bin::MessageQueue::Dispatch();
+    MessageQueue::Dispatch();
 
     // Update
-    bin::SceneGraph::GetInstance().UpdateAll();
+    SceneGraph::GetInstance().UpdateAll();
 
     // Render
     Locator::Get<Renderer>().Render();
@@ -97,6 +96,5 @@ bin::Core::~Core()
     Locator::Release<Physics>();
 
     SDL_DestroyWindow(m_WindowPtr);
-    m_WindowPtr = nullptr;
     SDL_Quit();
 }

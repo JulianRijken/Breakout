@@ -26,7 +26,6 @@ namespace bout
         bin::Event<int> m_OnScoreChanged{};
 
     private:
-        int m_BricksBroken{};
         int m_Score{};
     };
 }  // namespace bout

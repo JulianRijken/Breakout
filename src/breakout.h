@@ -2,9 +2,7 @@
 #define BREAKOUT_H
 
 #include <Node.h>
-
 #include "GameStats.h"
-
 
 namespace bin
 {
@@ -24,6 +22,11 @@ namespace bout
     public:
         Breakout();
         ~Breakout() override;
+
+        Breakout(Breakout&&) = delete;
+        Breakout(const Breakout&) = delete;
+        Breakout& operator=(Breakout&&) = delete;
+        Breakout& operator=(const Breakout&) = delete;
 
         void FixedUpdate() override;
         void Update() override;

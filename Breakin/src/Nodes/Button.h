@@ -14,6 +14,7 @@ namespace bin
     {
     public:
         Button(const glm::vec2& size);
+        ~Button() override = default;
 
         Button(Button&&) = delete;
         Button(const Button&) = delete;

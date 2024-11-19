@@ -2,7 +2,6 @@
 #define INPUT_H
 
 #include <SDL_events.h>
-#include <SDL_gamecontroller.h>
 #include <SDL_scancode.h>
 
 #include <glm/vec2.hpp>
@@ -76,7 +75,7 @@ namespace bin
         template<typename ActionName, typename... Args>
         static void Bind(ActionName actionName, Args&&... args)
         {
-            int actionIndex = static_cast<int>(actionName);
+            const int actionIndex = static_cast<int>(actionName);
             assert(GetInstance().m_InputActions.contains(actionIndex) && "Action Does Not Exist");
 
             auto& bind =
@@ -88,7 +87,7 @@ namespace bin
         static Uint32 GetMouseState();
 
     private:
-        void ProcessInput(bool& shouldQuit);
+        void ProcessInput(bool& shouldQuit) const;
 
         std::unordered_map<int, InputAction> m_InputActions{};
         std::vector<std::unique_ptr<InputBinding>> m_Binds{};

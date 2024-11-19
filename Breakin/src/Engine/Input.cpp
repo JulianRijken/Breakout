@@ -16,7 +16,7 @@ bool bin::InputAction::HasKeyboardKey(SDL_Scancode compareKey) const
     return std::ranges::count(keyboardButtons, compareKey) > 0;
 }
 
-void bin::Input::ProcessInput(bool& shouldQuit)
+void bin::Input::ProcessInput(bool& shouldQuit) const
 {
     SDL_Event event;
     while(SDL_PollEvent(&event))

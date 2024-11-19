@@ -3,10 +3,10 @@
 #include "Renderer.h"
 #include "Texture.h"
 
-bin::Text::Text(const std::string& text, Font* font, glm::vec2 alighnment, float size, SDL_Color color) :
+bin::Text::Text(std::string text, Font* font, const glm::vec2& alignment, float size, SDL_Color color) :
     m_Color(color),
-    m_Text(text),
-    m_Alighnment(alighnment),
+    m_Text(std::move(text)),
+    m_Alignment(alignment),
     m_Size(size),
     m_FontPtr(font)
 {
@@ -28,7 +28,7 @@ void bin::Text::UpdateTextTexture()
     if(surface == nullptr)
         throw std::runtime_error(std::string("Failed to create surface: ") + SDL_GetError());
 
-    auto* texture = bin::Locator::Get<Renderer>().CreateTextureFromSurface(surface);
+    auto* texture = Renderer::CreateTextureFromSurface(surface);
     SDL_FreeSurface(surface);
 
     if(texture == nullptr)
@@ -43,5 +43,5 @@ void bin::Text::Draw(const Renderer& renderer)
         m_TexturePtr = nullptr;
 
     renderer.DrawTexture(
-        m_TexturePtr.get(), GetWorldPosition(), static_cast<float>(m_FontPtr->GetSize()) / m_Size, m_Alighnment);
+        m_TexturePtr.get(), GetWorldPosition(), static_cast<float>(m_FontPtr->GetSize()) / m_Size, m_Alignment);
 }

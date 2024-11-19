@@ -27,7 +27,7 @@ namespace bin
         void DrawLine(const glm::vec2& from, const glm::vec2& to,
                       const SDL_Color& color = { 255, 255, 255, 255 }) const;
 
-        void DrawTexture(Texture* texture, const glm::vec2& position, float pixelsPerUnit,
+        void DrawTexture(const Texture* texture, const glm::vec2& position, float pixelsPerUnit,
                          const glm::vec2& pivot) const;
 
         void DrawBox(const glm::vec2& position, const glm::vec2& scale, const glm::vec2& pivot = { 0.5, 0.5 },

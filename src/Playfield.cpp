@@ -1,6 +1,5 @@
 #include "Playfield.h"
 
-#include <fmt/core.h>
 #include <Renderer.h>
 #include <SceneGraph.h>
 
@@ -13,20 +12,20 @@ bout::Playfield::Playfield(const glm::vec2& size) :
     m_Size(size)
 
 {
-    const int brickCount = 11;
-    const glm::vec2 brickSize = { 1.8f, 0.8f };
-    const glm::vec2 brickPadding = { 0.3f, 0.3f };
+    constexpr int brickCount = 11;
+    constexpr glm::vec2 brickSize = { 1.8f, 0.8f };
+    constexpr glm::vec2 brickPadding = { 0.3f, 0.3f };
 
     for(int y = 0; y < 5; ++y)
     {
-        glm::vec2 spawnPositon{};
-        spawnPositon.y = y * (brickPadding.y + brickSize.y);
+        glm::vec2 spawnPosition{};
+        spawnPosition.y = static_cast<float>(y) * (brickPadding.y + brickSize.y);
 
         for(int x = 0; x < brickCount; ++x)
         {
-            const float centerdIndexX = static_cast<float>((brickCount - 1) / 2.0f) - x;
+            const float centeredIndexX = static_cast<float>((brickCount - 1)) / 2.0f - static_cast<float>(x);
 
-            spawnPositon.x = centerdIndexX * (brickPadding.x + brickSize.x);
+            spawnPosition.x = centeredIndexX * (brickPadding.x + brickSize.x);
 
             Brick* brickSpawned{ nullptr };
 
@@ -51,8 +50,7 @@ bout::Playfield::Playfield(const glm::vec2& size) :
 
             assert(brickSpawned != nullptr && "Brick does not exist");
 
-
-            brickSpawned->SetLocalPosition(spawnPositon);
+            brickSpawned->SetLocalPosition(spawnPosition);
             brickSpawned->m_OnDestroyedEvent.AddListener(this, &Playfield::OnBrickDestroyedEvent);
             m_Bricks.insert(brickSpawned);
         }

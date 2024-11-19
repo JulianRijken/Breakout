@@ -1,6 +1,5 @@
 #include "Trail.h"
 
-#include <GameTime.h>
 #include <MathExtensions.h>
 #include <Renderer.h>
 

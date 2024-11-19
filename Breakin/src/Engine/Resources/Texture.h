@@ -6,7 +6,7 @@ struct SDL_Texture;
 
 namespace bin
 {
-    // Simple RAII wrapper fro SDL_Textue
+    // Simple RAII wrapper for SDL_Texture
     class Texture final
     {
     public:

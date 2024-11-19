@@ -17,7 +17,7 @@ class Physics final : public bin::Service
     friend class bin::BoxCollider;
 
 public:
-    [[nodiscard]] std::pair<bool, Manifold> DoesOverlap(bin::BoxCollider* a, bin::BoxCollider* b);
+    [[nodiscard]] static std::pair<bool, Manifold> DoesOverlap(bin::BoxCollider* a, bin::BoxCollider* b);
     [[nodiscard]] const std::unordered_set<bin::BoxCollider*>& GetColliders() const;
 
 private:

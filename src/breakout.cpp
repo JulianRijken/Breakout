@@ -1,19 +1,12 @@
 #include "Breakout.h"
 
-#include <fmt/core.h>
-#include <Font.h>
 #include <GameTime.h>
 #include <Input.h>
-#include <Locator.h>
 #include <MathExtensions.h>
 #include <MessageQueue.h>
 #include <Paddle.h>
-#include <Renderer.h>
-#include <Resources.h>
 #include <SceneGraph.h>
-#include <SDL_mouse.h>
 #include <Text.h>
-#include <Texture.h>
 
 #include "GlobalSettings.h"
 #include "HUD.h"
@@ -46,19 +39,20 @@ void bout::Breakout::FixedUpdate()
     const glm::vec2 mousePositionWorld = m_CameraPtr->ScreenToWorldPosition(bin::Input::GetMousePosition());
     m_PaddlePtr->SetPaddleTargetPosition(mousePositionWorld.x);
 
-    constexpr glm::vec2 mouseMovePlayfieldStrenght{ -0.02f, -0.02f };
-    constexpr float paddleMovePlayfieldStrenght{ -0.04f };
-    glm::vec2 mouseOffset{ mousePositionWorld * mouseMovePlayfieldStrenght };
-    glm::vec2 paddleOffset{ m_PaddlePtr->GetLocalPosition().x * paddleMovePlayfieldStrenght, 0 };
+    constexpr glm::vec2 mouseMovePlayfieldStrength{ -0.02f, -0.02f };
+    constexpr float paddleMovePlayfieldStrength{ -0.04f };
+
+    const glm::vec2 mouseOffset{ mousePositionWorld * mouseMovePlayfieldStrength };
+    const glm::vec2 paddleOffset{ m_PaddlePtr->GetLocalPosition().x * paddleMovePlayfieldStrength, 0 };
     m_PlayfieldPtr->SetLocalPosition(mouseOffset + paddleOffset);
 }
 
 void bout::Breakout::Update()
 {
-    const float decayRate = 0.1f;
+    constexpr float decayRate = 0.1f;
 
     m_ShakeTimer += bin::GameTime::GetDeltaTime();
-    const float shakeStrength = 0.3f;
+    constexpr float shakeStrength = 0.3f;
 
     const glm::vec2 offset = { bin::math::RandomRange(-1.0f, 1.0f), bin::math::RandomRange(-1.0f, 1.0f) };
     const float decay = std::exp(-m_ShakeTimer / decayRate);

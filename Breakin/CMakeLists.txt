@@ -79,7 +79,7 @@ if(EMSCRIPTEN)
     SET(CMAKE_EXECUTABLE_SUFFIX ".html")
 
     target_link_libraries(${TARGET_NAME} PUBLIC
-        # "--preload-file ${CMAKE_SOURCE_DIR}/Assets@Assets"
+        "--preload-file ${CMAKE_SOURCE_DIR}/Assets@Assets"
         "-s ALLOW_MEMORY_GROWTH"
         "-s EXIT_RUNTIME=1"
         "-s SDL2_IMAGE_FORMATS='[\"png\"]'"
@@ -87,7 +87,6 @@ if(EMSCRIPTEN)
         "-s GL_DEBUG"
         "-s DEMANGLE_SUPPORT=1"
         "-s OFFSCREEN_FRAMEBUFFER=1"
-
         "--shell-file \"${EMSCRIPTEN_ROOT_PATH}/src/shell_minimal.html\""
     )
 else()

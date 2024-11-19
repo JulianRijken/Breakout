@@ -24,7 +24,7 @@ namespace bin
         template<typename FontName>
         [[nodiscard]] static Font* GetFont(FontName fontName)
         {
-            int fontIndex = static_cast<int>(fontName);
+            const int fontIndex = static_cast<int>(fontName);
             if(g_FontPtrs.contains(fontIndex))
                 return g_FontPtrs.at(fontIndex).get();
 

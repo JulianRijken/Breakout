@@ -41,7 +41,7 @@ namespace bout
         bout::Trail* m_TrailPtr{};
         glm::vec2 m_MoveDirection{ 1, 1 };
         bin::BoxCollider* m_BoxColliderPtr{};
-        SDL_Color m_BallCollor{};
+        SDL_Color m_BallColor{};
     };
 }  // namespace bout
 #endif  // BALL_H

@@ -18,7 +18,7 @@ namespace bin
         Core& operator=(const Core&) = delete;
 
         // Requires to be public for Emscripten
-        void RunOneFrame();
+        void IncrementFrame();
 
     private:
 
@@ -26,9 +26,9 @@ namespace bin
         void GameEntry();
 
         // We are Breakin' and Entering!
-        void Enter();
+        void Run();
 
-        float m_Lag{ 0.0 };
+        float m_Lag{ 0.0f };
         bool m_IsApplicationQuitting{ false };
         SDL_Window* m_WindowPtr{ nullptr };
     };
