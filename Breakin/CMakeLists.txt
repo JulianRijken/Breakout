@@ -61,6 +61,7 @@ set(BREAKIN_SOURCE_FILES
 
 add_library(${TARGET_NAME} STATIC
     ${BREAKIN_SOURCE_FILES}
+    src/Nodes/Sprite.h src/Nodes/Sprite.cpp
 )
 
 

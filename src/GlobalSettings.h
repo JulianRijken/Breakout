@@ -24,8 +24,10 @@ namespace bout
 
     enum class SceneName
     {
+        Testing,
         Game,
-        MainMenu
+        MainMenu,
+        ScoreScreen
     };
 
     enum class FontName

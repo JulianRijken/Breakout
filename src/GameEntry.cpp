@@ -4,6 +4,9 @@
 #include <Input.h>
 #include <MainMenu.h>
 #include <SceneGraph.h>
+#include <Sprite.h>
+#include <Tween.h>
+#include <TweenEngine.h>
 
 #include "Breakout.h"
 #include "GlobalSettings.h"
@@ -19,5 +22,26 @@ void bin::Core::GameEntry()
 
     bin::SceneGraph::BindScene(bout::SceneName::MainMenu, []() { bin::SceneGraph::AddNode<bout::MainMenu>(); });
 
-    bin::SceneGraph::LoadScene(bout::SceneName::MainMenu);
+    bin::SceneGraph::BindScene(bout::SceneName::Testing,
+                               []()
+                               {
+                                   bin::SceneGraph::AddNode<Camera>();
+                                   auto& spriteOne = bin::SceneGraph::AddNode<Sprite>();
+
+                                   auto& spriteTwo = bin::SceneGraph::AddNode<Sprite>();
+                                   spriteTwo.SetParent(&spriteOne);
+                                   spriteTwo.SetLocalPosition({ 5, 5 });
+
+                                   bin::TweenEngine::Start(
+                                       bin::Tween{ .onUpdate =
+                                                       [&spriteOne](float value) {
+                                                           spriteOne.SetWorldPosition({ value, value });
+                                                       }
+
+
+                                       },
+                                       spriteOne);
+                               });
+
+    bin::SceneGraph::LoadScene(bout::SceneName::Testing);
 }
