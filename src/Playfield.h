@@ -20,7 +20,6 @@ namespace bout
         bin::Event<> m_OnFieldCleared{};
 
     private:
-        void Draw(const bin::Renderer& renderer) override;
         void OnBrickDestroyedEvent(Node& brick);
         void OnPlayfieldCleared();
 

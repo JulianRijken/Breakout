@@ -26,22 +26,28 @@ void bin::Core::GameEntry()
                                []()
                                {
                                    bin::SceneGraph::AddNode<Camera>();
+
+
                                    auto& spriteOne = bin::SceneGraph::AddNode<Sprite>();
 
                                    auto& spriteTwo = bin::SceneGraph::AddNode<Sprite>();
                                    spriteTwo.SetParent(&spriteOne);
-                                   spriteTwo.SetLocalPosition({ 5, 5 });
+                                   spriteTwo.SetLocalPosition({ 0, 4 });
+
+                                   auto& spriteThree = bin::SceneGraph::AddNode<Sprite>();
+                                   spriteThree.SetParent(&spriteTwo);
+                                   spriteThree.SetLocalPosition({ 0, 4 });
 
                                    bin::TweenEngine::Start(
-                                       bin::Tween{ .onUpdate =
-                                                       [&spriteOne](float value) {
-                                                           spriteOne.SetWorldPosition({ value, value });
-                                                       }
-
-
-                                       },
+                                       bin::Tween{ .duration = 5.0f,
+                                                   .onUpdate =
+                                                       [&spriteOne, &spriteTwo](float value)
+                                                   {
+                                                       spriteOne.SetLocalPosition({ value, value });
+                                                       spriteTwo.SetLocalPosition({ -value, value });
+                                                   } },
                                        spriteOne);
                                });
 
-    bin::SceneGraph::LoadScene(bout::SceneName::Testing);
+    bin::SceneGraph::LoadScene(bout::SceneName::Game);
 }

@@ -3,6 +3,7 @@
 #include <cmath>
 
 #include "GameTime.h"
+#include "MathExtensions.h"
 #include "Node.h"
 #include "Tween.h"
 
@@ -73,8 +74,9 @@ void bin::TweenInstance::Update()
     const float easedTime = easeFunction::Evaluate(alpha, m_Tween.easeType);
     const float interpolatedValue = std::lerp(m_Tween.from, m_Tween.to, easedTime);
 
+
     if(m_Tween.onUpdate)
-        m_Tween.onUpdate(interpolatedValue);
+        m_Tween.onUpdate(bin::math::Clamp01(interpolatedValue));
 
     if(m_HasReachedEnd)
     {
