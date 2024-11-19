@@ -1,13 +1,14 @@
 #include "Brick.h"
 
 #include <BoxCollider.h>
+#include <fmt/core.h>
 #include <MessageQueue.h>
+#include <Physics.h>
 #include <Renderer.h>
 #include <SceneGraph.h>
 
 #include "Ball.h"
 #include "GlobalSettings.h"
-#include "MathExtensions.h"
 
 
 bout::Brick::Brick(int pointsWorth, const glm::vec2& brickSize, const SDL_Color& brickColor) :
@@ -45,7 +46,7 @@ void bout::Brick::Break()
 
 void bout::Brick::Draw(const bin::Renderer& renderer)
 {
-    renderer.DrawBox(GetWorldPosition(), m_BrickSize, { 0.5f, 0.5f }, m_BrickColor);
+    renderer.DrawRect(GetWorldPosition(), m_BrickSize, { 0.5f, 0.5f }, m_BrickColor);
 }
 
-void bout::Brick::OnHit() { Break(); }
+void bout::Brick::OnHit(const bin::Manifold&) { Break(); }

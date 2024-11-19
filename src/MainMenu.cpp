@@ -6,11 +6,9 @@
 #include <SceneGraph.h>
 #include <Text.h>
 #include <Texture.h>
-#include <Tween.h>
 
 #include "GlobalSettings.h"
 #include "Prefabs.h"
-
 
 bout::MainMenu::MainMenu()
 {

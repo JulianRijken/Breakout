@@ -32,7 +32,6 @@ bout::Breakout::Breakout() :
     m_PlayfieldPtr->m_OnFieldCleared.AddListener(this, &Breakout::OnPlayfieldClearedEvent);
     bin::MessageQueue::AddListener(MessageType::BallCollided, this, &Breakout::OnWallHitMessage);
     bin::Input::Bind(InputActionName::FireBall, this, &Breakout::OnFireBallInput);
-    bin::Input::Bind(InputActionName::ForceRestart, this, &Breakout::OnForceRestartInput);
 }
 
 bout::Breakout::~Breakout() { bin::MessageQueue::RemoveListenerInstance(this); }
@@ -101,14 +100,6 @@ void bout::Breakout::OnFireBallInput(const bin::InputContext& context)
         return;
 
     m_PaddlePtr->TryLaunchBall(*m_PlayfieldPtr);
-}
-
-void bout::Breakout::OnForceRestartInput(const bin::InputContext& context)
-{
-    if(context.state != bin::ButtonState::Down)
-        return;
-
-    bin::SceneGraph::LoadScene(SceneName::MainMenu);
 }
 
 void bout::Breakout::OnPlayfieldClearedEvent() { OnGameOver(); }

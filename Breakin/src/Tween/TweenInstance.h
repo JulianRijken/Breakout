@@ -2,7 +2,7 @@
 #define TWEENINSTANCE_H
 
 #include "Event.h"
-#include "Tween.h"
+#include "TweenEngine.h"
 
 namespace bin
 {

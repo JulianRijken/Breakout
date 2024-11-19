@@ -133,6 +133,8 @@ namespace bin::math
                  static_cast<Uint8>(std::lerp(a.a, b.a, t)) };
     }
 
+    // Thanks to Freya Holmér for making the best function ever!
+    // https://mastodon.social/@acegikmo/111931613710775864
     template<typename Type>
     Type LerpSmooth(const Type& a, const Type& b, double duration, double deltaTime)
     {
@@ -179,6 +181,28 @@ namespace bin::math
         return std::clamp((value - inRangeMin) * (outRangeMax - outRangeMin) / (inRangeMax - inRangeMin) + outRangeMin,
                           outRangeMin,
                           outRangeMax);
+    }
+
+    struct CubicCurve final
+    {
+        glm::vec2 p0;
+        glm::vec2 p1;
+        glm::vec2 p2;
+        glm::vec2 p3;
+    };
+
+    template<typename Type>
+        requires std::floating_point<Type>
+    constexpr glm::vec2 EvaluateCubicBezier(const CubicCurve& curve, Type time)
+    {
+        const glm::vec2 a{ glm::mix(curve.p0, curve.p1, time) };
+        const glm::vec2 b{ glm::mix(curve.p1, curve.p2, time) };
+        const glm::vec2 c{ glm::mix(curve.p2, curve.p3, time) };
+
+        const glm::vec2 d{ glm::mix(a, b, time) };
+        const glm::vec2 e{ glm::mix(b, c, time) };
+
+        return glm::mix(d, e, time);
     }
 }
 #endif // MATHEXTENSIONS_H

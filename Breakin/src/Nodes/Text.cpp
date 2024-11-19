@@ -59,6 +59,9 @@ void bin::Text::Draw(const Renderer& renderer)
     if(m_TexturePtr == nullptr)
         return;
 
-    renderer.DrawTexture(
-        m_TexturePtr.get(), GetWorldPosition(), static_cast<float>(m_FontPtr->GetSize()) / m_Size, m_Alignment);
+    renderer.DrawTexture(m_TexturePtr.get(),
+                         GetWorldPosition(),
+                         GetWorldScale(),
+                         static_cast<float>(m_FontPtr->GetSize()) / m_Size,
+                         m_Alignment);
 }

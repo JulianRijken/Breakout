@@ -8,10 +8,13 @@
 
 namespace bin
 {
+
+    struct Manifold;
+
     class BoxCollider final : public bin::Node
     {
     public:
-        BoxCollider(const glm::vec2& size, uint16_t layers = 0x0001);
+        BoxCollider(const glm::vec2& size = { 1.0f, 1.0f }, uint16_t layers = 0x0001);
         ~BoxCollider() override;
 
         BoxCollider(BoxCollider&&) = delete;
@@ -19,17 +22,17 @@ namespace bin
         BoxCollider& operator=(BoxCollider&&) = delete;
         BoxCollider& operator=(const BoxCollider&) = delete;
 
-        [[nodiscard]] const glm::vec2& GetSize() const;
+        [[nodiscard]] glm::vec2 GetSize();
 
         bool CompareLayers(uint16_t layers) const;
 
-        bin::Event<> m_OnHit{};
+        bin::Event<const Manifold&> m_OnHit{};
 
     private:
         void Draw(const bin::Renderer& renderer) override;
 
-        uint16_t m_Layers;
-        glm::vec2 m_Size;
+        uint16_t m_Layers{ 0x0001 };
+        glm::vec2 m_Size{ 1.0f, 1.0f };
     };
 
 }  // namespace bin

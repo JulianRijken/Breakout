@@ -36,7 +36,7 @@ void bout::Trail::Draw(const bin::Renderer& renderer)
         const float scale = std::lerp(0.2f, 0.5f, alpha);
         const Uint8 colorAlpha = static_cast<Uint8>(255 * alpha);
 
-        renderer.DrawBox(drawPosition,
+        renderer.DrawRect(drawPosition,
                          { scale, scale },
                          { 0.5f, 0.5f },
                          SDL_Color{ drawColor.r, drawColor.g, drawColor.b, colorAlpha });

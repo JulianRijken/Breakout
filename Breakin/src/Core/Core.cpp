@@ -87,6 +87,9 @@ void bin::Core::IncrementFrame()
     // Update Tweens
     TweenEngine::Update();
 
+    // Late Update Scene Graph
+    SceneGraph::GetInstance().LateUpdateAll();
+
     // Render
     Locator::Get<Renderer>().Render();
 }

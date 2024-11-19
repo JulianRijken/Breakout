@@ -43,6 +43,7 @@ set(BREAKIN_SOURCE_FILES
     ${SOURCE_DIR}/Nodes/Camera.h                ${SOURCE_DIR}/Nodes/Camera.cpp
     ${SOURCE_DIR}/Nodes/Text.h                  ${SOURCE_DIR}/Nodes/Text.cpp
     ${SOURCE_DIR}/Nodes/Button.h                ${SOURCE_DIR}/Nodes/Button.cpp
+    ${SOURCE_DIR}/Nodes/Sprite.h                ${SOURCE_DIR}/Nodes/Sprite.cpp
 
     # Helper
     ${SOURCE_DIR}/Helper/Event.h
@@ -56,12 +57,10 @@ set(BREAKIN_SOURCE_FILES
     ${SOURCE_DIR}/Tween/EaseFinction.h          ${SOURCE_DIR}/Tween/EaseFinction.cpp
     ${SOURCE_DIR}/Tween/TweenEngine.h           ${SOURCE_DIR}/Tween/TweenEngine.cpp
     ${SOURCE_DIR}/Tween/TweenInstance.h         ${SOURCE_DIR}/Tween/TweenInstance.cpp
-    ${SOURCE_DIR}/Tween/Tween.h
 )
 
 add_library(${TARGET_NAME} STATIC
     ${BREAKIN_SOURCE_FILES}
-    src/Nodes/Sprite.h src/Nodes/Sprite.cpp
 )
 
 

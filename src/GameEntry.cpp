@@ -5,7 +5,6 @@
 #include <MainMenu.h>
 #include <SceneGraph.h>
 #include <Sprite.h>
-#include <Tween.h>
 #include <TweenEngine.h>
 
 #include "Breakout.h"
@@ -32,24 +31,45 @@ void bin::Core::GameEntry()
 
                                    auto& spriteTwo = bin::SceneGraph::AddNode<Sprite>();
                                    spriteTwo.SetParent(&spriteOne);
-                                   spriteTwo.SetLocalPosition({ 0, 4 });
+                                   spriteTwo.SetLocalPosition({ 0, 2 });
 
                                    auto& spriteThree = bin::SceneGraph::AddNode<Sprite>();
                                    spriteThree.SetParent(&spriteTwo);
-                                   spriteThree.SetLocalPosition({ 0, 4 });
+                                   spriteThree.SetLocalPosition({ -5, 5 });
 
-                                   bin::TweenEngine::Start(
-                                       bin::Tween{ .duration = 5.0f,
-                                                   .onUpdate =
-                                                       [&spriteOne, &spriteTwo](float value)
-                                                   {
-                                                       spriteOne.SetLocalScale({ value, value });
-                                                       spriteOne.SetLocalPosition({ value, value });
-                                                       spriteTwo.SetLocalPosition({ -value * 2, -value * 2 });
-                                                       spriteTwo.SetLocalAngle(value * 360.0f);
-                                                   } },
-                                       spriteOne);
+                                   spriteThree.SetWorldAngle(0.0f);
+                                   spriteThree.SetWorldPosition({ -5, 5 });
+                                   spriteThree.SetWorldScale({ 1, 1 });
+
+                                   spriteThree.m_UseAbsoluteAngle = true;
+
+
+                                   bin::TweenEngine::Start({ .duration = 2.0f,
+                                                             .onUpdate =
+                                                                 [&spriteOne, &spriteTwo](float value)
+                                                             {
+                                                                 spriteOne.SetLocalScale({ 1.0f, value * 2 });
+                                                                 spriteOne.SetLocalPosition({ value, value });
+                                                                 spriteOne.SetLocalAngle(value * 360.0f);
+                                                                 spriteTwo.SetLocalPosition({ -value * 2, -value * 2 });
+                                                                 spriteTwo.SetLocalAngle(value * 180.0f);
+
+                                                                 // spriteThree.SetWorldAngle(0.0f);
+                                                                 // spriteThree.SetWorldPosition({ -5, 5 });
+                                                                 // spriteThree.SetWorldScale({ 1, 1 });
+                                                             } },
+                                                           spriteOne);
                                });
 
-    bin::SceneGraph::LoadScene(bout::SceneName::Game);
+    // Make sure the user can always restart
+    bin::Input::Bind(bout::InputActionName::ForceRestart,
+                     [](const InputContext& context)
+                     {
+                         if(context.state != bin::ButtonState::Down)
+                             return;
+
+                         bin::SceneGraph::LoadScene(bout::SceneName::MainMenu);
+                     });
+
+    bin::SceneGraph::LoadScene(bout::SceneName::Testing);
 }

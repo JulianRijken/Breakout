@@ -10,6 +10,12 @@ void bin::SceneGraph::UpdateAll() const
         node->Update();
 }
 
+void bin::SceneGraph::LateUpdateAll() const
+{
+    for(const auto& node : m_ActiveNodes)
+        node->LateUpdate();
+}
+
 void bin::SceneGraph::FixedUpdateAll() const
 {
     for(const auto& node : m_ActiveNodes)

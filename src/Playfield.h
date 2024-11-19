@@ -7,6 +7,8 @@
 
 namespace bout
 {
+
+    class Wall;
     class Brick;
 
     class Playfield final : public bin::Node, public bin::IEventListener
@@ -23,6 +25,10 @@ namespace bout
         void OnBrickDestroyedEvent(Node& brick);
         void OnPlayfieldCleared();
 
+        static constexpr float WALL_WIDTH = 50.0f;
+
+
+        Wall* m_TopWall{};
         glm::vec2 m_Size{};
         std::unordered_set<Brick*> m_Bricks{};
     };

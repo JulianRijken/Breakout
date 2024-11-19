@@ -7,7 +7,6 @@
 #include <glm/vec2.hpp>
 #include <unordered_set>
 
-
 namespace bin
 {
     class Renderer;
@@ -27,6 +26,8 @@ namespace bin
         virtual void Draw(const bin::Renderer& /*unused*/) {}
 
         virtual void Update() {}
+
+        virtual void LateUpdate() {}
 
         virtual void FixedUpdate() {}
 
@@ -55,6 +56,10 @@ namespace bin
         [[nodiscard]] bool IsChild(Node* checkChildPtr) const;
         [[nodiscard]] bool IsMarkedForDestroy() const;
         [[nodiscard]] bool IsGettingDestroyed() const;
+
+        bool m_UseAbsolutePosition{};  // / NOLINT - C.131: Avoid trivial getters and setters
+        bool m_UseAbsoluteAngle{};     // / NOLINT - C.131: Avoid trivial getters and setters
+        bool m_UseAbsoluteScale{};     // / NOLINT - C.131: Avoid trivial getters and setters
 
 
         bin::Event<Node&> m_OnDestroyedEvent{};

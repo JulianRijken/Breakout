@@ -41,7 +41,7 @@ void bin::Node::SetWorldPosition(const glm::vec2& position)
     if(m_ParentPtr == nullptr)
         SetLocalPosition(position);
     else
-        SetLocalPosition(position - m_ParentPtr->GetWorldPosition());
+        SetLocalPosition(glm::vec2(glm::inverse(m_ParentPtr->GetWorldMatrix()) * glm::vec3(position, 1.0f)));
 }
 
 void bin::Node::SetWorldAngle(float angle)
@@ -57,7 +57,7 @@ void bin::Node::SetWorldScale(const glm::vec2& scale)
     if(m_ParentPtr == nullptr)
         SetLocalScale(scale);
     else
-        SetLocalScale(scale / m_ParentPtr->GetWorldPosition());
+        SetLocalScale(scale / m_ParentPtr->GetWorldScale());
 }
 
 const glm::vec2& bin::Node::GetLocalPosition() const { return m_LocalPosition; }
@@ -131,9 +131,11 @@ void bin::Node::UpdateWorldTransform()
     }
     else
     {
-        m_WorldPosition = glm::vec2(m_ParentPtr->GetWorldMatrix() * glm::vec3(m_LocalPosition, 1.0f));
-        m_WorldAngle = m_ParentPtr->GetWorldAngle() * m_LocalAngle;
-        m_WorldScale = m_ParentPtr->GetWorldScale() * m_LocalScale;
+        m_WorldPosition = m_UseAbsolutePosition
+                            ? m_LocalPosition
+                            : glm::vec2(m_ParentPtr->GetWorldMatrix() * glm::vec3(m_LocalPosition, 1.0f));
+        m_WorldAngle = m_UseAbsoluteAngle ? m_LocalAngle : m_ParentPtr->GetWorldAngle() + m_LocalAngle;
+        m_WorldScale = m_UseAbsoluteScale ? m_LocalScale : m_ParentPtr->GetWorldScale() * m_LocalScale;
     }
 
     m_WorldTransformationMatrix = glm::mat3x3(1.0f);

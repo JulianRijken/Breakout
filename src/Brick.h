@@ -5,6 +5,10 @@
 #include <Node.h>
 #include <SDL_pixels.h>
 
+namespace bin
+{
+    class Manifold;
+}
 
 namespace bout
 {
@@ -17,7 +21,7 @@ namespace bout
 
     private:
         void Draw(const bin::Renderer& renderer) override;
-        void OnHit();
+        void OnHit(const bin::Manifold& manifold);
 
         int m_PointsWorth{ 0 };
         bool m_Broken{ false };

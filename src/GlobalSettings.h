@@ -1,7 +1,10 @@
 #ifndef GLOBALSETTINGS_H
 #define GLOBALSETTINGS_H
 
+#include <MathExtensions.h>
+
 #include <cstdint>
+
 
 namespace bout
 {
@@ -43,6 +46,13 @@ namespace bout
         constexpr uint16_t BRICK = Index(1);
         constexpr uint16_t PADDLE = Index(2);
     }  // namespace collisionLayer
+
+    constexpr bin::math::CubicCurve BUMB_CURVE{
+        {   0,    0},
+        {0.28, 2.21},
+        { 0.2,    0},
+        {   1,    0}
+    };
 }  // namespace bout
 
 

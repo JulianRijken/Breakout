@@ -23,13 +23,13 @@ set(SOURCE_FILES
     ${SOURCE_DIR}/Prefabs.h         ${SOURCE_DIR}/Prefabs.cpp
     ${SOURCE_DIR}/HUD.h             ${SOURCE_DIR}/HUD.cpp
     ${SOURCE_DIR}/GameStats.h       ${SOURCE_DIR}/GameStats.cpp
+    ${SOURCE_DIR}/MainMenu.h        ${SOURCE_DIR}/MainMenu.cpp
+    ${SOURCE_DIR}/GlobalSettings.h  ${SOURCE_DIR}/GlobalSettings.cpp
+    ${SOURCE_DIR}/Wall.h            ${SOURCE_DIR}/Wall.cpp
 )
 
 add_executable(${TARGET_NAME}
     ${SOURCE_FILES}
-    src/MainMenu.h src/MainMenu.cpp
-    src/GlobalSettings.h src/GlobalSettings.cpp
-
 )
 
 target_include_directories(${TARGET_NAME} PUBLIC

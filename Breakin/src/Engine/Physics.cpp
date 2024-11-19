@@ -1,15 +1,16 @@
 #include "Physics.h"
 
+#include <BoxCollider.h>
+
 #include <glm/common.hpp>
 
 #include "MathExtensions.h"
 
+void bin::Physics::RegisterCollider(bin::BoxCollider* boxCollider) { m_Colliders.insert(boxCollider); }
 
-void Physics::RegisterCollider(bin::BoxCollider* boxCollider) { m_Colliders.insert(boxCollider); }
+void bin::Physics::UnregisterCollider(bin::BoxCollider* boxCollider) { m_Colliders.erase(boxCollider); }
 
-void Physics::UnregisterCollider(bin::BoxCollider* boxCollider) { m_Colliders.erase(boxCollider); }
-
-std::pair<bool, Manifold> Physics::DoesOverlap(bin::BoxCollider* a, bin::BoxCollider* b)
+std::pair<bool, bin::Manifold> bin::Physics::DoesOverlap(bin::BoxCollider* a, bin::BoxCollider* b)
 {
     const glm::vec2 posA = a->GetWorldPosition();
     const glm::vec2 posB = b->GetWorldPosition();
@@ -41,4 +42,4 @@ std::pair<bool, Manifold> Physics::DoesOverlap(bin::BoxCollider* a, bin::BoxColl
     return { false, m };
 }
 
-const std::unordered_set<bin::BoxCollider*>& Physics::GetColliders() const { return m_Colliders; }
+const std::unordered_set<bin::BoxCollider*>& bin::Physics::GetColliders() const { return m_Colliders; }

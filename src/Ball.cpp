@@ -36,7 +36,7 @@ void bout::Ball::FixedUpdate()
 
 void bout::Ball::Draw(const bin::Renderer& renderer)
 {
-    renderer.DrawBox(GetWorldPosition(), { 0.5f, 0.5f }, { 0.5f, 0.5f }, m_BallColor);
+    renderer.DrawRect(GetWorldPosition(), { 0.5f, 0.5f }, { 0.5f, 0.5f }, m_BallColor);
 }
 
 
@@ -44,7 +44,7 @@ void bout::Ball::HoldBall() { m_HoldingBall = true; }
 
 void bout::Ball::LaunchBall()
 {
-    m_MoveDirection = { bin::math::RandomRange(-1.0f, 1.0f), 1 };
+    m_MoveDirection = { 0.0f, 1.0f };
     m_HoldingBall = false;
 }
 
@@ -73,12 +73,6 @@ void bout::Ball::MoveBall()
     if(m_MoveDirection.y < 0 and m_MoveDirection.y > -minDirection)
         m_MoveDirection.y = -minDirection;
 
-    if(m_MoveDirection.x >= 0 and m_MoveDirection.x < minDirection)
-        m_MoveDirection.x = minDirection;
-
-    if(m_MoveDirection.x < 0 and m_MoveDirection.x > -minDirection)
-        m_MoveDirection.x = -minDirection;
-
 
     constexpr float hitMoveSpeedIncreaseEffect = 13.0;
     constexpr float hitMoveSpeedIncreaseDuration = 0.4f;
@@ -95,14 +89,14 @@ void bout::Ball::MoveBall()
 
 void bout::Ball::HandleBallCollision()
 {
-    const auto& colliders = bin::Locator::Get<Physics>().GetColliders();
+    const auto& colliders = bin::Locator::Get<bin::Physics>().GetColliders();
 
     for(const auto& collider : colliders)
     {
         if(collider == m_BoxColliderPtr)
             continue;
 
-        auto [didHit, manifold] = Physics::DoesOverlap(collider, m_BoxColliderPtr);
+        auto [didHit, manifold] = bin::Physics::DoesOverlap(collider, m_BoxColliderPtr);
 
         if(didHit)
         {
@@ -125,7 +119,7 @@ void bout::Ball::HandleBallCollision()
 
             Translate(-(normal * manifold.penetration));
             OnHitWall();
-            collider->m_OnHit.Invoke();
+            collider->m_OnHit.Invoke(manifold);
         }
     }
 }

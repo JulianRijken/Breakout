@@ -1,12 +1,15 @@
 #include "Sprite.h"
 
-#include <iostream>
-
 #include "Renderer.h"
+
+bin::Sprite::Sprite(const SDL_Color& color) :
+    m_Color(color)
+{
+}
+
+void bin::Sprite::SetColor(const SDL_Color& color) { m_Color = color; }
 
 void bin::Sprite::Draw(const Renderer& renderer)
 {
-    //
-    std::cout << GetWorldAngle() << std::endl;
-    renderer.DrawBox(GetWorldPosition(), GetWorldScale());
+    renderer.DrawRectRotated(GetWorldPosition(), GetWorldScale(), m_Pivot, GetWorldAngle(), m_Color);
 }

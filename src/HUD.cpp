@@ -7,7 +7,6 @@
 #include <SceneGraph.h>
 #include <Text.h>
 #include <Texture.h>
-#include <Tween.h>
 #include <TweenEngine.h>
 
 #include "GameStats.h"
@@ -52,11 +51,11 @@ void bout::HUD::OnScoreChanged(int score)
     const std::string text = fmt::format("SCORE {}", score);
     m_ScoreText->SetText(text);
 
-    bin::TweenEngine::Start(bin::Tween{ .from = 1.2f,
-                                        .to = 1.8f,
-                                        .duration = 1.0f,
-                                        .easeType = bin::EaseType::BounceOut,
-                                        .onUpdate = [this](float value) { m_ScoreText->SetSize(value); } },
+    bin::TweenEngine::Start({ .from = 1.2f,
+                              .to = 1.8f,
+                              .duration = 1.0f,
+                              .easeType = bin::EaseType::BounceOut,
+                              .onUpdate = [this](float value) { m_ScoreText->SetSize(value); } },
                             *this);
 }
 
@@ -72,20 +71,20 @@ void bout::HUD::OnBallsLeftChanged(int ballsLeft)
 
 void bout::HUD::OnBallLaunchedMessage(const bin::Message& /*unused*/)
 {
-    bin::TweenEngine::Start(bin::Tween{ .from = LAUNCH_BALL_TEXT_SIZE,
-                                        .to = 0.0f,
-                                        .duration = LAUNCH_BALL_TEXT_SHOW_DURATION,
-                                        .easeType = bin::EaseType::SineOut,
-                                        .onUpdate = [this](float value) { m_LaunchBallText->SetSize(value); } },
+    bin::TweenEngine::Start({ .from = LAUNCH_BALL_TEXT_SIZE,
+                              .to = 0.0f,
+                              .duration = LAUNCH_BALL_TEXT_SHOW_DURATION,
+                              .easeType = bin::EaseType::SineOut,
+                              .onUpdate = [this](float value) { m_LaunchBallText->SetSize(value); } },
                             *this);
 }
 
 void bout::HUD::OnBallSpawnedMessage(const bin::Message& /*unused*/)
 {
-    bin::TweenEngine::Start(bin::Tween{ .from = 0.0f,
-                                        .to = LAUNCH_BALL_TEXT_SIZE,
-                                        .duration = LAUNCH_BALL_TEXT_SHOW_DURATION,
-                                        .easeType = bin::EaseType::SineOut,
-                                        .onUpdate = [this](float value) { m_LaunchBallText->SetSize(value); } },
+    bin::TweenEngine::Start({ .from = 0.0f,
+                              .to = LAUNCH_BALL_TEXT_SIZE,
+                              .duration = LAUNCH_BALL_TEXT_SHOW_DURATION,
+                              .easeType = bin::EaseType::SineOut,
+                              .onUpdate = [this](float value) { m_LaunchBallText->SetSize(value); } },
                             *this);
 }

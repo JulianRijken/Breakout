@@ -6,11 +6,11 @@
 #include <glm/vec2.hpp>
 
 #include "Locator.h"
+#include "Texture.h"
 
 struct SDL_Renderer;
 struct SDL_Window;
 struct SDL_Surface;
-struct SDL_Texture;
 
 namespace bin
 {
@@ -27,14 +27,18 @@ namespace bin
         void DrawLine(const glm::vec2& from, const glm::vec2& to,
                       const SDL_Color& color = { 255, 255, 255, 255 }) const;
 
-        void DrawTexture(const Texture* texture, const glm::vec2& position, float pixelsPerUnit,
+        void DrawTexture(const Texture* texture, const glm::vec2& position, const glm::vec2& scale, float pixelsPerUnit,
                          const glm::vec2& pivot) const;
 
-        void DrawBox(const glm::vec2& position, const glm::vec2& scale, const glm::vec2& pivot = { 0.5, 0.5 },
-                     const SDL_Color& color = { 255, 255, 255, 255 }) const;
+        void DrawRectRotated(const glm::vec2& position, const glm::vec2& scale = { 1.0f, 1.0f },
+                             const glm::vec2& pivot = { 0.5, 0.5 }, float angle = 0.0f,
+                             const SDL_Color& color = { 255, 255, 255, 255 }) const;
 
-        void DrawWireBox(const glm::vec2& position, const glm::vec2& scale, const glm::vec2& pivot = { 0.5, 0.5 },
-                         const SDL_Color& color = { 255, 255, 255, 255 }) const;
+        void DrawRect(const glm::vec2& position, const glm::vec2& scale = { 1.0f, 1.0f },
+                      const glm::vec2& pivot = { 0.5, 0.5 }, const SDL_Color& color = { 255, 255, 255, 255 }) const;
+
+        void DrawWireRect(const glm::vec2& position, const glm::vec2& scale = { 1.0f, 1.0f },
+                          const glm::vec2& pivot = { 0.5, 0.5 }, const SDL_Color& color = { 255, 255, 255, 255 }) const;
 
         [[nodiscard]] static glm::ivec2 GetWindowSize();
         [[nodiscard]] static float GetAspectRatio();
@@ -50,6 +54,7 @@ namespace bin
 
         SDL_Renderer* m_RendererPtr{};
         SDL_Window* m_WindowPtr{};
+        std::unique_ptr<Texture> m_EmptyTexture{};
     };
 }  // namespace bin
 #endif  // RENDERER_H

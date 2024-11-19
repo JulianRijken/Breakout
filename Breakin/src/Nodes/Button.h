@@ -31,8 +31,14 @@ namespace bin
         void OnPress();
         void OnReleased();
 
+        static constexpr float SELECTED_SCALE{ 1.2f };
+        static constexpr float SCALE_LERP_DURATION{ 0.2f };
+
+
         bool m_IsSelected{};
         bool m_IsDown{};
+
+        float m_CurrentScale{};
 
         bool m_IsPressed{};
         SDL_Color m_Color{ 255, 255, 255, 255 };

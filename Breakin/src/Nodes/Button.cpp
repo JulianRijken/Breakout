@@ -3,6 +3,7 @@
 #include <Input.h>
 #include <SDL_mouse.h>
 
+#include "GameTime.h"
 #include "MathExtensions.h"
 #include "Renderer.h"
 #include "SceneGraph.h"
@@ -24,8 +25,12 @@ void bin::Button::Update()
 
     const glm::vec2 mouseWorldPosition = camera->ScreenToWorldPosition(mousePosition);
 
-    m_IsSelected = math::ABB(mouseWorldPosition, GetWorldPosition(), m_Size);
+    m_IsSelected = math::ABB(mouseWorldPosition, GetWorldPosition(), m_Size * GetWorldScale());
     m_IsDown = (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT));
+
+    const float targetScale = m_IsSelected ? SELECTED_SCALE : 1.0f;
+    m_CurrentScale = bin::math::LerpSmooth(m_CurrentScale, targetScale, SCALE_LERP_DURATION, GameTime::GetDeltaTime());
+    SetLocalScale(glm::vec2(1.0f) * m_CurrentScale);
 
     if(m_IsDown)
     {
@@ -59,7 +64,7 @@ void bin::Button::Draw(const Renderer& renderer)
     if(m_IsPressed)
         m_Color = { 255, 150, 150, 255 };
 
-    renderer.DrawBox(GetWorldPosition(), m_Size, { 0.5f, 0.5f }, m_Color);
+    renderer.DrawRect(GetWorldPosition(), m_Size * GetWorldScale(), { 0.5f, 0.5f }, m_Color);
 }
 
 void bin::Button::OnPress() { m_OnPress.Invoke(); }

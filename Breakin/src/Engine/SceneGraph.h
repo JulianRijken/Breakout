@@ -59,6 +59,7 @@ namespace bin
         void AddCamera(Camera* camera);
         void RemoveCamera(Camera* camera);
         void UpdateAll() const;
+        void LateUpdateAll() const;
         void FixedUpdateAll() const;
         void DrawAll(const bin::Renderer& renderer) const;
 

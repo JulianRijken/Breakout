@@ -33,7 +33,6 @@ namespace bout
 
     private:
         void OnFireBallInput(const bin::InputContext& context);
-        void OnForceRestartInput(const bin::InputContext& context);
 
         void OnWallHitMessage(const bin::Message& message);
 

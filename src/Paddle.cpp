@@ -5,6 +5,8 @@
 #include <MessageQueue.h>
 #include <Renderer.h>
 #include <SceneGraph.h>
+#include <Sprite.h>
+#include <TweenEngine.h>
 
 #include <algorithm>
 
@@ -12,11 +14,15 @@
 #include "BoxCollider.h"
 #include "GlobalSettings.h"
 
-
 bout::Paddle::Paddle()
 {
-    auto& boxColliderPtr = bin::SceneGraph::AddNode<bin::BoxCollider>(glm::vec2{ 2, 0.5f }, bout::collisionLayer::PADDLE);
-    boxColliderPtr.SetParent(this);
+    auto& boxCollider = bin::SceneGraph::AddNode<bin::BoxCollider>(PADDLE_SIZE, bout::collisionLayer::PADDLE);
+    boxCollider.SetParent(this);
+    boxCollider.m_OnHit.AddListener(this, &Paddle::OnHit);
+
+    m_SpritePtr = &bin::SceneGraph::AddNode<bin::Sprite>();
+    m_SpritePtr->SetLocalScale(PADDLE_SIZE);
+    m_SpritePtr->SetParent(this);
 }
 
 void bout::Paddle::SetPaddleTargetPosition(float targetPosition)
@@ -55,7 +61,27 @@ void bout::Paddle::FixedUpdate()
     SetLocalPosition({ m_PaddlePosition, GetLocalPosition().y });
 }
 
-void bout::Paddle::Draw(const bin::Renderer& renderer)
+void bout::Paddle::Update()
 {
-    renderer.DrawBox({ GetWorldPosition() }, { 2, 0.5 }, { 0.5f, 0.5f });
+    const float delta = GetWorldPosition().x - m_LastPosition;
+    m_LastPosition = GetWorldPosition().x;
+
+    m_PaddleAngle = bin::math::LerpSmooth(
+        m_PaddleAngle, -delta * ANGLE_DISTANCE, ANGLE_SMOOTH_DURATION, bin::GameTime::GetDeltaTime());
+
+    SetLocalAngle(m_PaddleAngle);
+}
+
+void bout::Paddle::OnHit(const bin::Manifold&)
+{
+    // Needed for the lambda capture
+    bin::Sprite* spritePtrCopy = m_SpritePtr;
+    bin::TweenEngine::Start({ .duration = BUMP_DURATION,
+                              .onUpdate =
+                                  [spritePtrCopy](float value)
+                              {
+                                  const float curve = bin::math::EvaluateCubicBezier(BUMB_CURVE, value).y;
+                                  spritePtrCopy->SetLocalPosition({ 0, curve * BUMP_HEIGHT });
+                              } },
+                            *spritePtrCopy);
 }

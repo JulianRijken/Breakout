@@ -6,6 +6,7 @@
 #include "BoxCollider.h"
 #include "Brick.h"
 #include "Prefabs.h"
+#include "Wall.h"
 
 
 bout::Playfield::Playfield(const glm::vec2& size) :
@@ -56,24 +57,24 @@ bout::Playfield::Playfield(const glm::vec2& size) :
         }
     }
 
-    constexpr float wallWidth = 50.0f;
-
-    auto& rightWall = bin::SceneGraph::AddNode<bin::BoxCollider>(glm::vec2{ wallWidth, m_Size.y + wallWidth * 2 });
-    rightWall.SetLocalPosition({ m_Size.x / 2.0f + wallWidth / 2.0f, 0 });
+    auto& rightWall = bin::SceneGraph::AddNode<Wall>(glm::vec2{ 1, 0 });
     rightWall.SetParent(this);
+    rightWall.SetLocalScale({ WALL_WIDTH, m_Size.y + WALL_WIDTH * 2 });
+    rightWall.SetLocalPosition({ m_Size.x / 2.0f + WALL_WIDTH / 2.0f, 0 });
 
-    auto& leftWall = bin::SceneGraph::AddNode<bin::BoxCollider>(glm::vec2{ wallWidth, m_Size.y + wallWidth * 2 });
-    leftWall.SetLocalPosition({ -m_Size.x / 2.0f - wallWidth / 2.0f, 0 });
+
+    auto& leftWall = bin::SceneGraph::AddNode<Wall>(glm::vec2{ -1, 0 });
     leftWall.SetParent(this);
+    leftWall.SetLocalScale({ WALL_WIDTH, m_Size.y + WALL_WIDTH * 2 });
+    leftWall.SetLocalPosition({ -m_Size.x / 2.0f - WALL_WIDTH / 2.0f, 0 });
 
-
-    auto& topWall = bin::SceneGraph::AddNode<bin::BoxCollider>(glm::vec2{ m_Size.x, wallWidth });
-    topWall.SetLocalPosition({ 0, m_Size.y / 2.0f + wallWidth / 2.0f });
+    auto& topWall = bin::SceneGraph::AddNode<Wall>(glm::vec2{ 0, 1 });
     topWall.SetParent(this);
+    topWall.SetLocalPosition({ 0, m_Size.y / 2.0f + WALL_WIDTH / 2.0f });
+    topWall.SetLocalScale({ m_Size.x, WALL_WIDTH });
 }
 
 const glm::vec2& bout::Playfield::GetSize() const { return m_Size; }
-
 
 void bout::Playfield::OnBrickDestroyedEvent(Node& brick)
 {

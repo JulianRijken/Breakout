@@ -5,7 +5,6 @@
 #include "GameTime.h"
 #include "MathExtensions.h"
 #include "Node.h"
-#include "Tween.h"
 
 bin::TweenInstance::TweenInstance(Tween&& tween, Node& target) :
     m_IsHalting(tween.delay > 0),

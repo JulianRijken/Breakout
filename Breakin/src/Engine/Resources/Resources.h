@@ -2,7 +2,6 @@
 #define Resources_H
 
 #include <filesystem>
-#include <iostream>
 #include <map>
 
 #include "Font.h"
