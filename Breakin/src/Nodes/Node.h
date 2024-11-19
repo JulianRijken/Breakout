@@ -37,6 +37,7 @@ namespace bin
         [[nodiscard]] const glm::vec2& GetLocalPosition() const;
         [[nodiscard]] bool IsChild(Node* checkChildPtr) const;
         [[nodiscard]] bool IsMarkedForDestroy() const;
+        [[nodiscard]] bool IsGettingDestroyed() const;
 
         bin::Event<Node&> m_OnDestroyedEvent{};
 

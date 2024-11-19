@@ -55,6 +55,8 @@ bool bin::Node::IsChild(Node* checkChildPtr) const
 
 bool bin::Node::IsMarkedForDestroy() const { return m_MarkedForDestroy; }
 
+bool bin::Node::IsGettingDestroyed() const { return m_GettingDestroyed; }
+
 
 void bin::Node::SetParent(Node* newParentPtr, bool worldPositionStays)
 {

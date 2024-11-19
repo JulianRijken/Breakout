@@ -30,6 +30,7 @@ set(BREAKIN_SOURCE_FILES
     ${SOURCE_DIR}/Engine/Renderer.h             ${SOURCE_DIR}/Engine/Renderer.cpp
     ${SOURCE_DIR}/Engine/Physics.h              ${SOURCE_DIR}/Engine/Physics.cpp
     ${SOURCE_DIR}/Engine/SceneGraph.h           ${SOURCE_DIR}/Engine/SceneGraph.cpp
+    ${SOURCE_DIR}/Engine/Input.h                ${SOURCE_DIR}/Engine/Input.cpp
 
     # Resources
     ${SOURCE_DIR}/Engine/Resources/Font.h       ${SOURCE_DIR}/Engine/Resources/Font.cpp
@@ -40,6 +41,8 @@ set(BREAKIN_SOURCE_FILES
     ${SOURCE_DIR}/Nodes/Node.h                  ${SOURCE_DIR}/Nodes/Node.cpp
     ${SOURCE_DIR}/Nodes/BoxCollider.h           ${SOURCE_DIR}/Nodes/BoxCollider.cpp
     ${SOURCE_DIR}/Nodes/Camera.h                ${SOURCE_DIR}/Nodes/Camera.cpp
+    ${SOURCE_DIR}/Nodes/Text.h                  ${SOURCE_DIR}/Nodes/Text.cpp
+    ${SOURCE_DIR}/Nodes/Button.h                ${SOURCE_DIR}/Nodes/Button.cpp
 
     # Helper
     ${SOURCE_DIR}/Helper/Event.h
@@ -47,13 +50,17 @@ set(BREAKIN_SOURCE_FILES
     ${SOURCE_DIR}/Helper/MathExtensions.h
     ${SOURCE_DIR}/Helper/MessageQueue.h         ${SOURCE_DIR}/Helper/MessageQueue.cpp
     ${SOURCE_DIR}/Helper/Singleton.h
+
+
+    # Tween
+    ${SOURCE_DIR}/Tween/EaseFinction.h          ${SOURCE_DIR}/Tween/EaseFinction.cpp
+    ${SOURCE_DIR}/Tween/TweenEngine.h           ${SOURCE_DIR}/Tween/TweenEngine.cpp
+    ${SOURCE_DIR}/Tween/TweenInstance.h         ${SOURCE_DIR}/Tween/TweenInstance.cpp
+    ${SOURCE_DIR}/Tween/Tween.h
 )
 
 add_library(${TARGET_NAME} STATIC
     ${BREAKIN_SOURCE_FILES}
-    src/Nodes/Text.h src/Nodes/Text.cpp
-    src/Engine/Input.h src/Engine/Input.cpp
-    src/Nodes/Button.h src/Nodes/Button.cpp
 )
 
 
@@ -65,6 +72,7 @@ target_include_directories(${TARGET_NAME} PUBLIC
     ${SOURCE_DIR}/Engine
     ${SOURCE_DIR}/Engine/Resources
     ${SOURCE_DIR}/Helper
+    ${SOURCE_DIR}/Tween
 )
 
 target_link_libraries(${TARGET_NAME} PUBLIC
