@@ -103,7 +103,7 @@ void bout::Breakout::OnBrickBreakMessage(const bin::Message& /*unused*/)
               [this](float value)
           {
               const float curve = bin::math::EvaluateCubicBezier(BUMP_CURVE, value).y;
-              SDL_Color color = { 255, 255, 255, static_cast<Uint8>(curve * BRICK_BREAK_FLASH_ALPHA) };
+              const SDL_Color color = { 255, 255, 255, static_cast<Uint8>(curve * BRICK_BREAK_FLASH_ALPHA) };
               m_BackgroundFlashSpritePtr->SetColor(color);
           } },
         *this);

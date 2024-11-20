@@ -72,7 +72,7 @@ void bin::SceneGraph::LoadSceneSetToLoad()
 
     ClearScene();
 
-    int loadingScene = m_SceneToLoad;
+    const int loadingScene = m_SceneToLoad;
 
     // Reset scene to load
     m_SceneToLoad = -1;
@@ -80,7 +80,7 @@ void bin::SceneGraph::LoadSceneSetToLoad()
     // Call functions to load scene
     m_SceneBinds[loadingScene]();
 
-    // Ye somone actually loaded a scene while loading a scene
+    // Ye someone actually loaded a scene while loading a scene
     if(m_SceneToLoad >= 0)
     {
         LoadSceneSetToLoad();

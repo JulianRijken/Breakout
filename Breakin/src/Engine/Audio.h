@@ -8,6 +8,7 @@ namespace bin
     class Sound;
 
     // TODO: Audio is handled globally but should ideally work with lifetime and the scene graph
+    //       Like a sound node of some sorts
     class Audio final : public bin::Service
     {
     public:

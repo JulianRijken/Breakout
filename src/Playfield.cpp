@@ -63,7 +63,7 @@ bout::Playfield::Playfield(const glm::vec2& size) :
                                       .onUpdate =
                                           [brickSpawned, spawnPosition](float value)
                                       {
-                                          const float fromPosition = 10.0f;
+                                          constexpr float fromPosition = 10.0f;
                                           const float fallHeight = std::lerp(fromPosition, spawnPosition.y, value);
                                           brickSpawned->SetLocalPosition({ spawnPosition.x, fallHeight });
                                       } },

@@ -43,8 +43,8 @@ void bout::Brick::Break()
                                   const float scale = 1.0f - value;
                                   m_SpritePtr->SetLocalScale({ scale, scale });
 
-                                  const SDL_Color toColor = { 255, 255, 255, 255 };
-                                  const SDL_Color lerpColor = bin::math::Lerp(originalColor, toColor, value);
+                                  const SDL_Color lerpColor =
+                                      bin::math::Lerp(originalColor, SDL_Color{ 255, 255, 255, 255 }, value);
                                   m_SpritePtr->SetColor(lerpColor);
 
                                   m_SpritePtr->SetLocalAngle(value * randomRotationDistance);

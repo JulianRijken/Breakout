@@ -20,41 +20,41 @@ void bin::Core::PreInit(bin::InitSettings& settings)
 
 void bin::Core::GameEntry()
 {
-    bin::Audio::SetGlobalVolume(0.3f);
+    Audio::SetGlobalVolume(0.3f);
 
-    bin::Resources::LoadFont(bout::FontName::NES_Font, "Fonts/NES_Font.ttf", 8);
+    Resources::LoadFont(bout::FontName::NES_Font, "Fonts/NES_Font.ttf", 8);
 
-    bin::Resources::LoadSound(bout::SoundName::WallHit, "Sounds/SFX 3.ogg");
-    bin::Resources::LoadSound(bout::SoundName::PaddleHit, "Sounds/Custom_PaddleHit.ogg");
-    bin::Resources::LoadSound(bout::SoundName::BrickBreak, "Sounds/Custom_BrickBreak.ogg");
-    bin::Resources::LoadSound(bout::SoundName::ButtonPress, "Sounds/SFX 3.ogg");
-    bin::Resources::LoadSound(bout::SoundName::ButtonRelease, "Sounds/SFX 3.ogg");
-    bin::Resources::LoadSound(bout::SoundName::ButtonHover, "Sounds/SFX 4.ogg");
-    bin::Resources::LoadSound(bout::SoundName::GameStart, "Sounds/SFX 3.ogg");
-    bin::Resources::LoadSound(bout::SoundName::GameLost, "Sounds/SFX 11.ogg");
-    bin::Resources::LoadSound(bout::SoundName::GameWon, "Sounds/SFX 1.ogg");
+    Resources::LoadSound(bout::SoundName::WallHit, "Sounds/SFX 3.ogg");
+    Resources::LoadSound(bout::SoundName::PaddleHit, "Sounds/Custom_PaddleHit.ogg");
+    Resources::LoadSound(bout::SoundName::BrickBreak, "Sounds/Custom_BrickBreak.ogg");
+    Resources::LoadSound(bout::SoundName::ButtonPress, "Sounds/SFX 3.ogg");
+    Resources::LoadSound(bout::SoundName::ButtonRelease, "Sounds/SFX 3.ogg");
+    Resources::LoadSound(bout::SoundName::ButtonHover, "Sounds/SFX 4.ogg");
+    Resources::LoadSound(bout::SoundName::GameStart, "Sounds/SFX 3.ogg");
+    Resources::LoadSound(bout::SoundName::GameLost, "Sounds/SFX 11.ogg");
+    Resources::LoadSound(bout::SoundName::GameWon, "Sounds/SFX 1.ogg");
 
 
-    bin::Input::AddInputAction(bout::InputActionName::FireBall, { { SDL_SCANCODE_SPACE }, true });
-    bin::Input::AddInputAction(bout::InputActionName::CheatForceRestart,
+    Input::AddInputAction(bout::InputActionName::FireBall, { { SDL_SCANCODE_SPACE }, true });
+    Input::AddInputAction(bout::InputActionName::CheatForceRestart,
                                {
                                    {SDL_SCANCODE_R, SDL_SCANCODE_ESCAPE}
     });
-    bin::Input::AddInputAction(bout::InputActionName::CheatSpawnBall, { { SDL_SCANCODE_1 } });
-    bin::Input::AddInputAction(bout::InputActionName::CheatClearField, { { SDL_SCANCODE_2 } });
+    Input::AddInputAction(bout::InputActionName::CheatSpawnBall, { { SDL_SCANCODE_1 } });
+    Input::AddInputAction(bout::InputActionName::CheatClearField, { { SDL_SCANCODE_2 } });
 
-    bin::SceneGraph::BindScene(bout::SceneName::Game, []() { bin::SceneGraph::AddNode<bout::Breakout>(); });
+    SceneGraph::BindScene(bout::SceneName::Game, []() { bin::SceneGraph::AddNode<bout::Breakout>(); });
 
-    bin::SceneGraph::BindScene(bout::SceneName::MainMenu, []() { bin::SceneGraph::AddNode<bout::MainMenu>(); });
+    SceneGraph::BindScene(bout::SceneName::MainMenu, []() { bin::SceneGraph::AddNode<bout::MainMenu>(); });
 
-    bin::SceneGraph::BindScene(bout::SceneName::GameWonScreen,
+    SceneGraph::BindScene(bout::SceneName::GameWonScreen,
                                []()
                                {
                                    bin::SceneGraph::LoadScene(bout::SceneName::MainMenu);
                                    //
                                });
 
-    bin::SceneGraph::BindScene(bout::SceneName::GameLostScreen,
+    SceneGraph::BindScene(bout::SceneName::GameLostScreen,
                                []()
                                {
                                    bin::SceneGraph::LoadScene(bout::SceneName::MainMenu);
@@ -62,7 +62,7 @@ void bin::Core::GameEntry()
                                });
 
 
-    bin::SceneGraph::BindScene(bout::SceneName::TestingSceneGraph,
+    SceneGraph::BindScene(bout::SceneName::TestingSceneGraph,
                                []()
                                {
                                    bin::SceneGraph::AddNode<Camera>();
@@ -103,7 +103,7 @@ void bin::Core::GameEntry()
                                });
 
     // Make sure the user can always restart
-    bin::Input::Bind(bout::InputActionName::CheatForceRestart,
+    Input::Bind(bout::InputActionName::CheatForceRestart,
                      [](const InputContext& context)
                      {
                          if(context.state != bin::ButtonState::Down)
@@ -112,5 +112,5 @@ void bin::Core::GameEntry()
                          bin::SceneGraph::LoadScene(bout::SceneName::MainMenu);
                      });
 
-    bin::SceneGraph::LoadScene(bout::SceneName::MainMenu);
+    SceneGraph::LoadScene(bout::SceneName::MainMenu);
 }

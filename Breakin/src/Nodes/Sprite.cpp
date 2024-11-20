@@ -7,7 +7,7 @@ bin::Sprite::Sprite(const SDL_Color& color) :
 {
 }
 
-const SDL_Color& bin::Sprite::GetColor() { return m_Color; }
+const SDL_Color& bin::Sprite::GetColor() const { return m_Color; }
 
 void bin::Sprite::SetColor(const SDL_Color& color) { m_Color = color; }
 
