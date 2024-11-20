@@ -6,6 +6,9 @@
 #include <SceneGraph.h>
 #include <Text.h>
 #include <Texture.h>
+#include <TweenEngine.h>
+
+#include <iostream>
 
 #include "GlobalSettings.h"
 #include "Prefabs.h"
@@ -16,21 +19,91 @@ bout::MainMenu::MainMenu()
     camera.SetOrthoSize(10);
 
     auto& title = bin::SceneGraph::AddNode<bin::Text>(
-        "BREAKOUT", bin::Resources::GetFont(FontName::NES_Font), glm::vec2{ 0.5f, 0.5f }, 2.0f);
+        "", bin::Resources::GetFont(FontName::NES_Font), glm::vec2{ 0.5f, 0.5f }, 2.0f);
     title.SetParent(this);
     title.SetLocalPosition({ 0, 6 });
 
+    auto& subTitle = bin::SceneGraph::AddNode<bin::Text>(
+        "", bin::Resources::GetFont(FontName::NES_Font), glm::vec2{ 0.5f, 0.5f }, 0.8f, SDL_Color(200, 200, 200, 255));
+    subTitle.SetParent(this);
+    subTitle.SetLocalPosition({ 0, 4 });
+
     auto& startButton = prefabs::TextButton({ 10, 2 }, "START", *this);
     startButton.SetParent(this);
-    startButton.SetLocalPosition({ 0, 2 });
+    startButton.SetLocalPosition({ 0, -15 });
     startButton.m_OnReleased.AddListener(this, &MainMenu::OnStartButtonPress);
 
     auto& quitButton = prefabs::TextButton({ 10, 2 }, "QUIT", *this);
     quitButton.SetParent(this);
-    quitButton.SetLocalPosition({ 0, -2 });
+    quitButton.SetLocalPosition({ 0, -15 });
     quitButton.m_OnReleased.AddListener(this, &MainMenu::OnQuitButtonPress);
+
+    bin::TweenEngine::Start(
+        {
+            .duration = 0.5f,
+            .onUpdate =
+                [&title](float value)
+            {
+                std::string toText = bin::math::TextCutoff("BREAKOUT", value);
+                title.SetText(toText);
+            },
+        },
+        title);
+
+    bin::TweenEngine::Start(
+        {
+            .delay = 0.8f,
+            .duration = 0.8f,
+            .onUpdate =
+                [&subTitle](float value)
+            {
+                std::string toText = bin::math::TextCutoff("BY JULIAN RIJKEN", value);
+                subTitle.SetText(toText);
+            },
+        },
+        subTitle);
+
+    bin::TweenEngine::Start(
+        {
+            .delay = 1.5f,
+            .from = startButton.GetLocalPosition().y,
+            .to = 1.0f,
+            .duration = 0.8f,
+            .easeType = bin::EaseType::SineOut,
+            .onUpdate =
+                [&startButton](float value) {
+                    startButton.SetLocalPosition({ 0.0f, value });
+                },
+        },
+        startButton);
+
+    bin::TweenEngine::Start(
+        {
+            .delay = 0.3f + 1.5f,
+            .from = quitButton.GetLocalPosition().y,
+            .to = -3.0f,
+            .duration = 0.8f,
+            .easeType = bin::EaseType::SineOut,
+            .onUpdate =
+                [&quitButton](float value) {
+                    quitButton.SetLocalPosition({ 0.0f, value });
+                },
+        },
+        quitButton);
 }
 
-void bout::MainMenu::OnStartButtonPress() { bin::SceneGraph::LoadScene(SceneName::Game); }
+void bout::MainMenu::OnStartButtonPress()
+{
+    bin::TweenEngine::Start({ .from = 0.0f,
+                              .to = 20.0f,
+                              .duration = 0.8f,
+                              .easeType = bin::EaseType::SineIn,
+                              .onUpdate =
+                                  [this](float value) {
+                                      SetLocalPosition({ 0.0f, value });
+                                  },
+                              .onEnd = []() { bin::SceneGraph::LoadScene(SceneName::Game); } },
+                            *this);
+}
 
 void bout::MainMenu::OnQuitButtonPress() { SDL_Quit(); }

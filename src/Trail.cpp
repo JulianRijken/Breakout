@@ -8,10 +8,11 @@ void bout::Trail::SetTrailColor(SDL_Color newColor) { m_TrailColor = newColor; }
 
 void bout::Trail::FixedUpdate()
 {
+    // Needs to be done in fixed update because this allows for equal spacing
+    // could be solved with more math
     constexpr int maxFramesBack{ 30 };
 
     m_PastPoints.emplace_back(GetWorldPosition(), m_TrailColor);
-
 
     if(m_PastPoints.size() > maxFramesBack)
         m_PastPoints.pop_front();

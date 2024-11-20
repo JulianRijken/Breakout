@@ -7,6 +7,7 @@
 #include <Paddle.h>
 #include <SceneGraph.h>
 #include <Text.h>
+#include <TweenEngine.h>
 
 #include "Ball.h"
 #include "GlobalSettings.h"
@@ -18,6 +19,8 @@ bout::Breakout::Breakout() :
     m_PlayfieldPtr(&bin::SceneGraph::AddNode<Playfield>(glm::vec2{ 24, 22 })),
     m_PaddlePtr(&bin::SceneGraph::AddNode<Paddle>())
 {
+    m_PlayfieldPtr->SetParent(this);
+
     m_PaddlePtr->SetParent(m_PlayfieldPtr);
     m_PaddlePtr->SetLocalPosition({ 0, -m_PlayfieldPtr->GetSize().y / 2.0f });
 
@@ -27,11 +30,28 @@ bout::Breakout::Breakout() :
     m_CameraPtr->SetOrthoSize(m_PlayfieldPtr->GetSize().y / 2 + CAMERA_PADDING);
     m_CameraPtr->SetLocalPosition({ 0, 0 });
 
-    TySpawnBall();
+
+    SetLocalPosition({ 0.0f, m_CameraPtr->GetOrthoSize() * 2.0f });
+
 
     m_PlayfieldPtr->m_OnFieldCleared.AddListener(this, &Breakout::OnPlayfieldClearedEvent);
     bin::MessageQueue::AddListener(MessageType::BallCollided, this, &Breakout::OnWallHitMessage);
     bin::Input::Bind(InputActionName::FireBall, this, &Breakout::OnFireBallInput);
+
+    bin::TweenEngine::Start(
+        {
+            .delay = 0.5f,
+            .from = GetLocalPosition().y,
+            .to = 0.0f,
+            .duration = 1.0f,
+            .easeType = bin::EaseType::SineInOut,
+            .onUpdate =
+                [this](float value) {
+                    SetLocalPosition({ 0, value });
+                },
+            .onEnd = [this]() { TySpawnBall(); },
+        },
+        *this);
 }
 
 bout::Breakout::~Breakout() { bin::MessageQueue::RemoveListenerInstance(this); }

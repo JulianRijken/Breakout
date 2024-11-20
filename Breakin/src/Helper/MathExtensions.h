@@ -133,6 +133,22 @@ namespace bin::math
                  static_cast<Uint8>(std::lerp(a.a, b.a, t)) };
     }
 
+    template<typename TimeType>
+    std::string TextCutoff(const std::string& text, TimeType t)
+    {
+        std::string result{};
+
+        if(t <= 0.0f)
+            return result;
+
+        t = Clamp01(t);
+
+        auto charCount = static_cast<size_t>(std::ceil(t * text.size()));
+        result = text.substr(0, charCount);
+
+        return result;
+    }
+
     // Thanks to Freya Holmér for making the best function ever!
     // https://mastodon.social/@acegikmo/111931613710775864
     template<typename Type>

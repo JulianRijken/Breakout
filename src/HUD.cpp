@@ -31,7 +31,7 @@ bout::HUD::HUD(GameStats& gameStats)
     m_LaunchBallText = &bin::SceneGraph::AddNode<bin::Text>("LAUNCH BALL",
                                                             bin::Resources::GetFont(FontName::NES_Font),
                                                             glm::vec2{ 0.5f, 0.5f },
-                                                            0.8f,
+                                                            0.0f,
                                                             SDL_Color{ 200, 200, 200, 255 });
     m_LaunchBallText->SetParent(this);
     m_LaunchBallText->SetLocalPosition({ 0, -5 });

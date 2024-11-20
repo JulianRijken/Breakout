@@ -13,6 +13,9 @@ bin::Text::Text(std::string text, Font* font, const glm::vec2& alignment, float 
     UpdateTextTexture();
 }
 
+float bin::Text::GetSize() { return m_Size; }
+
+
 void bin::Text::SetText(const std::string& text)
 {
     if(m_Text == text)

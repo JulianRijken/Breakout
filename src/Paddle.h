@@ -31,7 +31,7 @@ namespace bout
         void OnHit(const bin::Manifold&);
 
         // TODO: Make non constexpr for future game modes
-        static constexpr glm::vec2 PADDLE_SIZE = { 2.5f, 0.5f };
+        static constexpr glm::vec2 PADDLE_SIZE = { 2.5f, 0.6f };
         static constexpr float MOVE_DURATION = 0.2f;
         static constexpr float MAX_MOVE_DISTANCE = 12 - PADDLE_SIZE.x / 2.0f;
 

@@ -77,7 +77,7 @@ bout::Playfield::Playfield(const glm::vec2& size) :
 
 
     // Mode side walls inwards
-    bin::TweenEngine::Start({ .duration = 2.0f,
+    bin::TweenEngine::Start({ .duration = 0.8f,
                               .easeType = bin::EaseType::SineOut,
                               .onUpdate =
                                   [this, &rightWall, &leftWall](float value)
@@ -93,8 +93,8 @@ bout::Playfield::Playfield(const glm::vec2& size) :
 
     // Move top wall down
     bin::TweenEngine::Start(
-        { .delay = 0.5f,
-          .duration = 2.0f,
+        { .delay = 0.8f,
+          .duration = 1.5f,
           .easeType = bin::EaseType::SineOut,
           .onUpdate =
               [this](float value) {

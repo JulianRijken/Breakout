@@ -16,6 +16,8 @@ namespace bin
         Text(std::string text, Font* font, const glm::vec2& alignment = { 0, 0 }, float size = 1.0f,
              SDL_Color color = { 255, 255, 255, 255 });
 
+        [[nodiscard]] float GetSize();
+
         void SetText(const std::string& text);
         void SetSize(float size);
         void SetColor(const SDL_Color& color);
