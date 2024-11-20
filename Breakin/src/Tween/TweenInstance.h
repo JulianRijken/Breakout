@@ -1,8 +1,7 @@
 #ifndef TWEENINSTANCE_H
 #define TWEENINSTANCE_H
-
 #include "Event.h"
-#include "TweenEngine.h"
+#include "Tween.h"
 
 namespace bin
 {

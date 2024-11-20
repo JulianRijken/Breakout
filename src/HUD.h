@@ -8,8 +8,7 @@
 
 namespace bin
 {
-
-    class Message;
+    struct Message;
     class Text;
 }
 

@@ -7,7 +7,7 @@
 
 namespace bin
 {
-    class Manifold;
+    struct Manifold;
 }
 
 namespace bout
