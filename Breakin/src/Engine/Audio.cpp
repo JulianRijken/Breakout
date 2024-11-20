@@ -4,7 +4,10 @@
 #include <SDL.h>
 #include <SDL_mixer.h>
 
+#include <cassert>
 #include <stdexcept>
+
+#include "Sound.h"
 
 bin::Audio::Audio()
 {
@@ -21,3 +24,9 @@ bin::Audio::Audio()
 }
 
 bin::Audio::~Audio() { Mix_CloseAudio(); }
+
+void bin::Audio::Play(Sound* sound)
+{
+    assert(sound != nullptr && "Sound is null");
+    Mix_PlayChannel(-1, sound->m_MixChunk, 0);
+}

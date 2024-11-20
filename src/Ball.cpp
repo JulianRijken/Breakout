@@ -1,11 +1,13 @@
 #include "Ball.h"
 
+#include <Audio.h>
 #include <BoxCollider.h>
 #include <GameTime.h>
 #include <MathExtensions.h>
 #include <MessageQueue.h>
 #include <Physics.h>
 #include <Renderer.h>
+#include <Resources.h>
 #include <SceneGraph.h>
 
 #include "GlobalSettings.h"
@@ -51,6 +53,7 @@ void bout::Ball::LaunchBall()
 void bout::Ball::OnHitWall()
 {
     m_TimeSinceHit = 0;
+    bin::Audio::Play(bin::Resources::GetSound(SoundName::WallHit));
     bin::MessageQueue::Broadcast(bout::MessageType::BallCollided);
 }
 

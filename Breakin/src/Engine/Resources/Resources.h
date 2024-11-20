@@ -53,8 +53,10 @@ namespace bin
             if(g_FontPtrs.contains(fontIndex))
                 throw std::runtime_error("Font ID already loaded: " + std::to_string(fontIndex));
 
-
             const auto fullPath = g_AssetPath / filePath;
+            if(not std::filesystem::exists(fullPath))
+                throw std::runtime_error("Sound file does not exist: " + fullPath.string());
+
             g_FontPtrs.emplace(fontIndex, std::make_unique<Font>(fullPath.string(), size));
         }
 
@@ -67,6 +69,9 @@ namespace bin
                 throw std::runtime_error("Sound ID already loaded: " + std::to_string(soundIndex));
 
             const auto fullPath = g_AssetPath / filePath;
+            if(not std::filesystem::exists(fullPath))
+                throw std::runtime_error("Sound file does not exist: " + fullPath.string());
+
             g_SoundPtrs.emplace(soundIndex, std::make_unique<Sound>(fullPath.string()));
         }
 

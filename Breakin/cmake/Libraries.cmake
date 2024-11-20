@@ -66,17 +66,18 @@ function(make_libs_available)
             FetchContent_MakeAvailable(sdl2-image)
 
             message(STATUS "Downloading " sdl2_mixer...)
+            set(SDL2MIXER_SAMPLES OFF)
+            set(SDL2MIXER_INSTALL OFF)
+            set(SDL2MIXER_OPUS OFF)
+            set(SDL2MIXER_FLAC OFF)
+            set(SDL2MIXER_VORBIS_STB ON)
+            set(SDL2MIXER_VENDORED ON)
             FetchContent_Declare(
                 sdl2-mixer
                 GIT_REPOSITORY https://github.com/libsdl-org/SDL_mixer
                 GIT_TAG release-2.8.0
                 GIT_SHALLOW TRUE
                 OVERRIDE_FIND_PACKAGE TRUE)
-            set(SDL_MIXER_ENABLE_OPUS OFF CACHE BOOL "Disable Opus codec")
-            set(SDL_MIXER_ENABLE_MP3 ON CACHE BOOL "Enable MP3 codec")
-            set(SDL_MIXER_ENABLE_VORBIS ON CACHE BOOL "Enable Ogg Vorbis codec")
-            set(SDL_MIXER_ENABLE_FLAC ON CACHE BOOL "Enable FLAC codec")
-
             FetchContent_MakeAvailable(sdl2-mixer)
 
         endif()

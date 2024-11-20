@@ -62,8 +62,7 @@ void bout::HUD::OnBallsLeftChanged(int ballsLeft)
     const std::string text = fmt::format("BALLS LEFT {}", ballsLeft);
     m_BallsLeftText->SetText(text);
 
-
-    // TODO: Get rid of 5.0f
+    // TODO: Get rid of magic number
     m_BallsLeftText->SetColor(bin::math::Lerp(NO_BALLS_COLOR, FULL_BALLS_COLOR, static_cast<float>(ballsLeft) / 4.0f));
 }
 

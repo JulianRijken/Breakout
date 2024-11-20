@@ -1,5 +1,7 @@
 #include "Core.h"
 
+#include "Audio.h"
+
 #define SDL_MAIN_HANDLED
 #include <fmt/core.h>
 #include <fmt/format.h>
@@ -31,6 +33,8 @@ bin::Core::Core()
 
     Locator::Provide<Renderer>(m_WindowPtr);
     Locator::Provide<Physics>();
+    Locator::Provide<Audio>();
+
     Resources::Initialize();
 
     GameEntry();
@@ -96,8 +100,10 @@ void bin::Core::IncrementFrame()
 
 bin::Core::~Core()
 {
-    Resources::Cleanup();
     SceneGraph::GetInstance().ClearScene();
+
+    Resources::Cleanup();
+    Locator::Release<Audio>();
     Locator::Release<Renderer>();
     Locator::Release<Physics>();
 
