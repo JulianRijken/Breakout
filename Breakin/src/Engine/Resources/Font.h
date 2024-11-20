@@ -26,5 +26,5 @@ namespace bin
         int m_Size;
         TTF_Font* m_Font;
     };
-}  // namespace jul
+}  // namespace bin
 #endif // FONT_H

@@ -2,10 +2,13 @@
 #define BREAKOUT_H
 
 #include <Node.h>
+
 #include "GameStats.h"
+
 
 namespace bin
 {
+    class Sprite;
     struct InputContext;
     struct Message;
     class Camera;
@@ -35,6 +38,7 @@ namespace bout
         void OnFireBallInput(const bin::InputContext& context);
 
         void OnWallHitMessage(const bin::Message& message);
+        void OnBrickBreakMessage(const bin::Message& message);
 
         void OnBallLostEvent();
         void OnPlayfieldClearedEvent();
@@ -44,12 +48,16 @@ namespace bout
 
         void OnGameOver();
 
+        static constexpr int BRICK_BREAK_FLASH_ALPHA{ 20 };
+        static constexpr float BRICK_BREAK_FLASH_DURATION{ 0.14f };
+
         static constexpr float CAMERA_PADDING{ 3 };
         float m_ShakeTimer{};
 
         bin::Camera* m_CameraPtr{};
         Playfield* m_PlayfieldPtr{};
         Paddle* m_PaddlePtr{};
+        bin::Sprite* m_BackgroundFlashSpritePtr{};
         GameStats m_GameStats{};
     };
 

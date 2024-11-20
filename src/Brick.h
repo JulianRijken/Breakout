@@ -7,6 +7,8 @@
 
 namespace bin
 {
+    class BoxCollider;
+    class Sprite;
     struct Manifold;
 }
 
@@ -15,18 +17,16 @@ namespace bout
     class Brick final : public bin::Node, public bin::IEventListener
     {
     public:
-        Brick(int pointsWorth, const glm::vec2& brickSize, const SDL_Color& brickColor);
+        Brick(int pointsWorth, const SDL_Color& brickColor);
 
         void Break();
 
     private:
-        void Draw(const bin::Renderer& renderer) override;
         void OnHit(const bin::Manifold& manifold);
 
         int m_PointsWorth{ 0 };
-        bool m_Broken{ false };
-        glm::vec2 m_BrickSize{ 1, 1 };
-        SDL_Color m_BrickColor{ 255, 255, 255, 255 };
+        bin::BoxCollider* m_BoxColliderPtr{};
+        bin::Sprite* m_SpritePtr{};
     };
 }  // namespace bout
 

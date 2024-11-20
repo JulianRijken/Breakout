@@ -117,5 +117,5 @@ namespace bin
         std::vector<FunctionBind> m_FunctionBinds{};
         std::unordered_set<IEventListener*> m_EventListeners{};
     };
-}  // namespace jul
+}  // namespace bin
 #endif // EVENT_H

@@ -1,49 +1,55 @@
 #include "Brick.h"
 
+#include <Audio.h>
 #include <BoxCollider.h>
 #include <MessageQueue.h>
 #include <Renderer.h>
 #include <SceneGraph.h>
+#include <Sprite.h>
+#include <TweenEngine.h>
 
 #include "GlobalSettings.h"
+#include "Resources.h"
 
-
-bout::Brick::Brick(int pointsWorth, const glm::vec2& brickSize, const SDL_Color& brickColor) :
-    m_PointsWorth(pointsWorth),
-    m_BrickSize(brickSize),
-    m_BrickColor(brickColor)
+bout::Brick::Brick(int pointsWorth, const SDL_Color& brickColor) :
+    m_PointsWorth(pointsWorth)
 {
-    auto& boxCollider = bin::SceneGraph::AddNode<bin::BoxCollider>(m_BrickSize, bout::collisionLayer::BRICK);
-    boxCollider.SetParent(this);
-    boxCollider.m_OnHit.AddListener(this, &Brick::OnHit);
+    m_SpritePtr = &bin::SceneGraph::AddNode<bin::Sprite>(brickColor);
+    m_SpritePtr->SetParent(this);
+
+    m_BoxColliderPtr =
+        &bin::SceneGraph::AddNode<bin::BoxCollider>(glm::vec2{ 1.0f, 1.0f }, bout::collisionLayer::BRICK);
+    m_BoxColliderPtr->SetParent(this);
+    m_BoxColliderPtr->m_OnHit.AddListener(this, &Brick::OnHit);
 }
 
 void bout::Brick::Break()
 {
-    if(m_Broken)
+    if(m_BoxColliderPtr == nullptr)
         return;
 
-    m_Broken = true;
     bin::MessageQueue::Broadcast(MessageType::BrickBreak, { m_PointsWorth });
+    bin::Audio::Play(bin::Resources::GetSound(SoundName::BrickBreak));
 
-    // TODO: Allow bricks to spawn balls when the destroy
-    //       Needs tweening because it needs to hold the ball for a sec
-    //       and only after that release it slowly
-    //       so the ball also needs a different function that shoot
-    // if(bin::math::RandomValue() > 0.9f)
-    // {
-    //     auto& ball = bin::SceneGraph::AddNode<Ball>();
-    //     ball.SetWorldPosition(GetWorldPosition());
-    //     ball.ShootBall();
-    // }
+    SDL_Color originalColor = m_SpritePtr->GetColor();
+    bin::TweenEngine::Start({ .duration = 0.7f,
+                              .easeType = bin::EaseType::SineOut,
+                              .onUpdate =
+                                  [this, originalColor](float value)
+                              {
+                                  const float scale = 1.0f - value;
+                                  m_SpritePtr->SetLocalScale({ scale, scale });
 
-    // TODO: Use m_Broken to keep brick alive while destroying collider
-    MarkForDestroy();
+                                  SDL_Color toColor = { 255, 255, 255, 255 };
+                                  SDL_Color lerpColor = bin::math::Lerp(originalColor, toColor, value);
+                                  m_SpritePtr->SetColor(lerpColor);
+                              },
+                              .onEnd = [this]() { MarkForDestroy(); } },
+                            *this);
+
+
+    m_BoxColliderPtr->MarkForDestroy();
+    m_BoxColliderPtr = nullptr;
 }
 
-void bout::Brick::Draw(const bin::Renderer& renderer)
-{
-    renderer.DrawRect(GetWorldPosition(), m_BrickSize, { 0.5f, 0.5f }, m_BrickColor);
-}
-
-void bout::Brick::OnHit(const bin::Manifold&) { Break(); }
+void bout::Brick::OnHit(const bin::Manifold& /*unused*/) { Break(); }

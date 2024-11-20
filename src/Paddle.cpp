@@ -1,9 +1,11 @@
 #include "Paddle.h"
 
+#include <Audio.h>
 #include <GameTime.h>
 #include <MathExtensions.h>
 #include <MessageQueue.h>
 #include <Renderer.h>
+#include <Resources.h>
 #include <SceneGraph.h>
 #include <Sprite.h>
 #include <TweenEngine.h>
@@ -74,6 +76,8 @@ void bout::Paddle::Update()
 
 void bout::Paddle::OnHit(const bin::Manifold&)
 {
+    bin::Audio::Play(bin::Resources::GetSound(SoundName::PaddleHit));
+
     // Needed for the lambda capture
     bin::Sprite* spritePtrCopy = m_SpritePtr;
     bin::TweenEngine::Start({ .duration = BUMP_DURATION,

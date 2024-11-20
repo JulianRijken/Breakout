@@ -13,7 +13,15 @@
 void bin::Core::GameEntry()
 {
     bin::Resources::LoadFont(bout::FontName::NES_Font, "Fonts/NES_Font.ttf", 8);
+
     bin::Resources::LoadSound(bout::SoundName::WallHit, "Sounds/SFX 3.ogg");
+    bin::Resources::LoadSound(bout::SoundName::PaddleHit, "Sounds/Custom_PaddleHit.ogg");
+    bin::Resources::LoadSound(bout::SoundName::BrickBreak, "Sounds/Custom_BrickBreak.ogg");
+    bin::Resources::LoadSound(bout::SoundName::ButtonPress, "Sounds/SFX 3.ogg");
+    bin::Resources::LoadSound(bout::SoundName::ButtonRelease, "Sounds/SFX 3.ogg");
+    bin::Resources::LoadSound(bout::SoundName::ButtonHover, "Sounds/SFX 4.ogg");
+    bin::Resources::LoadSound(bout::SoundName::GameStart, "Sounds/SFX 3.ogg");
+
 
     bin::Input::AddInputAction(bout::InputActionName::FireBall, { { SDL_SCANCODE_SPACE }, true });
     bin::Input::AddInputAction(bout::InputActionName::ForceRestart, { { SDL_SCANCODE_R } });

@@ -1,5 +1,6 @@
 #include "Playfield.h"
 
+#include <MathExtensions.h>
 #include <Renderer.h>
 #include <SceneGraph.h>
 
@@ -9,10 +10,8 @@
 #include "TweenEngine.h"
 #include "Wall.h"
 
-
 bout::Playfield::Playfield(const glm::vec2& size) :
     m_Size(size)
-
 {
     constexpr int brickCount = 11;
     constexpr glm::vec2 brickSize = { 1.8f, 0.8f };
@@ -53,8 +52,22 @@ bout::Playfield::Playfield(const glm::vec2& size) :
             assert(brickSpawned != nullptr && "Brick does not exist");
 
             brickSpawned->SetLocalPosition(spawnPosition);
+
             brickSpawned->m_OnDestroyedEvent.AddListener(this, &Playfield::OnBrickDestroyedEvent);
             m_BrickPtrs.insert(brickSpawned);
+
+            // Make bricks fall :O
+            bin::TweenEngine::Start({ .delay = spawnPosition.y * 0.2f,
+                                      .duration = 1.5f + bin::math::RandomValue() * 0.2f,
+                                      .easeType = bin::EaseType::BounceOut,
+                                      .onUpdate =
+                                          [brickSpawned, spawnPosition](float value)
+                                      {
+                                          const float fromPosition = 10.0f;
+                                          const float fallHeight = std::lerp(fromPosition, spawnPosition.y, value);
+                                          brickSpawned->SetLocalPosition({ spawnPosition.x, fallHeight });
+                                      } },
+                                    *brickSpawned);
         }
     }
 

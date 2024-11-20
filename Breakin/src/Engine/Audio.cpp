@@ -28,5 +28,10 @@ bin::Audio::~Audio() { Mix_CloseAudio(); }
 void bin::Audio::Play(Sound* sound)
 {
     assert(sound != nullptr && "Sound is null");
+
+    // TODO: Make voule a global setting
+    constexpr int volume = 50;
+    Mix_VolumeChunk(sound->m_MixChunk, volume);
+    Mix_Volume(-1, volume);
     Mix_PlayChannel(-1, sound->m_MixChunk, 0);
 }

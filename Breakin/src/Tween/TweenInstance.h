@@ -28,5 +28,5 @@ namespace bin
         Node* m_Target{ nullptr };
         Tween m_Tween;
     };
-}  // namespace jul
+}  // namespace bin
 #endif // TWEENINSTANCE_H

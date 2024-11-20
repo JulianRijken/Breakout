@@ -40,7 +40,13 @@ namespace bout
 
     enum class SoundName
     {
-        WallHit
+        WallHit,
+        PaddleHit,
+        BrickBreak,
+        ButtonPress,
+        ButtonRelease,
+        ButtonHover,
+        GameStart,
     };
 
     namespace collisionLayer

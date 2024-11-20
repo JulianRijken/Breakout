@@ -6,6 +6,7 @@
 #include <MessageQueue.h>
 #include <Paddle.h>
 #include <SceneGraph.h>
+#include <Sprite.h>
 #include <Text.h>
 #include <TweenEngine.h>
 
@@ -14,21 +15,26 @@
 #include "HUD.h"
 #include "Playfield.h"
 
-bout::Breakout::Breakout() :
-    m_CameraPtr(&bin::SceneGraph::AddNode<bin::Camera>()),
-    m_PlayfieldPtr(&bin::SceneGraph::AddNode<Playfield>(glm::vec2{ 24, 22 })),
-    m_PaddlePtr(&bin::SceneGraph::AddNode<Paddle>())
+bout::Breakout::Breakout()
 {
+
+    m_BackgroundFlashSpritePtr = &bin::SceneGraph::AddNode<bin::Sprite>(SDL_Color(0, 0, 0, 0));
+    m_BackgroundFlashSpritePtr->SetParent(this);
+    m_BackgroundFlashSpritePtr->SetLocalScale({ 1000, 1000 });
+
+    m_PlayfieldPtr = &bin::SceneGraph::AddNode<Playfield>(glm::vec2{ 24, 22 });
     m_PlayfieldPtr->SetParent(this);
 
+    m_CameraPtr = &bin::SceneGraph::AddNode<bin::Camera>();
+    m_CameraPtr->SetOrthoSize(m_PlayfieldPtr->GetSize().y / 2 + CAMERA_PADDING);
+    m_CameraPtr->SetLocalPosition({ 0, 0 });
+
+    m_PaddlePtr = &bin::SceneGraph::AddNode<Paddle>();
     m_PaddlePtr->SetParent(m_PlayfieldPtr);
     m_PaddlePtr->SetLocalPosition({ 0, -m_PlayfieldPtr->GetSize().y / 2.0f });
 
     auto& hud = bin::SceneGraph::AddNode<HUD>(m_GameStats);
     hud.SetParent(this);
-
-    m_CameraPtr->SetOrthoSize(m_PlayfieldPtr->GetSize().y / 2 + CAMERA_PADDING);
-    m_CameraPtr->SetLocalPosition({ 0, 0 });
 
 
     SetLocalPosition({ 0.0f, m_CameraPtr->GetOrthoSize() * 2.0f });
@@ -36,6 +42,7 @@ bout::Breakout::Breakout() :
 
     m_PlayfieldPtr->m_OnFieldCleared.AddListener(this, &Breakout::OnPlayfieldClearedEvent);
     bin::MessageQueue::AddListener(MessageType::BallCollided, this, &Breakout::OnWallHitMessage);
+    bin::MessageQueue::AddListener(MessageType::BrickBreak, this, &Breakout::OnBrickBreakMessage);
     bin::Input::Bind(InputActionName::FireBall, this, &Breakout::OnFireBallInput);
 
     // Move game down and spawn ball
@@ -85,6 +92,21 @@ void bout::Breakout::Update()
 }
 
 void bout::Breakout::OnWallHitMessage(const bin::Message& /*unused*/) { ShakeCamera(); }
+
+void bout::Breakout::OnBrickBreakMessage(const bin::Message&)
+{
+    // Flash screen
+    bin::TweenEngine::Start(
+        { .duration = BRICK_BREAK_FLASH_DURATION,
+          .onUpdate =
+              [this](float value)
+          {
+              const float curve = bin::math::EvaluateCubicBezier(BUMP_CURVE, value).y;
+              SDL_Color color = { 255, 255, 255, static_cast<Uint8>(curve * BRICK_BREAK_FLASH_ALPHA) };
+              m_BackgroundFlashSpritePtr->SetColor(color);
+          } },
+        *this);
+}
 
 void bout::Breakout::OnBallLostEvent()
 {

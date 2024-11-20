@@ -12,6 +12,7 @@ namespace bin
     public:
         Sprite(const SDL_Color& color = { 255, 255, 255, 255 });
 
+        [[nodiscard]] const SDL_Color& GetColor();
         void SetColor(const SDL_Color& color);
 
     private:

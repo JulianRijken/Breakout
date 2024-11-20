@@ -82,5 +82,5 @@ namespace bin
         inline static std::map<int, std::unique_ptr<Sound>> g_SoundPtrs{};
         inline static std::filesystem::path g_AssetPath{};
     };
-}  // namespace jul
+}  // namespace bin
 #endif  // Resources_H

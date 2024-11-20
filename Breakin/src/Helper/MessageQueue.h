@@ -49,5 +49,5 @@ namespace bin
         static inline std::queue<Message> g_Messages{};
     };
 
-}  // namespace jul
+}  // namespace bin
 #endif // MESSAGEQUEUE_H

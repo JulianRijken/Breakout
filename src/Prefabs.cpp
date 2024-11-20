@@ -11,35 +11,40 @@
 
 bout::Brick& bout::prefabs::BlueBrick(const glm::vec2& size, bin::Node& parent)
 {
-    auto& brick = bin::SceneGraph::AddNode<Brick>(1, size, SDL_Color{ 45, 172, 214, 255 });
+    auto& brick = bin::SceneGraph::AddNode<Brick>(1, SDL_Color{ 45, 172, 214, 255 });
+    brick.SetLocalScale(size);
     brick.SetParent(&parent);
     return brick;
 }
 
 bout::Brick& bout::prefabs::GreenBrick(const glm::vec2& size, bin::Node& parent)
 {
-    auto& brick = bin::SceneGraph::AddNode<Brick>(4, size, SDL_Color{ 65, 224, 70, 255 });
+    auto& brick = bin::SceneGraph::AddNode<Brick>(4, SDL_Color{ 65, 224, 70, 255 });
+    brick.SetLocalScale(size);
     brick.SetParent(&parent);
     return brick;
 }
 
 bout::Brick& bout::prefabs::YellowBrick(const glm::vec2& size, bin::Node& parent)
 {
-    auto& brick = bin::SceneGraph::AddNode<Brick>(4, size, SDL_Color{ 235, 229, 59, 255 });
+    auto& brick = bin::SceneGraph::AddNode<Brick>(4, SDL_Color{ 235, 229, 59, 255 });
+    brick.SetLocalScale(size);
     brick.SetParent(&parent);
     return brick;
 }
 
 bout::Brick& bout::prefabs::OrangeBrick(const glm::vec2& size, bin::Node& parent)
 {
-    auto& brick = bin::SceneGraph::AddNode<Brick>(7, size, SDL_Color{ 235, 165, 59, 255 });
+    auto& brick = bin::SceneGraph::AddNode<Brick>(7, SDL_Color{ 235, 165, 59, 255 });
+    brick.SetLocalScale(size);
     brick.SetParent(&parent);
     return brick;
 }
 
 bout::Brick& bout::prefabs::RedBrick(const glm::vec2& size, bin::Node& parent)
 {
-    auto& brick = bin::SceneGraph::AddNode<Brick>(7, size, SDL_Color{ 235, 59, 59, 255 });
+    auto& brick = bin::SceneGraph::AddNode<Brick>(7, SDL_Color{ 235, 59, 59, 255 });
+    brick.SetLocalScale(size);
     brick.SetParent(&parent);
     return brick;
 }

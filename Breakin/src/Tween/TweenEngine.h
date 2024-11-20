@@ -25,5 +25,5 @@ namespace bin
         std::vector<std::unique_ptr<TweenInstance>> m_TweenInstances;
     };
 
-}  // namespace jul
+}  // namespace bin
 #endif // TWEENENGINE_H

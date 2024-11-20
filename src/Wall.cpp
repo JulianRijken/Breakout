@@ -1,7 +1,9 @@
 #include "Wall.h"
 
+#include <Audio.h>
 #include <BoxCollider.h>
 #include <MathExtensions.h>
+#include <Resources.h>
 #include <SceneGraph.h>
 #include <Sprite.h>
 #include <TweenEngine.h>
@@ -21,6 +23,9 @@ bout::Wall::Wall(const glm::vec2& moveDirection) :
 
 void bout::Wall::OnHit(const bin::Manifold&)
 {
+    bin::Audio::Play(bin::Resources::GetSound(SoundName::WallHit));
+
+
     // Animate wall move and color
     bin::TweenEngine::Start({ .duration = WALL_HIT_MOVE_DURATION,
                               .onUpdate =
