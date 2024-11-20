@@ -31,10 +31,12 @@ set(BREAKIN_SOURCE_FILES
     ${SOURCE_DIR}/Engine/Physics.h              ${SOURCE_DIR}/Engine/Physics.cpp
     ${SOURCE_DIR}/Engine/SceneGraph.h           ${SOURCE_DIR}/Engine/SceneGraph.cpp
     ${SOURCE_DIR}/Engine/Input.h                ${SOURCE_DIR}/Engine/Input.cpp
+    ${SOURCE_DIR}/Engine/Audio.h                ${SOURCE_DIR}/Engine/Audio.cpp
 
     # Resources
     ${SOURCE_DIR}/Engine/Resources/Font.h       ${SOURCE_DIR}/Engine/Resources/Font.cpp
     ${SOURCE_DIR}/Engine/Resources/Texture.h    ${SOURCE_DIR}/Engine/Resources/Texture.cpp
+    ${SOURCE_DIR}/Engine/Resources/Sound.h      ${SOURCE_DIR}/Engine/Resources/Sound.cpp
     ${SOURCE_DIR}/Engine/Resources/Resources.h  ${SOURCE_DIR}/Engine/Resources/Resources.cpp
 
     # Nodes
@@ -54,6 +56,7 @@ set(BREAKIN_SOURCE_FILES
 
 
     # Tween
+    ${SOURCE_DIR}/Tween/Tween.h
     ${SOURCE_DIR}/Tween/EaseFinction.h          ${SOURCE_DIR}/Tween/EaseFinction.cpp
     ${SOURCE_DIR}/Tween/TweenEngine.h           ${SOURCE_DIR}/Tween/TweenEngine.cpp
     ${SOURCE_DIR}/Tween/TweenInstance.h         ${SOURCE_DIR}/Tween/TweenInstance.cpp
@@ -61,7 +64,6 @@ set(BREAKIN_SOURCE_FILES
 
 add_library(${TARGET_NAME} STATIC
     ${BREAKIN_SOURCE_FILES}
-    src/Tween/Tween.h
 )
 
 
@@ -103,6 +105,7 @@ else()
         SDL2::SDL2
         SDL2_ttf::SDL2_ttf
         SDL2_image::SDL2_image
+        SDL2_mixer::SDL2_mixer
     )
 endif()
 

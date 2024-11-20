@@ -31,7 +31,7 @@ function(make_libs_available)
             FetchContent_Declare(
                 sdl2
                 GIT_REPOSITORY https://github.com/libsdl-org/SDL
-                GIT_TAG release-2.30.2
+                GIT_TAG release-2.30.9
                 GIT_SHALLOW TRUE
                 OVERRIDE_FIND_PACKAGE TRUE)
             FetchContent_MakeAvailable(sdl2)
@@ -65,6 +65,20 @@ function(make_libs_available)
                 OVERRIDE_FIND_PACKAGE TRUE)
             FetchContent_MakeAvailable(sdl2-image)
 
+            message(STATUS "Downloading " sdl2_mixer...)
+            FetchContent_Declare(
+                sdl2-mixer
+                GIT_REPOSITORY https://github.com/libsdl-org/SDL_mixer
+                GIT_TAG release-2.8.0
+                GIT_SHALLOW TRUE
+                OVERRIDE_FIND_PACKAGE TRUE)
+            set(SDL_MIXER_ENABLE_OPUS OFF CACHE BOOL "Disable Opus codec")
+            set(SDL_MIXER_ENABLE_MP3 ON CACHE BOOL "Enable MP3 codec")
+            set(SDL_MIXER_ENABLE_VORBIS ON CACHE BOOL "Enable Ogg Vorbis codec")
+            set(SDL_MIXER_ENABLE_FLAC ON CACHE BOOL "Enable FLAC codec")
+
+            FetchContent_MakeAvailable(sdl2-mixer)
+
         endif()
 
     else()
@@ -74,5 +88,6 @@ function(make_libs_available)
         find_package(SDL2 REQUIRED)
         find_package(SDL2_ttf REQUIRED)
         find_package(SDL2_image REQUIRED)
+        find_package(SDL2_mixer REQUIRED)
     endif()
 endfunction()

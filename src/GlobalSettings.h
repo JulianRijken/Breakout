@@ -38,6 +38,11 @@ namespace bout
         NES_Font
     };
 
+    enum class SoundName
+    {
+        WallHit
+    };
+
     namespace collisionLayer
     {
         constexpr uint16_t Index(int index) { return 1 << index; }
