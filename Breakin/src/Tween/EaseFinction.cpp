@@ -1,19 +1,15 @@
 #include "EaseFinction.h"
 
 #include <cmath>
-
 #include <glm/ext/scalar_constants.hpp>
 
 float bin::easeFunction::LinearLerp(float time) { return time; }
 
-float bin::easeFunction::SineInLerp(float time) { return 1.0f - std::cosf(time * glm::pi<float>() / 2.0f); }
+float bin::easeFunction::SineInLerp(float time) { return 1.0f - std::cos(time * glm::pi<float>() / 2.0f); }
 
-float bin::easeFunction::SineOutLerp(float time) { return std::sinf(time * glm::pi<float>() / 2.0f); }
+float bin::easeFunction::SineOutLerp(float time) { return std::sin(time * glm::pi<float>() / 2.0f); }
 
-float bin::easeFunction::SineInOutLerp(float time)
-{
-    return -(std::cosf(glm::pi<float>() * time) - 1.0f) / 2.0f;
-}
+float bin::easeFunction::SineInOutLerp(float time) { return -(std::cos(glm::pi<float>() * time) - 1.0f) / 2.0f; }
 
 float bin::easeFunction::BounceOutLerp(float time)
 {
