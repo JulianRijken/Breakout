@@ -23,12 +23,12 @@ bout::MainMenu::MainMenu()
     auto& startButton = prefabs::TextButton({ 10, 2 }, "START", *this);
     startButton.SetParent(this);
     startButton.SetLocalPosition({ 0, 2 });
-    startButton.m_OnPress.AddListener(this, &MainMenu::OnStartButtonPress);
+    startButton.m_OnReleased.AddListener(this, &MainMenu::OnStartButtonPress);
 
     auto& quitButton = prefabs::TextButton({ 10, 2 }, "QUIT", *this);
     quitButton.SetParent(this);
     quitButton.SetLocalPosition({ 0, -2 });
-    quitButton.m_OnPress.AddListener(this, &MainMenu::OnQuitButtonPress);
+    quitButton.m_OnReleased.AddListener(this, &MainMenu::OnQuitButtonPress);
 }
 
 void bout::MainMenu::OnStartButtonPress() { bin::SceneGraph::LoadScene(SceneName::Game); }

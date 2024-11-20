@@ -3,11 +3,10 @@
 #include <Renderer.h>
 #include <SceneGraph.h>
 
-#include <iostream>
-
 #include "Brick.h"
 #include "Prefabs.h"
 #include "Sprite.h"
+#include "TweenEngine.h"
 #include "Wall.h"
 
 
@@ -61,27 +60,54 @@ bout::Playfield::Playfield(const glm::vec2& size) :
 
     auto& rightWall = bin::SceneGraph::AddNode<Wall>(glm::vec2{ 1, 0 });
     rightWall.SetParent(this);
-    rightWall.SetLocalScale({ WALL_WIDTH, m_Size.y + WALL_WIDTH * 2 });
+    rightWall.SetLocalScale({ WALL_WIDTH, 0.0f });
     rightWall.SetLocalPosition({ m_Size.x / 2.0f + WALL_WIDTH / 2.0f, 0 });
     m_RightWallSpritePtr = rightWall.GetFirstChildNodeOfType<bin::Sprite>();
 
     auto& leftWall = bin::SceneGraph::AddNode<Wall>(glm::vec2{ -1, 0 });
     leftWall.SetParent(this);
-    leftWall.SetLocalScale({ WALL_WIDTH, m_Size.y + WALL_WIDTH * 2 });
+    leftWall.SetLocalScale({ WALL_WIDTH, 0.0f });
     leftWall.SetLocalPosition({ -m_Size.x / 2.0f - WALL_WIDTH / 2.0f, 0 });
     m_LeftWallSpritePtr = leftWall.GetFirstChildNodeOfType<bin::Sprite>();
 
     m_TopWallPtr = &bin::SceneGraph::AddNode<Wall>(glm::vec2{ 0, 1 });
     m_TopWallPtr->SetParent(this);
     m_TopWallPtr->SetLocalPosition({ 0, m_Size.y / 2.0f + WALL_WIDTH / 2.0f });
-    m_TopWallPtr->SetLocalScale({ m_Size.x, WALL_WIDTH });
+    m_TopWallPtr->SetLocalScale({ m_Size.x, 0.0f });
+
+
+    // Mode side walls inwards
+    bin::TweenEngine::Start({ .duration = 2.0f,
+                              .easeType = bin::EaseType::SineOut,
+                              .onUpdate =
+                                  [this, &rightWall, &leftWall](float value)
+                              {
+                                  const glm::vec2 fromSale = { 0.0f, m_Size.y + WALL_WIDTH * 2 };
+                                  const glm::vec2 toScale = { WALL_WIDTH, fromSale.y };
+                                  const glm::vec2 mixedScale = glm::mix(fromSale, toScale, value);
+
+                                  rightWall.SetLocalScale(mixedScale);
+                                  leftWall.SetLocalScale(mixedScale);
+                              } },
+                            *this);
+
+    // Move top wall down
+    bin::TweenEngine::Start(
+        { .delay = 0.5f,
+          .duration = 2.0f,
+          .easeType = bin::EaseType::SineOut,
+          .onUpdate =
+              [this](float value) {
+                  m_TopWallPtr->SetLocalScale({ m_TopWallPtr->GetLocalScale().x, value * WALL_WIDTH });
+              } },
+        *this);
 }
 
 const glm::vec2& bout::Playfield::GetSize() const { return m_Size; }
 
 void bout::Playfield::LateUpdate()
 {
-    // This is probably the most hacky thing the bout project...
+    // This is probably the most hacky thing about the project...
     // So the top wall needs to scale exactly to match the side walls!
     // Yes all this is needed because I want transparenty and
     // my gf does not want a gap in the walls :(
@@ -92,11 +118,9 @@ void bout::Playfield::LateUpdate()
         m_RightWallSpritePtr->GetWorldPosition().x - m_RightWallSpritePtr->GetWorldScale().x / 2.0f;
 
     const float center = std::lerp(leftWallPosition, rightWallPosition, 0.5f);
+    const float distance = rightWallPosition - leftWallPosition;
 
-    const float dist = rightWallPosition - leftWallPosition;
-    std::cout << dist << std::endl;
-
-    m_TopWallPtr->SetLocalScale({ dist, WALL_WIDTH });
+    m_TopWallPtr->SetLocalScale({ distance, m_TopWallPtr->GetLocalScale().y });
     m_TopWallPtr->SetWorldPosition({ center, m_TopWallPtr->GetWorldPosition().y });
 }
 

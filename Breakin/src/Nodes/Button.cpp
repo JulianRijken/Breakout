@@ -25,17 +25,22 @@ void bin::Button::Update()
 
     const glm::vec2 mouseWorldPosition = camera->ScreenToWorldPosition(mousePosition);
 
-    m_IsSelected = math::ABB(mouseWorldPosition, GetWorldPosition(), m_Size * GetWorldScale());
-    m_IsDown = (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT));
+    m_IsMouseOver = math::ABB(mouseWorldPosition, GetWorldPosition(), m_Size * GetWorldScale());
+    m_IsMouseDown = (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT));
 
-    const float targetScale = m_IsSelected ? SELECTED_SCALE : 1.0f;
+    const float targetScale = m_IsMouseOver ? SELECTED_SCALE : 1.0f;
     m_CurrentScale = bin::math::LerpSmooth(m_CurrentScale, targetScale, SCALE_LERP_DURATION, GameTime::GetDeltaTime());
     SetLocalScale(glm::vec2(1.0f) * m_CurrentScale);
 
-    if(m_IsDown)
+    // TODO: Holding mouse down and hovering over also triggers now
+    if(m_IsMouseDown)
     {
-        if(not m_IsSelected)
+        if(not m_IsMouseOver)
+        {
+            m_IsPressed = false;
             return;
+        }
+
 
         if(m_IsPressed)
             return;
@@ -50,6 +55,7 @@ void bin::Button::Update()
             return;
 
         OnReleased();
+
         m_IsPressed = false;
     }
 }
@@ -58,7 +64,7 @@ void bin::Button::Draw(const Renderer& renderer)
 {
     m_Color = { 200, 200, 200, 255 };
 
-    if(m_IsSelected)
+    if(m_IsMouseOver)
         m_Color = { 255, 255, 255, 255 };
 
     if(m_IsPressed)

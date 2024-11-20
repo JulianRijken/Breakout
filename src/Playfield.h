@@ -31,7 +31,7 @@ namespace bout
         void OnBrickDestroyedEvent(Node& brick);
         void OnPlayfieldCleared();
 
-        static constexpr float WALL_WIDTH = 50.0f;
+        static constexpr float WALL_WIDTH = 100.0f;
 
         bin::Sprite* m_LeftWallSpritePtr{};
         bin::Sprite* m_RightWallSpritePtr{};

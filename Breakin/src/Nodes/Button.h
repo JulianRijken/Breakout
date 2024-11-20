@@ -35,8 +35,8 @@ namespace bin
         static constexpr float SCALE_LERP_DURATION{ 0.2f };
 
 
-        bool m_IsSelected{};
-        bool m_IsDown{};
+        bool m_IsMouseOver{};
+        bool m_IsMouseDown{};
 
         float m_CurrentScale{};
 

@@ -44,7 +44,7 @@ namespace bout
 
         void OnGameOver();
 
-        static constexpr float CAMERA_PADDING{ 2 };
+        static constexpr float CAMERA_PADDING{ 3 };
         float m_ShakeTimer{};
 
         bin::Camera* m_CameraPtr{};

@@ -27,7 +27,7 @@ void bout::Wall::OnHit(const bin::Manifold&)
                                   [this](float value)
                               {
                                   const float curve = bin::math::EvaluateCubicBezier(BUMB_CURVE, value).y;
-                                  m_SpritePtr->SetLocalPosition(m_MoveDirection * (curve / GetWorldScale().x));
+                                  m_SpritePtr->SetLocalPosition(m_MoveDirection / GetWorldScale() * curve);
                                   m_SpritePtr->SetColor(bin::math::Lerp(WALL_NORMAL_COLOR, WALL_HIT_COLOR, curve));
                               } },
                             *this);

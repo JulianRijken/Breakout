@@ -36,7 +36,7 @@ void bin::Renderer::Render() const
         m_RendererPtr, camera->m_ClearColor.r, camera->m_ClearColor.g, camera->m_ClearColor.b, camera->m_ClearColor.a);
     SDL_RenderClear(m_RendererPtr);
 
-    DrawUnitGrid();
+    // DrawUnitGrid();
     bin::SceneGraph::GetInstance().DrawAll(*this);
 
     SDL_RenderPresent(m_RendererPtr);
