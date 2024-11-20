@@ -20,6 +20,12 @@ namespace bin
         Audio& operator=(Audio&&) noexcept = delete;
 
         static void Play(Sound* sound);
+
+        // 0 to 1
+        static void SetGlobalVolume(float volume);
+
+    private:
+        float m_GlobalVolume{ 0.5f };
     };
 }  // namespace bin
 

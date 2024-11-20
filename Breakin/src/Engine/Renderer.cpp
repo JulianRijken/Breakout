@@ -62,7 +62,6 @@ void bin::Renderer::DrawTexture(const Texture* texture, const glm::vec2& positio
     const Camera* camera = SceneGraph::GetInstance().GetBestCamera();
     assert(camera && "Camera is null, you are probably drawing outside of Draw()");
 
-
     const glm::ivec2 textureSize = texture->GetSize();
     const glm::vec2 worldSize = static_cast<glm::vec2>(textureSize) / pixelsPerUnit * scale;
 
@@ -74,7 +73,6 @@ void bin::Renderer::DrawTexture(const Texture* texture, const glm::vec2& positio
     const SDL_Rect destRect = { screenPos.x, screenPos.y + screenScale.y, screenScale.x, -screenScale.y };
     const SDL_Rect srcRect = { 0, 0, textureSize.x, textureSize.y };
 
-    SDL_SetRenderDrawColor(m_RendererPtr, 255, 0, 0, 255);
     SDL_RenderCopy(m_RendererPtr, texture->GetSDLTexture(), &srcRect, &destRect);
 }
 
@@ -189,15 +187,20 @@ void bin::Renderer::DrawUnitGrid() const
     const glm::ivec2 size = { std::ceil(worldSize.x * 0.5f + worldCenter.x),
                               std::ceil(worldSize.y * 0.5f + worldCenter.y) };
 
+
     auto getGridColor = [](int pos) -> SDL_Color
     {
-        if(pos == 0)
-            return SDL_Color{ 255, 255, 255, 100 };
+        constexpr SDL_Color every100thLineColor{ 255, 255, 255, 100 };
+        constexpr SDL_Color every10thLineColor{ 255, 255, 255, 40 };
+        constexpr SDL_Color every1thLineColor{ 255, 255, 255, 15 };
+
+        if(pos % 100 == 0)
+            return every100thLineColor;
 
         if(pos % 10 == 0)
-            return SDL_Color{ 255, 255, 255, 40 };
+            return every10thLineColor;
 
-        return SDL_Color{ 255, 255, 255, 15 };
+        return every1thLineColor;
     };
 
     for(int x = -size.x; x < size.x; ++x)

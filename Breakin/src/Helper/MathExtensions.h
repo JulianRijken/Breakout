@@ -153,9 +153,9 @@ namespace bin::math
     // Thanks to Freya Holmér for making the best function ever!
     // https://mastodon.social/@acegikmo/111931613710775864
     template<typename Type>
-    Type LerpSmooth(const Type& a, const Type& b, double duration, double deltaTime)
+    Type LerpSmooth(const Type& a, const Type& b, float duration, float deltaTime)
     {
-        const double h{ -duration / glm::log2(1.0 / 100.0) };
+        const float h{ -duration / glm::log2(1.0f / 100.0f) };
 
         return glm::mix(b, a, glm::exp2(-deltaTime / h));
     }

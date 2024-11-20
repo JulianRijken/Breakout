@@ -21,7 +21,6 @@ namespace bin
 
     class Locator final
     {
-
     public:
         // When using an existing service
         template<typename ServiceType, typename ImplementationType>

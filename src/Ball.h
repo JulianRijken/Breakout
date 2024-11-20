@@ -36,7 +36,7 @@ namespace bout
         void UpdateBallColor();
 
         // In Units a second
-        float m_MoveSpeed{ 20.0 };
+        float m_MoveSpeed{ 20.0f };
         float m_TimeSinceHit{ 0.0f };
 
         bool m_HoldingBall{ true };

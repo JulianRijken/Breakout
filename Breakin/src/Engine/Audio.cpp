@@ -7,6 +7,7 @@
 #include <cassert>
 #include <stdexcept>
 
+#include "MathExtensions.h"
 #include "Sound.h"
 
 bin::Audio::Audio()
@@ -30,8 +31,10 @@ void bin::Audio::Play(Sound* sound)
     assert(sound != nullptr && "Sound is null");
 
     // TODO: Make voule a global setting
-    constexpr int volume = 50;
+    const int volume = static_cast<int>(std::ceil(Locator::Get<Audio>().m_GlobalVolume * MIX_MAX_VOLUME));
     Mix_VolumeChunk(sound->m_MixChunk, volume);
     Mix_Volume(-1, volume);
     Mix_PlayChannel(-1, sound->m_MixChunk, 0);
 }
+
+void bin::Audio::SetGlobalVolume(float volume) { Locator::Get<Audio>().m_GlobalVolume = math::Clamp01(volume); }

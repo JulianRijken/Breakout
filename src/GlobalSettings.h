@@ -64,10 +64,10 @@ namespace bout
     }  // namespace collisionLayer
 
     constexpr bin::math::CubicCurve BUMP_CURVE{
-        {   0,    0},
-        {0.28, 2.21},
-        { 0.2,    0},
-        {   1,    0}
+        { 0.0f,  0.0f},
+        {0.28f, 2.21f},
+        { 0.2f,  0.0f},
+        { 1.0f,  0.0f}
     };
 }  // namespace bout
 

@@ -1,11 +1,20 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <string>
+
 struct SDL_Window;
 struct SDL_Renderer;
 
 namespace bin
 {
+    struct InitSettings
+    {
+        int windowWidth = 1280;
+        int windowHeight = 720;
+        std::string windowTitle = "Breakin Application";
+    };
+
     class Core final
     {
     public:
@@ -21,8 +30,8 @@ namespace bin
         void IncrementFrame();
 
     private:
-
         // Is implemented by the game
+        void PreInit(InitSettings& initSettings);
         void GameEntry();
 
         // We are Breakin' and Entering!

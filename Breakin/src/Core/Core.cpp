@@ -20,16 +20,18 @@
 
 bin::Core::Core()
 {
+    InitSettings settings{};
+    PreInit(settings);
+
     if(SDL_Init(SDL_INIT_VIDEO) != 0)
         throw std::runtime_error(fmt::format("SDL_Init Error: {}", SDL_GetError()));
 
-    // Not stored as member variable as SDL might change the width or height
-    constexpr const char* windowTitle = "Breakout - By Julian Rijken";
-    constexpr int windowWidth{ 1280 };
-    constexpr int windowHeight{ 720 };
-
-    m_WindowPtr = SDL_CreateWindow(
-        windowTitle, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowWidth, windowHeight, SDL_WINDOW_RESIZABLE);
+    m_WindowPtr = SDL_CreateWindow(settings.windowTitle.c_str(),
+                                   SDL_WINDOWPOS_CENTERED,
+                                   SDL_WINDOWPOS_CENTERED,
+                                   settings.windowWidth,
+                                   settings.windowHeight,
+                                   SDL_WINDOW_RESIZABLE);
 
     Locator::Provide<Renderer>(m_WindowPtr);
     Locator::Provide<Physics>();

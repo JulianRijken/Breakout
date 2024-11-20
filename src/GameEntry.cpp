@@ -1,3 +1,4 @@
+#include <Audio.h>
 #include <Camera.h>
 #include <Core.h>
 #include <Input.h>
@@ -10,8 +11,17 @@
 #include "GlobalSettings.h"
 #include "Resources.h"
 
+void bin::Core::PreInit(bin::InitSettings& settings)
+{
+    settings.windowWidth = 1280;
+    settings.windowHeight = 720;
+    settings.windowTitle = "Breakout - By Julian Rijken";
+}
+
 void bin::Core::GameEntry()
 {
+    bin::Audio::SetGlobalVolume(0.3f);
+
     bin::Resources::LoadFont(bout::FontName::NES_Font, "Fonts/NES_Font.ttf", 8);
 
     bin::Resources::LoadSound(bout::SoundName::WallHit, "Sounds/SFX 3.ogg");
