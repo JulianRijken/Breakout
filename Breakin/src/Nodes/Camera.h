@@ -33,7 +33,7 @@ namespace bin
         [[nodiscard]] glm::mat4 GetViewProjectionMatrix() const;
         [[nodiscard]] glm::vec2 GetViewWorldSize() const;
 
-        SDL_Color m_ClearColor{ 25, 25, 25, 0 };  // / NOLINT - C.131: Avoid trivial getters and setters
+        SDL_Color m_ClearColor{ 25, 25, 25, 0 };  // NOLINT - C.131: Avoid trivial getters and setters
         int m_Priority{ 0 };                      // NOLINT - C.131: Avoid trivial getters and setters
 
         // Allows for sorting the camera by priority

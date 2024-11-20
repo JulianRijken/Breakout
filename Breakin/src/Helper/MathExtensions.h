@@ -174,10 +174,10 @@ namespace bin::math
         requires std::floating_point<Type>
     constexpr Type MapWave(const Type time, const Type min, const Type max, const Type repeatTime, const Type startTime)
     {
-        const Type amplitude{ (max - min) / 2.0f };
+        const Type amplitude{ (max - min) / static_cast<Type>(2) };
         const Type intercept{ min + amplitude };
-        const Type pulsation{ 2 * std::numbers::pi_v<Type> / repeatTime };
-        const Type phase{ 2 * std::numbers::pi_v<Type> * startTime };
+        const Type pulsation{ static_cast<Type>(2) * std::numbers::pi_v<Type> / repeatTime };
+        const Type phase{ static_cast<Type>(2) * std::numbers::pi_v<Type> * startTime };
 
         return amplitude * std::sin(pulsation * time + phase) + intercept;
     }

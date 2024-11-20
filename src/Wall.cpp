@@ -28,6 +28,7 @@ void bout::Wall::OnHit(const bin::Manifold&)
 
     // Animate wall move and color
     bin::TweenEngine::Start({ .duration = WALL_HIT_MOVE_DURATION,
+                              .ignoreTimeScale = true,
                               .onUpdate =
                                   [this](float value)
                               {

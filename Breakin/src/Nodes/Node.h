@@ -68,9 +68,9 @@ namespace bin
         [[nodiscard]] bool IsMarkedForDestroy() const;
         [[nodiscard]] bool IsGettingDestroyed() const;
 
-        bool m_UseAbsolutePosition{};  // / NOLINT - C.131: Avoid trivial getters and setters
-        bool m_UseAbsoluteAngle{};     // / NOLINT - C.131: Avoid trivial getters and setters
-        bool m_UseAbsoluteScale{};     // / NOLINT - C.131: Avoid trivial getters and setters
+        bool m_UseAbsolutePosition{ false };  // NOLINT - C.131: Avoid trivial getters and setters
+        bool m_UseAbsoluteAngle{ false };     // NOLINT - C.131: Avoid trivial getters and setters
+        bool m_UseAbsoluteScale{ false };     // NOLINT - C.131: Avoid trivial getters and setters
 
         bin::Event<Node&> m_OnDestroyedEvent{};
 

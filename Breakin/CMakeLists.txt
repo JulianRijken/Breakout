@@ -85,8 +85,8 @@ target_link_libraries(${TARGET_NAME} PUBLIC
 )
 
 if(EMSCRIPTEN)
-    target_compile_options(${TARGET_NAME} PUBLIC -pthread -gsource-map -sUSE_SDL=2 -sUSE_SDL_IMAGE=2 -sUSE_SDL_TTF=2 -g -Wno-switch)
-    target_link_libraries(${TARGET_NAME} PUBLIC -sERROR_ON_UNDEFINED_SYMBOLS=0 -sUSE_SDL=2 -sUSE_SDL_IMAGE=2 -sUSE_SDL_TTF=2)
+    target_compile_options(${TARGET_NAME} PUBLIC -pthread -gsource-map -sUSE_SDL=2 -sUSE_SDL_IMAGE=2 -sUSE_SDL_TTF=2 -sUSE_SDL_MIXER=2 -g -Wno-switch)
+    target_link_libraries(${TARGET_NAME} PUBLIC -sERROR_ON_UNDEFINED_SYMBOLS=0 -sUSE_SDL=2 -sUSE_SDL_IMAGE=2 -sUSE_SDL_MIXER=2 -sUSE_SDL_TTF=2)
 
     SET(CMAKE_EXECUTABLE_SUFFIX ".html")
 

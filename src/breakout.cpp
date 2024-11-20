@@ -27,7 +27,7 @@ bout::Breakout::Breakout()
     m_PlayfieldPtr->SetParent(this);
 
     m_CameraPtr = &bin::SceneGraph::AddNode<bin::Camera>();
-    m_CameraPtr->SetOrthoSize(m_PlayfieldPtr->GetSize().y / 2 + CAMERA_PADDING);
+    m_CameraPtr->SetOrthoSize(m_PlayfieldPtr->GetSize().y / 2.0f + CAMERA_PADDING);
     m_CameraPtr->SetLocalPosition({ 0, 0 });
 
     m_PaddlePtr = &bin::SceneGraph::AddNode<Paddle>();
@@ -94,7 +94,7 @@ void bout::Breakout::Update()
 
 void bout::Breakout::OnWallHitMessage(const bin::Message& /*unused*/) { ShakeCamera(); }
 
-void bout::Breakout::OnBrickBreakMessage(const bin::Message&)
+void bout::Breakout::OnBrickBreakMessage(const bin::Message& /*unused*/)
 {
     // Flash screen
     bin::TweenEngine::Start(

@@ -28,8 +28,8 @@ void bin::Button::Update()
     m_IsMouseOver = math::ABB(mouseWorldPosition, GetWorldPosition(), m_Size * GetWorldScale());
     m_IsMouseDown = (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT));
 
-    const float targetScale = m_IsMouseOver ? SELECTED_SCALE : 1.0f;
-    m_CurrentScale = bin::math::LerpSmooth(m_CurrentScale, targetScale, SCALE_LERP_DURATION, GameTime::GetDeltaTime());
+    const float targetScale = m_IsMouseOver ? m_SelectedScale : 1.0f;
+    m_CurrentScale = bin::math::LerpSmooth(m_CurrentScale, targetScale, m_ScaleLerpDuration, GameTime::GetDeltaTime());
     SetLocalScale(glm::vec2(1.0f) * m_CurrentScale);
 
     // TODO: Holding mouse down and hovering over also triggers now
@@ -62,13 +62,13 @@ void bin::Button::Update()
 
 void bin::Button::Draw(const Renderer& renderer)
 {
-    m_Color = { 200, 200, 200, 255 };
+    m_Color = m_IdleColor;
 
     if(m_IsMouseOver)
-        m_Color = { 255, 255, 255, 255 };
+        m_Color = m_SelectedColor;
 
     if(m_IsPressed)
-        m_Color = { 255, 150, 150, 255 };
+        m_Color = m_PressedColor;
 
     renderer.DrawRect(GetWorldPosition(), m_Size * GetWorldScale(), { 0.5f, 0.5f }, m_Color);
 }

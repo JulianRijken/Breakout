@@ -24,15 +24,18 @@ namespace bin
         bin::Event<> m_OnPress{};
         bin::Event<> m_OnReleased{};
 
+        float m_SelectedScale{ 1.2f };                    // NOLINT - C.131: Avoid trivial getters and setters
+        float m_ScaleLerpDuration{ 0.2f };                // NOLINT - C.131: Avoid trivial getters and setters
+        SDL_Color m_IdleColor{ 200, 200, 200, 255 };      // NOLINT - C.131: Avoid trivial getters and setters
+        SDL_Color m_SelectedColor{ 255, 255, 255, 255 };  // NOLINT - C.131: Avoid trivial getters and setters
+        SDL_Color m_PressedColor{ 150, 150, 255, 255 };   // NOLINT - C.131: Avoid trivial getters and setters
+
     private:
         void Update() override;
         void Draw(const Renderer& renderer) override;
 
         void OnPress();
         void OnReleased();
-
-        static constexpr float SELECTED_SCALE{ 1.2f };
-        static constexpr float SCALE_LERP_DURATION{ 0.2f };
 
 
         bool m_IsMouseOver{};

@@ -18,5 +18,6 @@ bool bin::BoxCollider::CompareLayers(uint16_t layers) const { return layers & m_
 
 void bin::BoxCollider::Draw(const Renderer&)
 {
+    // TODO: Add debug option to engine
     // renderer.DrawRect(GetWorldPosition(), m_Size * GetWorldScale(), { 0.5f, 0.5f }, { 89, 247, 115, 125 });
 }

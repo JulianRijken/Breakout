@@ -31,18 +31,23 @@ void bout::Brick::Break()
     bin::MessageQueue::Broadcast(MessageType::BrickBreak, { m_PointsWorth });
     bin::Audio::Play(bin::Resources::GetSound(SoundName::BrickBreak));
 
-    SDL_Color originalColor = m_SpritePtr->GetColor();
+    const float randomRotationDistance =
+        bin::math::RandomRange(300.0f, 600.0f) * (bin::math::RandomValue() > 0.5f ? -1.0f : 1.0f);
+
+    const SDL_Color originalColor = m_SpritePtr->GetColor();
     bin::TweenEngine::Start({ .duration = 0.7f,
                               .easeType = bin::EaseType::SineOut,
                               .onUpdate =
-                                  [this, originalColor](float value)
+                                  [this, originalColor, randomRotationDistance](float value)
                               {
                                   const float scale = 1.0f - value;
                                   m_SpritePtr->SetLocalScale({ scale, scale });
 
-                                  SDL_Color toColor = { 255, 255, 255, 255 };
-                                  SDL_Color lerpColor = bin::math::Lerp(originalColor, toColor, value);
+                                  const SDL_Color toColor = { 255, 255, 255, 255 };
+                                  const SDL_Color lerpColor = bin::math::Lerp(originalColor, toColor, value);
                                   m_SpritePtr->SetColor(lerpColor);
+
+                                  m_SpritePtr->SetLocalAngle(value * randomRotationDistance);
                               },
                               .onEnd = [this]() { MarkForDestroy(); } },
                             *this);
