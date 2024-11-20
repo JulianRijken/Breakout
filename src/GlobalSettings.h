@@ -21,16 +21,19 @@ namespace bout
 
     enum class InputActionName
     {
-        ForceRestart,
+        CheatForceRestart,
+        CheatSpawnBall,
+        CheatClearField,
         FireBall
     };
 
     enum class SceneName
     {
-        Testing,
+        TestingSceneGraph,
         Game,
         MainMenu,
-        ScoreScreen
+        GameLostScreen,
+        GameWonScreen
     };
 
     enum class FontName
@@ -47,6 +50,8 @@ namespace bout
         ButtonRelease,
         ButtonHover,
         GameStart,
+        GameLost,
+        GameWon
     };
 
     namespace collisionLayer

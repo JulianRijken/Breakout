@@ -71,36 +71,49 @@ bout::Playfield::Playfield(const glm::vec2& size) :
         }
     }
 
-    auto& rightWall = bin::SceneGraph::AddNode<Wall>(glm::vec2{ 1, 0 });
-    rightWall.SetParent(this);
-    rightWall.SetLocalScale({ WALL_WIDTH, 0.0f });
-    rightWall.SetLocalPosition({ m_Size.x / 2.0f + WALL_WIDTH / 2.0f, 0 });
-    m_RightWallSpritePtr = rightWall.GetFirstChildNodeOfType<bin::Sprite>();
+    m_RightWallPtr = &bin::SceneGraph::AddNode<Wall>(glm::vec2{ 1, 0 });
+    m_RightWallPtr->SetParent(this);
+    m_RightWallPtr->SetLocalScale({ WALL_WIDTH, 0.0f });
+    m_RightWallPtr->SetLocalPosition({ m_Size.x / 2.0f + WALL_WIDTH / 2.0f, 0 });
+    m_RightWallSpritePtr = m_RightWallPtr->GetFirstChildNodeOfType<bin::Sprite>();
 
-    auto& leftWall = bin::SceneGraph::AddNode<Wall>(glm::vec2{ -1, 0 });
-    leftWall.SetParent(this);
-    leftWall.SetLocalScale({ WALL_WIDTH, 0.0f });
-    leftWall.SetLocalPosition({ -m_Size.x / 2.0f - WALL_WIDTH / 2.0f, 0 });
-    m_LeftWallSpritePtr = leftWall.GetFirstChildNodeOfType<bin::Sprite>();
+    m_LeftWallPtr = &bin::SceneGraph::AddNode<Wall>(glm::vec2{ -1, 0 });
+    m_LeftWallPtr->SetParent(this);
+    m_LeftWallPtr->SetLocalScale({ WALL_WIDTH, 0.0f });
+    m_LeftWallPtr->SetLocalPosition({ -m_Size.x / 2.0f - WALL_WIDTH / 2.0f, 0 });
+    m_LeftWallSpritePtr = m_LeftWallPtr->GetFirstChildNodeOfType<bin::Sprite>();
 
     m_TopWallPtr = &bin::SceneGraph::AddNode<Wall>(glm::vec2{ 0, 1 });
     m_TopWallPtr->SetParent(this);
     m_TopWallPtr->SetLocalPosition({ 0, m_Size.y / 2.0f + WALL_WIDTH / 2.0f });
     m_TopWallPtr->SetLocalScale({ m_Size.x, 0.0f });
 
+    ShowWalls();
+}
 
+const glm::vec2& bout::Playfield::GetSize() const { return m_Size; }
+
+void bout::Playfield::BreakAllBricks()
+{
+    for(auto&& brick : m_BrickPtrs)
+        brick->Break();
+}
+
+void bout::Playfield::ShowWalls()
+{
     // Mode side walls inwards
     bin::TweenEngine::Start({ .duration = 0.8f,
+                              .ignoreTimeScale = true,
                               .easeType = bin::EaseType::SineOut,
                               .onUpdate =
-                                  [this, &rightWall, &leftWall](float value)
+                                  [this](float value)
                               {
                                   const glm::vec2 fromSale = { 0.0f, m_Size.y + WALL_WIDTH * 2 };
                                   const glm::vec2 toScale = { WALL_WIDTH, fromSale.y };
                                   const glm::vec2 mixedScale = glm::mix(fromSale, toScale, value);
 
-                                  rightWall.SetLocalScale(mixedScale);
-                                  leftWall.SetLocalScale(mixedScale);
+                                  m_RightWallPtr->SetLocalScale(mixedScale);
+                                  m_LeftWallPtr->SetLocalScale(mixedScale);
                               } },
                             *this);
 
@@ -108,6 +121,7 @@ bout::Playfield::Playfield(const glm::vec2& size) :
     bin::TweenEngine::Start(
         { .delay = 0.8f,
           .duration = 1.5f,
+          .ignoreTimeScale = true,
           .easeType = bin::EaseType::SineOut,
           .onUpdate =
               [this](float value) {
@@ -116,7 +130,38 @@ bout::Playfield::Playfield(const glm::vec2& size) :
         *this);
 }
 
-const glm::vec2& bout::Playfield::GetSize() const { return m_Size; }
+void bout::Playfield::HideWalls()
+{
+
+    // Mode side walls inwards
+    bin::TweenEngine::Start({ .delay = 0.8f,
+                              .duration = 0.8f,
+                              .ignoreTimeScale = true,
+                              .easeType = bin::EaseType::SineIn,
+
+                              .onUpdate =
+                                  [this](float value)
+                              {
+                                  const glm::vec2 fromSale = { 0.0f, m_Size.y + WALL_WIDTH * 2 };
+                                  const glm::vec2 toScale = { WALL_WIDTH, fromSale.y };
+                                  const glm::vec2 mixedScale = glm::mix(toScale, fromSale, value);
+
+                                  m_RightWallPtr->SetLocalScale(mixedScale);
+                                  m_LeftWallPtr->SetLocalScale(mixedScale);
+                              } },
+                            *this);
+
+    // Move top wall up
+    bin::TweenEngine::Start(
+        { .duration = 1.5f,
+          .ignoreTimeScale = true,
+          .easeType = bin::EaseType::SineIn,
+          .onUpdate =
+              [this](float value) {
+                  m_TopWallPtr->SetLocalScale({ m_TopWallPtr->GetLocalScale().x, (1.0f - value) * WALL_WIDTH });
+              } },
+        *this);
+}
 
 void bout::Playfield::LateUpdate()
 {

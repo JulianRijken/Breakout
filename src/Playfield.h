@@ -25,6 +25,11 @@ namespace bout
 
         bin::Event<> m_OnFieldCleared{};
 
+        void BreakAllBricks();
+
+        void ShowWalls();
+        void HideWalls();
+
     private:
         void LateUpdate() override;
 
@@ -36,7 +41,8 @@ namespace bout
         bin::Sprite* m_LeftWallSpritePtr{};
         bin::Sprite* m_RightWallSpritePtr{};
         Wall* m_TopWallPtr{};
-
+        Wall* m_RightWallPtr{};
+        Wall* m_LeftWallPtr{};
         glm::vec2 m_Size{};
         std::unordered_set<Brick*> m_BrickPtrs{};
     };

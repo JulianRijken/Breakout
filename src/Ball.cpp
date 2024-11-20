@@ -30,7 +30,8 @@ void bout::Ball::FixedUpdate()
 
     MoveBall();
 
-    constexpr float minPosition = 15.0f;
+    // Should probably be something breakout handles and not the ball
+    constexpr float minPosition = 18.0f;
     if(GetLocalPosition().y < -minPosition)
         OnBallUnderMap();
 }

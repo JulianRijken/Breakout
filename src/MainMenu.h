@@ -19,6 +19,7 @@ namespace bout
         MainMenu();
 
     private:
+        bool m_StartingGame{ false };
         void OnStartButtonPress();
         void OnQuitButtonPress();
     };

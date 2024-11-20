@@ -59,7 +59,7 @@ void bout::HUD::OnScoreChanged(int score)
 
 void bout::HUD::OnBallsLeftChanged(int ballsLeft)
 {
-    const std::string text = fmt::format("BALLS LEFT {}", ballsLeft);
+    const std::string text = ballsLeft > 0 ? fmt::format("BALLS LEFT {}", ballsLeft) : "NO BALLS";
     m_BallsLeftText->SetText(text);
 
     // TODO: Get rid of magic number

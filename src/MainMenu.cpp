@@ -2,6 +2,7 @@
 
 #include <Button.h>
 #include <Font.h>
+#include <GameTime.h>
 #include <Resources.h>
 #include <SceneGraph.h>
 #include <Text.h>
@@ -12,6 +13,9 @@
 
 bout::MainMenu::MainMenu()
 {
+    // Reset time scale
+    bin::GameTime::SetTimeScale(1.0f);
+
     auto& camera = bin::SceneGraph::AddNode<bin::Camera>();
     camera.SetOrthoSize(10);
 
@@ -95,6 +99,11 @@ bout::MainMenu::MainMenu()
 
 void bout::MainMenu::OnStartButtonPress()
 {
+    if(m_StartingGame)
+        return;
+
+    m_StartingGame = true;
+
     // Move main menu to the top and load game scene
     bin::TweenEngine::Start({ .from = 0.0f,
                               .to = 20.0f,
@@ -108,4 +117,10 @@ void bout::MainMenu::OnStartButtonPress()
                             *this);
 }
 
-void bout::MainMenu::OnQuitButtonPress() { SDL_Quit(); }
+void bout::MainMenu::OnQuitButtonPress()
+{
+    if(m_StartingGame)
+        return;
+
+    SDL_Quit();
+}

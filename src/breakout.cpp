@@ -1,10 +1,12 @@
 #include "Breakout.h"
 
+#include <Audio.h>
 #include <GameTime.h>
 #include <Input.h>
 #include <MathExtensions.h>
 #include <MessageQueue.h>
 #include <Paddle.h>
+#include <Resources.h>
 #include <SceneGraph.h>
 #include <Sprite.h>
 #include <Text.h>
@@ -17,7 +19,6 @@
 
 bout::Breakout::Breakout()
 {
-
     m_BackgroundFlashSpritePtr = &bin::SceneGraph::AddNode<bin::Sprite>(SDL_Color(0, 0, 0, 0));
     m_BackgroundFlashSpritePtr->SetParent(this);
     m_BackgroundFlashSpritePtr->SetLocalScale({ 1000, 1000 });
@@ -36,23 +37,23 @@ bout::Breakout::Breakout()
     auto& hud = bin::SceneGraph::AddNode<HUD>(m_GameStats);
     hud.SetParent(this);
 
-
-    SetLocalPosition({ 0.0f, m_CameraPtr->GetOrthoSize() * 2.0f });
-
-
+    // Bind events
     m_PlayfieldPtr->m_OnFieldCleared.AddListener(this, &Breakout::OnPlayfieldClearedEvent);
     bin::MessageQueue::AddListener(MessageType::BallCollided, this, &Breakout::OnWallHitMessage);
     bin::MessageQueue::AddListener(MessageType::BrickBreak, this, &Breakout::OnBrickBreakMessage);
     bin::Input::Bind(InputActionName::FireBall, this, &Breakout::OnFireBallInput);
+    bin::Input::Bind(InputActionName::CheatSpawnBall, this, &Breakout::OnCheatSpawnBallInput);
+    bin::Input::Bind(InputActionName::CheatClearField, this, &Breakout::OnCheatClearFieldInput);
 
     // Move game down and spawn ball
+    SetLocalPosition({ 0.0f, m_CameraPtr->GetOrthoSize() * 2.0f });
     bin::TweenEngine::Start(
         {
             .delay = 0.5f,
             .from = GetLocalPosition().y,
             .to = 0.0f,
             .duration = 1.0f,
-            .easeType = bin::EaseType::SineInOut,
+            .easeType = bin::EaseType::SineOut,
             .onUpdate =
                 [this](float value) {
                     SetLocalPosition({ 0, value });
@@ -113,12 +114,15 @@ void bout::Breakout::OnBallLostEvent()
     if(m_GameStats.HasBallsLeft())
         TySpawnBall();
     else
-        OnGameOver();
+        OnGameOver(false);
 }
 
 void bout::Breakout::TySpawnBall()
 {
     if(m_PaddlePtr->IsHoldingBall())
+        return;
+
+    if(not m_GameStats.HasBallsLeft())
         return;
 
     auto& ball = bin::SceneGraph::AddNode<Ball>();
@@ -135,7 +139,64 @@ void bout::Breakout::TySpawnBall()
 
 void bout::Breakout::ShakeCamera() { m_ShakeTimer = 0.0f; }
 
-void bout::Breakout::OnGameOver() { bin::SceneGraph::LoadScene(SceneName::MainMenu); }
+void bout::Breakout::OnGameOver(bool hasWon)
+{
+    // Slow down time
+    bin::TweenEngine::Start({ .from = bin::GameTime::GetTimeScale(),
+                              .to = 0.0f,
+                              .duration = 2.0f,
+                              .ignoreTimeScale = true,
+                              .easeType = bin::EaseType::SineOut,
+                              .onUpdate = [](float value) { bin::GameTime::SetTimeScale(value); },
+                              .onEnd =
+                                  [this, hasWon]()
+                              {
+                                  auto ballsStillAllive = bin::SceneGraph::GetAllNodesOfClass<Ball>();
+                                  for(auto&& ball : ballsStillAllive)
+                                      ball->MarkForDestroy();
+
+                                  m_PlayfieldPtr->HideWalls();
+
+                                  if(hasWon)
+                                      bin::Audio::Play(bin::Resources::GetSound(SoundName::GameWon));
+                                  else
+                                      bin::Audio::Play(bin::Resources::GetSound(SoundName::GameLost));
+
+
+                                  // Move game down
+                                  bin::TweenEngine::Start(
+                                      {
+                                          .from = 0.0f,
+                                          .to = -m_CameraPtr->GetOrthoSize() * 2.0f,
+                                          .duration = 1.0f,
+                                          .ignoreTimeScale = true,
+                                          .easeType = bin::EaseType::SineInOut,
+                                          .onUpdate =
+                                              [this](float value) {
+                                                  SetLocalPosition({ 0, value });
+                                              },
+                                      },
+                                      *this);
+
+                                  // Show win or lose screen
+                                  bin::TweenEngine::Start(
+                                      {
+                                          .delay = 1.7f,
+                                          .duration = 0.0f,
+                                          .ignoreTimeScale = true,
+                                          .onEnd =
+                                              [hasWon]()
+                                          {
+                                              if(hasWon)
+                                                  bin::SceneGraph::LoadScene(SceneName::GameWonScreen);
+                                              else
+                                                  bin::SceneGraph::LoadScene(SceneName::GameLostScreen);
+                                          },
+                                      },
+                                      *this);
+                              } },
+                            *this);
+}
 
 void bout::Breakout::OnFireBallInput(const bin::InputContext& context)
 {
@@ -145,4 +206,21 @@ void bout::Breakout::OnFireBallInput(const bin::InputContext& context)
     m_PaddlePtr->TryLaunchBall(*m_PlayfieldPtr);
 }
 
-void bout::Breakout::OnPlayfieldClearedEvent() { OnGameOver(); }
+void bout::Breakout::OnCheatSpawnBallInput(const bin::InputContext& context)
+{
+    if(context.state != bin::ButtonState::Down)
+        return;
+
+    auto& ball = bin::SceneGraph::AddNode<Ball>();
+    ball.LaunchBall();
+}
+
+void bout::Breakout::OnCheatClearFieldInput(const bin::InputContext& context)
+{
+    if(context.state != bin::ButtonState::Down)
+        return;
+
+    m_PlayfieldPtr->BreakAllBricks();
+}
+
+void bout::Breakout::OnPlayfieldClearedEvent() { OnGameOver(true); }

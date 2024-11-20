@@ -25,3 +25,7 @@ float bin::GameTime::GetUnscaledDeltaTime() { return g_DeltaTime; }
 float bin::GameTime::GetFixedDeltaTime() { return g_FixedDeltaTime; }
 
 float bin::GameTime::GetElapsedTime() { return g_ElapsedTime; }
+
+float bin::GameTime::GetTimeScale() { return g_TimeScale; }
+
+void bin::GameTime::SetTimeScale(float timeScale) { g_TimeScale = std::max(0.0f, timeScale); }

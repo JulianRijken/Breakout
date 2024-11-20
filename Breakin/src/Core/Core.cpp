@@ -68,7 +68,7 @@ void bin::Core::IncrementFrame()
     // Cleanup SceneGraph
     SceneGraph::GetInstance().CleanupNodesSetToDestroy();
     // Load Scene set to load for next frame
-    SceneGraph::GetInstance().ActivateSceneSetToLoad();
+    SceneGraph::GetInstance().LoadSceneSetToLoad();
     // Move added nodes
     SceneGraph::GetInstance().MoveAddedNodesToActiveNodes();
 

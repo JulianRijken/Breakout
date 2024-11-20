@@ -65,21 +65,30 @@ void bin::SceneGraph::CleanupNodesSetToDestroy()
     std::erase_if(m_ActiveNodes, [](const auto& node) { return node->m_GettingDestroyed; });
 }
 
-void bin::SceneGraph::ActivateSceneSetToLoad()
+void bin::SceneGraph::LoadSceneSetToLoad()
 {
     if(m_SceneToLoad < 0)
         return;
 
     ClearScene();
 
-    // Call functions to load scene
-    m_SceneBinds[m_SceneToLoad]();
-
-    // Add nodes instantly
-    MoveAddedNodesToActiveNodes();
+    int loadingScene = m_SceneToLoad;
 
     // Reset scene to load
     m_SceneToLoad = -1;
+
+    // Call functions to load scene
+    m_SceneBinds[loadingScene]();
+
+    // Ye somone actually loaded a scene while loading a scene
+    if(m_SceneToLoad >= 0)
+    {
+        LoadSceneSetToLoad();
+        return;
+    }
+
+    // Add nodes instantly
+    MoveAddedNodesToActiveNodes();
 }
 
 void bin::SceneGraph::ClearScene()

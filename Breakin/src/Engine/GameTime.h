@@ -12,6 +12,9 @@ namespace bin
         [[nodiscard]] static float GetUnscaledDeltaTime();
         [[nodiscard]] static float GetFixedDeltaTime();
         [[nodiscard]] static float GetElapsedTime();
+        [[nodiscard]] static float GetTimeScale();
+
+        static void SetTimeScale(float timeScale);
 
     private:
         static void IncrementFrame();

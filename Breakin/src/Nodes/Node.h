@@ -41,6 +41,7 @@ namespace bin
             return nullptr;
         }
 
+
         void Translate(const glm::vec2& delta);
 
         void SetLocalPosition(const glm::vec2& position);

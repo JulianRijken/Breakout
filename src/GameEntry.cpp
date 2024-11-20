@@ -21,16 +21,38 @@ void bin::Core::GameEntry()
     bin::Resources::LoadSound(bout::SoundName::ButtonRelease, "Sounds/SFX 3.ogg");
     bin::Resources::LoadSound(bout::SoundName::ButtonHover, "Sounds/SFX 4.ogg");
     bin::Resources::LoadSound(bout::SoundName::GameStart, "Sounds/SFX 3.ogg");
+    bin::Resources::LoadSound(bout::SoundName::GameLost, "Sounds/SFX 11.ogg");
+    bin::Resources::LoadSound(bout::SoundName::GameWon, "Sounds/SFX 1.ogg");
 
 
     bin::Input::AddInputAction(bout::InputActionName::FireBall, { { SDL_SCANCODE_SPACE }, true });
-    bin::Input::AddInputAction(bout::InputActionName::ForceRestart, { { SDL_SCANCODE_R } });
+    bin::Input::AddInputAction(bout::InputActionName::CheatForceRestart,
+                               {
+                                   {SDL_SCANCODE_R, SDL_SCANCODE_ESCAPE}
+    });
+    bin::Input::AddInputAction(bout::InputActionName::CheatSpawnBall, { { SDL_SCANCODE_1 } });
+    bin::Input::AddInputAction(bout::InputActionName::CheatClearField, { { SDL_SCANCODE_2 } });
 
     bin::SceneGraph::BindScene(bout::SceneName::Game, []() { bin::SceneGraph::AddNode<bout::Breakout>(); });
 
     bin::SceneGraph::BindScene(bout::SceneName::MainMenu, []() { bin::SceneGraph::AddNode<bout::MainMenu>(); });
 
-    bin::SceneGraph::BindScene(bout::SceneName::Testing,
+    bin::SceneGraph::BindScene(bout::SceneName::GameWonScreen,
+                               []()
+                               {
+                                   bin::SceneGraph::LoadScene(bout::SceneName::MainMenu);
+                                   //
+                               });
+
+    bin::SceneGraph::BindScene(bout::SceneName::GameLostScreen,
+                               []()
+                               {
+                                   bin::SceneGraph::LoadScene(bout::SceneName::MainMenu);
+                                   //
+                               });
+
+
+    bin::SceneGraph::BindScene(bout::SceneName::TestingSceneGraph,
                                []()
                                {
                                    bin::SceneGraph::AddNode<Camera>();
@@ -71,7 +93,7 @@ void bin::Core::GameEntry()
                                });
 
     // Make sure the user can always restart
-    bin::Input::Bind(bout::InputActionName::ForceRestart,
+    bin::Input::Bind(bout::InputActionName::CheatForceRestart,
                      [](const InputContext& context)
                      {
                          if(context.state != bin::ButtonState::Down)

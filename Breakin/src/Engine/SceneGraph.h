@@ -50,6 +50,18 @@ namespace bin
             GetInstance().m_SceneToLoad = sceneId;
         }
 
+        template<typename NodeType>
+            requires std::derived_from<NodeType, Node>
+        static std::vector<NodeType*> GetAllNodesOfClass()
+        {
+            std::vector<NodeType*> nodesOfClass;
+
+            for(const auto& node : GetInstance().m_ActiveNodes)
+                if(auto* castedNode = dynamic_cast<NodeType*>(node.get()))
+                    nodesOfClass.push_back(castedNode);
+
+            return nodesOfClass;
+        }
 
         // Reruns camera with the highest priority
         // Can be nullptr
@@ -65,7 +77,7 @@ namespace bin
 
         void MoveAddedNodesToActiveNodes();
         void CleanupNodesSetToDestroy();
-        void ActivateSceneSetToLoad();
+        void LoadSceneSetToLoad();
         void ClearScene();
 
 

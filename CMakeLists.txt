@@ -24,7 +24,7 @@ set(SOURCE_FILES
     ${SOURCE_DIR}/HUD.h             ${SOURCE_DIR}/HUD.cpp
     ${SOURCE_DIR}/GameStats.h       ${SOURCE_DIR}/GameStats.cpp
     ${SOURCE_DIR}/MainMenu.h        ${SOURCE_DIR}/MainMenu.cpp
-    ${SOURCE_DIR}/GlobalSettings.h  ${SOURCE_DIR}/GlobalSettings.cpp
+    ${SOURCE_DIR}/GlobalSettings.h
     ${SOURCE_DIR}/Wall.h            ${SOURCE_DIR}/Wall.cpp
 )
 

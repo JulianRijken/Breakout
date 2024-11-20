@@ -36,6 +36,8 @@ namespace bout
 
     private:
         void OnFireBallInput(const bin::InputContext& context);
+        void OnCheatSpawnBallInput(const bin::InputContext& context);
+        void OnCheatClearFieldInput(const bin::InputContext& context);
 
         void OnWallHitMessage(const bin::Message& message);
         void OnBrickBreakMessage(const bin::Message& message);
@@ -46,7 +48,7 @@ namespace bout
         void TySpawnBall();
         void ShakeCamera();
 
-        void OnGameOver();
+        void OnGameOver(bool hasWon);
 
         static constexpr int BRICK_BREAK_FLASH_ALPHA{ 20 };
         static constexpr float BRICK_BREAK_FLASH_DURATION{ 0.14f };
@@ -54,10 +56,10 @@ namespace bout
         static constexpr float CAMERA_PADDING{ 3 };
         float m_ShakeTimer{};
 
-        bin::Camera* m_CameraPtr{};
-        Playfield* m_PlayfieldPtr{};
-        Paddle* m_PaddlePtr{};
         bin::Sprite* m_BackgroundFlashSpritePtr{};
+        Playfield* m_PlayfieldPtr{};
+        bin::Camera* m_CameraPtr{};
+        Paddle* m_PaddlePtr{};
         GameStats m_GameStats{};
     };
 
