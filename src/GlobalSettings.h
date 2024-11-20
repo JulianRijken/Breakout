@@ -47,7 +47,7 @@ namespace bout
         constexpr uint16_t PADDLE = Index(2);
     }  // namespace collisionLayer
 
-    constexpr bin::math::CubicCurve BUMB_CURVE{
+    constexpr bin::math::CubicCurve BUMP_CURVE{
         {   0,    0},
         {0.28, 2.21},
         { 0.2,    0},

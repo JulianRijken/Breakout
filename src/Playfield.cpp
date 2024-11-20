@@ -109,7 +109,7 @@ void bout::Playfield::LateUpdate()
 {
     // This is probably the most hacky thing about the project...
     // So the top wall needs to scale exactly to match the side walls!
-    // Yes all this is needed because I want transparenty and
+    // Yes all this is needed because I want transparency and
     // my gf does not want a gap in the walls :(
 
     const float leftWallPosition =

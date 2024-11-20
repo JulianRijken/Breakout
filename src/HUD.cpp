@@ -1,12 +1,10 @@
 #include "HUD.h"
 
 #include <fmt/core.h>
-#include <Font.h>
 #include <MessageQueue.h>
 #include <Resources.h>
 #include <SceneGraph.h>
 #include <Text.h>
-#include <Texture.h>
 #include <TweenEngine.h>
 
 #include "GameStats.h"

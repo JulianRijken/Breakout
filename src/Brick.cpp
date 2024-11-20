@@ -1,13 +1,10 @@
 #include "Brick.h"
 
 #include <BoxCollider.h>
-#include <fmt/core.h>
 #include <MessageQueue.h>
-#include <Physics.h>
 #include <Renderer.h>
 #include <SceneGraph.h>
 
-#include "Ball.h"
 #include "GlobalSettings.h"
 
 
@@ -30,7 +27,7 @@ void bout::Brick::Break()
     bin::MessageQueue::Broadcast(MessageType::BrickBreak, { m_PointsWorth });
 
     // TODO: Allow bricks to spawn balls when the destroy
-    //       Needs tweening becuase it needs to hold the ball for a sec
+    //       Needs tweening because it needs to hold the ball for a sec
     //       and only after that release it slowly
     //       so the ball also needs a different function that shoot
     // if(bin::math::RandomValue() > 0.9f)

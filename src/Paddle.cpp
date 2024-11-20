@@ -80,7 +80,7 @@ void bout::Paddle::OnHit(const bin::Manifold&)
                               .onUpdate =
                                   [spritePtrCopy](float value)
                               {
-                                  const float curve = bin::math::EvaluateCubicBezier(BUMB_CURVE, value).y;
+                                  const float curve = bin::math::EvaluateCubicBezier(BUMP_CURVE, value).y;
                                   spritePtrCopy->SetLocalPosition({ 0, curve * BUMP_HEIGHT });
                               } },
                             *spritePtrCopy);

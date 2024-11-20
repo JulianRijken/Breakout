@@ -16,21 +16,21 @@ namespace bin
 
     namespace easeFunction
     {
-        double LinearLerp(double time);
+        float LinearLerp(float time);
 
-        double SineInLerp(double time);
+        float SineInLerp(float time);
 
-        double SineOutLerp(double time);
+        float SineOutLerp(float time);
 
-        double SineInOutLerp(double time);
+        float SineInOutLerp(float time);
 
-        double BounceOutLerp(double time);
+        float BounceOutLerp(float time);
 
-        double BounceInLerp(double time);
+        float BounceInLerp(float time);
 
-        double BounceInOutLerp(double time);
+        float BounceInOutLerp(float time);
 
-        double Evaluate(double time, EaseType type);
+        float Evaluate(float time, EaseType type);
     }  // namespace easeFunction
 
 }  // namespace bin

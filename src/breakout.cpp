@@ -38,6 +38,7 @@ bout::Breakout::Breakout() :
     bin::MessageQueue::AddListener(MessageType::BallCollided, this, &Breakout::OnWallHitMessage);
     bin::Input::Bind(InputActionName::FireBall, this, &Breakout::OnFireBallInput);
 
+    // Move game down and spawn ball
     bin::TweenEngine::Start(
         {
             .delay = 0.5f,

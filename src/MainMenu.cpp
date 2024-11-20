@@ -5,10 +5,7 @@
 #include <Resources.h>
 #include <SceneGraph.h>
 #include <Text.h>
-#include <Texture.h>
 #include <TweenEngine.h>
-
-#include <iostream>
 
 #include "GlobalSettings.h"
 #include "Prefabs.h"
@@ -38,18 +35,20 @@ bout::MainMenu::MainMenu()
     quitButton.SetLocalPosition({ 0, -15 });
     quitButton.m_OnReleased.AddListener(this, &MainMenu::OnQuitButtonPress);
 
+    // Animate Title
     bin::TweenEngine::Start(
         {
             .duration = 0.5f,
             .onUpdate =
                 [&title](float value)
             {
-                std::string toText = bin::math::TextCutoff("BREAKOUT", value);
+                const std::string toText = bin::math::TextCutoff("BREAKOUT", value);
                 title.SetText(toText);
             },
         },
         title);
 
+    // Animate Subtitle
     bin::TweenEngine::Start(
         {
             .delay = 0.8f,
@@ -57,12 +56,13 @@ bout::MainMenu::MainMenu()
             .onUpdate =
                 [&subTitle](float value)
             {
-                std::string toText = bin::math::TextCutoff("BY JULIAN RIJKEN", value);
+                const std::string toText = bin::math::TextCutoff("BY JULIAN RIJKEN", value);
                 subTitle.SetText(toText);
             },
         },
         subTitle);
 
+    // Animate Start Button
     bin::TweenEngine::Start(
         {
             .delay = 1.5f,
@@ -77,6 +77,7 @@ bout::MainMenu::MainMenu()
         },
         startButton);
 
+    // Animate Quit Button
     bin::TweenEngine::Start(
         {
             .delay = 0.3f + 1.5f,
@@ -94,6 +95,7 @@ bout::MainMenu::MainMenu()
 
 void bout::MainMenu::OnStartButtonPress()
 {
+    // Move main menu to the top and load game scene
     bin::TweenEngine::Start({ .from = 0.0f,
                               .to = 20.0f,
                               .duration = 0.8f,

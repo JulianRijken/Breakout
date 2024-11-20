@@ -1,6 +1,5 @@
 #include <Camera.h>
 #include <Core.h>
-#include <fmt/core.h>
 #include <Input.h>
 #include <MainMenu.h>
 #include <SceneGraph.h>

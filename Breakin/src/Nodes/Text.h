@@ -5,11 +5,10 @@
 
 #include "Font.h"
 #include "Node.h"
+#include "Texture.h"
 
 namespace bin
 {
-    class Texture;
-
     class Text final : public Node
     {
     public:

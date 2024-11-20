@@ -7,6 +7,7 @@
 #include <glm/exponential.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <numbers>
+#include <string>
 
 namespace bin::math
 {

@@ -6,24 +6,22 @@
 
 void bin::TweenEngine::Update()
 {
-    TweenEngine& instace = GetInstance();
-
     // Loops over all tween instances
-    // Erases if decommisioned
-    // Keeps track of original size incase of tweens starting during the loop
-    size_t originalSize = instace.m_TweenInstances.size();
+    // Erases if decommissioned
+    // Keeps track of original size in case of teens starting during the loop
+    size_t originalSize = GetInstance().m_TweenInstances.size();
     for(size_t index = 0; index < originalSize;)
     {
-        auto& instance = instace.m_TweenInstances[index];
+        const auto& tweenInstance = GetInstance().m_TweenInstances[index];
 
-        if(instance->IsDecommisioned())
+        if(tweenInstance->IsDecommissioned())
         {
-            instace.m_TweenInstances.erase(instace.m_TweenInstances.begin() + index);
+            GetInstance().m_TweenInstances.erase(GetInstance().m_TweenInstances.begin() + index);
             --originalSize;
         }
         else
         {
-            instance->Update();
+            tweenInstance->Update();
             ++index;
         }
     }
@@ -42,7 +40,7 @@ void bin::TweenEngine::Start(Tween&& tween, Node& target)
     }
 
     // Instantly stop with 0 time
-    // In senarios where the user might input a variable time
+    // In scenarios where the user might input a variable time
     if(tween.delay + tween.duration <= 0)
     {
         if(tween.onEnd)

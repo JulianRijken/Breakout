@@ -11,7 +11,7 @@ bin::TweenInstance::TweenInstance(Tween&& tween, Node& target) :
     m_Target(&target),
     m_Tween(std::move(tween))
 {
-    // Sets target to nullptr when detroyed
+    // Sets target to nullptr when destroyed
     m_Target->m_OnDestroyedEvent.AddListener(this, &TweenInstance::OnTargetDestroyed);
 }
 
@@ -36,7 +36,7 @@ void bin::TweenInstance::Update()
         return;
     }
 
-    const float deltaTime = m_Tween.igunoreTimeScale ? GameTime::GetUnscaledDeltaTime() : GameTime::GetDeltaTime();
+    const float deltaTime = m_Tween.ignoreTimeScale ? GameTime::GetUnscaledDeltaTime() : GameTime::GetDeltaTime();
 
     if(m_IsHalting)
     {
@@ -58,8 +58,8 @@ void bin::TweenInstance::Update()
 
     m_Time += deltaTime;
 
-    // Yes, deltatime can go below 0
-    // when we change time scale :)
+    // Yes, datetime can go below 0
+    // when we change timescale :)
     m_Time = std::max(0.0f, m_Time);
 
     if(m_Time >= m_Tween.duration)
@@ -67,7 +67,6 @@ void bin::TweenInstance::Update()
         m_Time = m_Tween.duration;
         m_HasReachedEnd = true;
     }
-
 
     const float alpha = bin::math::Clamp01(m_Time / m_Tween.duration);
     const float easedTime = easeFunction::Evaluate(alpha, m_Tween.easeType);

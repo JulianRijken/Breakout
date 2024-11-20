@@ -18,7 +18,7 @@ namespace bin
         void Cancel();
         void OnTargetDestroyed(Node& object);
 
-        [[nodiscard]] bool IsDecommisioned() const { return m_IsDecommissioned; }
+        [[nodiscard]] bool IsDecommissioned() const { return m_IsDecommissioned; }
 
         bool m_IsHalting{ false };
         bool m_IsDecommissioned{ false };

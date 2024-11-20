@@ -5,7 +5,6 @@
 #include <Resources.h>
 #include <SceneGraph.h>
 #include <Text.h>
-#include <Texture.h>
 
 #include "Brick.h"
 #include "GlobalSettings.h"

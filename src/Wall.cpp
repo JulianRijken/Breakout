@@ -3,7 +3,6 @@
 #include <BoxCollider.h>
 #include <MathExtensions.h>
 #include <SceneGraph.h>
-#include <SDL_pixels.h>
 #include <Sprite.h>
 #include <TweenEngine.h>
 
@@ -22,11 +21,12 @@ bout::Wall::Wall(const glm::vec2& moveDirection) :
 
 void bout::Wall::OnHit(const bin::Manifold&)
 {
+    // Animate wall move and color
     bin::TweenEngine::Start({ .duration = WALL_HIT_MOVE_DURATION,
                               .onUpdate =
                                   [this](float value)
                               {
-                                  const float curve = bin::math::EvaluateCubicBezier(BUMB_CURVE, value).y;
+                                  const float curve = bin::math::EvaluateCubicBezier(BUMP_CURVE, value).y;
                                   m_SpritePtr->SetLocalPosition(m_MoveDirection / GetWorldScale() * curve);
                                   m_SpritePtr->SetColor(bin::math::Lerp(WALL_NORMAL_COLOR, WALL_HIT_COLOR, curve));
                               } },

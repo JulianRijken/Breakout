@@ -2,7 +2,6 @@
 #define TWEEN_H
 
 #include <functional>
-
 #include "EaseFinction.h"
 
 namespace bin
@@ -13,7 +12,7 @@ namespace bin
         float from = 0.0;
         float to = 1.0;
         float duration = 1.0;
-        bool igunoreTimeScale = false;
+        bool ignoreTimeScale = false;
         bool invokeWhenDestroyed = false;
         EaseType easeType = EaseType::Linear;
 
