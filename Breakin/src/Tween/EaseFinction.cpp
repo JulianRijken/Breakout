@@ -61,7 +61,7 @@ float bin::easeFunction::Evaluate(float time, EaseType type)
             return BounceInOutLerp(time);
     }
 
-    return 0.0;
+    return 0.0f;
 }
 
 float bin::easeFunction::BounceInLerp(float time) { return 1 - BounceOutLerp(1 - time); }

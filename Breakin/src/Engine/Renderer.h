@@ -31,14 +31,15 @@ namespace bin
                          const glm::vec2& pivot) const;
 
         void DrawRectRotated(const glm::vec2& position, const glm::vec2& scale = { 1.0f, 1.0f },
-                             const glm::vec2& pivot = { 0.5, 0.5 }, float angle = 0.0f,
+                             const glm::vec2& pivot = { 0.5f, 0.5f }, float angle = 0.0f,
                              const SDL_Color& color = { 255, 255, 255, 255 }) const;
 
         void DrawRect(const glm::vec2& position, const glm::vec2& scale = { 1.0f, 1.0f },
-                      const glm::vec2& pivot = { 0.5, 0.5 }, const SDL_Color& color = { 255, 255, 255, 255 }) const;
+                      const glm::vec2& pivot = { 0.5f, 0.5f }, const SDL_Color& color = { 255, 255, 255, 255 }) const;
 
         void DrawWireRect(const glm::vec2& position, const glm::vec2& scale = { 1.0f, 1.0f },
-                          const glm::vec2& pivot = { 0.5, 0.5 }, const SDL_Color& color = { 255, 255, 255, 255 }) const;
+                          const glm::vec2& pivot = { 0.5f, 0.5f },
+                          const SDL_Color& color = { 255, 255, 255, 255 }) const;
 
         [[nodiscard]] static glm::ivec2 GetWindowSize();
         [[nodiscard]] static float GetAspectRatio();

@@ -8,10 +8,10 @@ namespace bin
 {
     struct Tween final
     {
-        float delay = 0.0;
-        float from = 0.0;
-        float to = 1.0;
-        float duration = 1.0;
+        float delay = 0.0f;
+        float from = 0.0f;
+        float to = 1.0f;
+        float duration = 1.0f;
         bool ignoreTimeScale = false;
         bool invokeWhenDestroyed = false;
         EaseType easeType = EaseType::Linear;

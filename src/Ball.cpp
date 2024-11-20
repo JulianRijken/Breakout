@@ -76,7 +76,7 @@ void bout::Ball::MoveBall()
         m_MoveDirection.y = -minDirection;
 
 
-    constexpr float hitMoveSpeedIncreaseEffect = 13.0;
+    constexpr float hitMoveSpeedIncreaseEffect = 13.0f;
     constexpr float hitMoveSpeedIncreaseDuration = 0.4f;
 
 

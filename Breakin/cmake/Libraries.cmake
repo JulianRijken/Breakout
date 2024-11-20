@@ -16,6 +16,7 @@ function(make_libs_available)
         FetchContent_MakeAvailable(glm)
 
 
+
         message(STATUS "Downloading " fmt...)
         FetchContent_Declare(
             fmt
