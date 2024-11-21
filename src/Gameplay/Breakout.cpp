@@ -158,7 +158,11 @@ void bout::Breakout::TySpawnBall()
     if(not GameState::GetInstance().HasBallsLeft())
         return;
 
-    auto& ball = bin::SceneGraph::AddNode<Ball>();
+
+    const float moveSpeed = GameState::GetInstance().GetDifficultyPreset().ballMoveSpeed;
+    const SDL_Color ballHitColor = GameState::GetInstance().GetDifficultyPreset().ballHitColor;
+
+    auto& ball = bin::SceneGraph::AddNode<Ball>(moveSpeed, ballHitColor);
     m_PaddlePtr->HoldBall(ball);
     GameState::GetInstance().RemoveBall();
 

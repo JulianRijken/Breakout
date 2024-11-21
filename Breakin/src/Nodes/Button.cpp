@@ -34,7 +34,7 @@ void bin::Button::Update()
 
     m_IsMouseDown = (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT));
 
-    const float targetScale = m_IsMouseOver ? m_SelectedScale : 1.0f;
+    const float targetScale = (m_IsPressed ? m_PressedScale : (m_IsMouseOver ? m_SelectedScale : 1.0f));
     m_CurrentScale =
         bin::math::LerpSmooth(m_CurrentScale, targetScale, m_ScaleLerpDuration, GameTime::GetUnscaledDeltaTime());
     SetLocalScale(glm::vec2(1.0f) * m_CurrentScale);

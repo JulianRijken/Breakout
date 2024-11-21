@@ -45,6 +45,7 @@ namespace bin
         bin::Event<> m_OnPress{};
         bin::Event<> m_OnReleased{};
 
+        float m_PressedScale{ 1.0f };                     // NOLINT - C.131: Avoid trivial getters and setters
         float m_SelectedScale{ 1.2f };                    // NOLINT - C.131: Avoid trivial getters and setters
         float m_ScaleLerpDuration{ 0.2f };                // NOLINT - C.131: Avoid trivial getters and setters
         SDL_Color m_IdleColor{ 200, 200, 200, 255 };      // NOLINT - C.131: Avoid trivial getters and setters
@@ -58,6 +59,7 @@ namespace bin
         void OnHover();
         void OnPress();
         void OnReleased();
+
 
         Sound* m_ButtonHoverSound{};
         Sound* m_ButtonPressSound{};

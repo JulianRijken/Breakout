@@ -16,7 +16,8 @@ namespace bout
     class Ball final : public bin::Node
     {
     public:
-        Ball();
+        Ball(float moveSpeed = 20.0f, SDL_Color hitColor = { 255, 0, 0, 255 },
+             SDL_Color normalColor = { 200, 200, 255, 255 });
 
         ~Ball() override = default;
         Ball(Ball&&) = delete;
@@ -42,11 +43,14 @@ namespace bout
         void UpdateBallColor();
 
         // In Units a second
-        float m_MoveSpeed{ 20.0f };
-        float m_TimeSinceHit{ 0.0f };
+        float m_MoveSpeed{};
+        float m_TimeSinceHit{};
+
+        SDL_Color m_HitColor{};
+        SDL_Color m_NormalColor{};
+        SDL_Color m_BallColor{};
 
         bool m_HoldingBall{ true };
-        SDL_Color m_BallColor{};
         glm::vec2 m_MoveDirection{ 1, 1 };
         bin::Trail* m_TrailPtr{};
         bin::BoxCollider* m_BoxColliderPtr{};

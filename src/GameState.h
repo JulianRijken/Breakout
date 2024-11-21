@@ -41,7 +41,6 @@ namespace bout
     private:
         void OnBrickBreakMessage(const bin::Message& message);
 
-
         int m_BallsLeft{};
         int m_Score{};
     };

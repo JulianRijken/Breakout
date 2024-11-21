@@ -12,7 +12,10 @@
 #include "GlobalSettings.h"
 #include "Trail.h"
 
-bout::Ball::Ball()
+bout::Ball::Ball(float moveSpeed, SDL_Color hitColor, SDL_Color normalColor) :
+    m_MoveSpeed(moveSpeed),
+    m_HitColor(hitColor),
+    m_NormalColor(normalColor)
 {
     m_BoxColliderPtr = &bin::SceneGraph::AddNode<bin::BoxCollider>(glm::vec2{ 0.5f, 0.5f });
     m_BoxColliderPtr->SetParent(this);
@@ -131,10 +134,8 @@ void bout::Ball::UpdateBallColor()
     m_TimeSinceHit += bin::GameTime::GetDeltaTime();
 
     constexpr float hitTimeDuration{ 0.2f };
-    constexpr SDL_Color hitColor{ 255, 0, 0, 255 };
-    constexpr SDL_Color normalColor{ 200, 200, 255, 255 };
 
     const float colorStrength = bin::math::Clamp01(m_TimeSinceHit / hitTimeDuration);
-    m_BallColor = bin::math::Lerp(hitColor, normalColor, colorStrength);
+    m_BallColor = bin::math::Lerp(m_HitColor, m_NormalColor, colorStrength);
     m_TrailPtr->SetTrailColor(m_BallColor);
 }

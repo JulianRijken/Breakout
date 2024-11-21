@@ -3,6 +3,7 @@
 
 #include <Event.h>
 
+#include "GlobalSettings.h"
 #include "Node.h"
 
 
@@ -27,7 +28,12 @@ namespace bout
     private:
         bool m_StartingGame{ false };
         void OnStartButtonPress();
+        void OnDifficultyButtonPress();
         void OnQuitButtonPress();
+
+        void SetDifficulty(Difficulty difficulty);
+
+        bin::Text* m_DifficultyButtonText{};
     };
 }  // namespace bout
 

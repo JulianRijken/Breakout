@@ -66,8 +66,9 @@ void bout::HUD::OnBallsLeftChangedEvent(int ballsLeft)
 {
     UpdateBallsLeftText(ballsLeft);
 
-    const float alpha =
-        static_cast<float>(ballsLeft) / GameState::GetInstance().GetDifficultyPreset().startingBallCount;
+    const float alpha = bin::math::Clamp01(static_cast<float>(ballsLeft) /
+                                           (GameState::GetInstance().GetDifficultyPreset().startingBallCount - 1));
+
     m_BallsLeftText->SetColor(bin::math::Lerp(NO_BALLS_COLOR, FULL_BALLS_COLOR, alpha));
     m_BallsLeftShaker->SetStrength(bin::math::Lerp(NO_BALLS_SHAKE_STRENGTH, FULL_BALLS_SHAKE_STRENGTH, alpha));
 }

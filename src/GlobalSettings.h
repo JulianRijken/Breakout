@@ -2,6 +2,7 @@
 #define GLOBALSETTINGS_H
 
 #include <MathExtensions.h>
+#include <SDL_pixels.h>
 
 #include <cstdint>
 #include <unordered_map>
@@ -10,21 +11,24 @@ namespace bout
 {
     enum class Difficulty
     {
-        // TODO: Give these funny names
+        Noob,
         Easy,
         Hard
     };
 
     struct DifficultyPreset
     {
-        // TODO: Add ball move speed
         int startingBallCount{};
+        float ballMoveSpeed{};
+        SDL_Color ballHitColor{};
     };
 
     const std::unordered_map<Difficulty, DifficultyPreset> DIFFICULTY_SETTINGS{
-        {Difficulty::Easy, { .startingBallCount = 10 }},
+        {Difficulty::Noob, { .startingBallCount = 10, .ballMoveSpeed = 10.0f, .ballHitColor = { 50, 255, 0, 255 } }},
 
-        {Difficulty::Hard,  { .startingBallCount = 5 }}
+        {Difficulty::Easy,  { .startingBallCount = 5, .ballMoveSpeed = 16.0f, .ballHitColor = { 0, 50, 255, 255 } }},
+
+        {Difficulty::Hard,   { .startingBallCount = 3, .ballMoveSpeed = 22.0f, .ballHitColor = { 255, 0, 0, 255 } }}
     };
 
 

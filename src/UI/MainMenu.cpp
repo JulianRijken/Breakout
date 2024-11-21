@@ -9,14 +9,12 @@
 #include <Text.h>
 #include <TweenEngine.h>
 
+#include "GameState.h"
 #include "GlobalSettings.h"
 #include "Prefabs.h"
 
 bout::MainMenu::MainMenu()
 {
-    // Reset time scale
-    bin::GameTime::SetTimeScale(1.0f);
-
     auto& camera = bin::SceneGraph::AddNode<bin::Camera>();
     camera.SetOrthoSize(10);
 
@@ -38,6 +36,15 @@ bout::MainMenu::MainMenu()
     startButton.SetOnPressSound(SoundName::ButtonPress);
     startButton.SetOnReleasedSound(SoundName::ButtonRelease);
 
+    auto& difficultyButton = prefabs::TextButton({ 10, 2 }, "", *this);
+    difficultyButton.SetParent(this);
+    difficultyButton.SetLocalPosition({ 0, -15 });
+    difficultyButton.m_OnReleased.AddListener(this, &MainMenu::OnDifficultyButtonPress);
+    difficultyButton.SetOnHoverSound(SoundName::ButtonHover);
+    difficultyButton.SetOnPressSound(SoundName::ButtonPress);
+    difficultyButton.SetOnReleasedSound(SoundName::ButtonRelease);
+
+    m_DifficultyButtonText = difficultyButton.GetFirstChildNodeOfType<bin::Text>();
 
     auto& quitButton = prefabs::TextButton({ 10, 2 }, "QUIT", *this);
     quitButton.SetParent(this);
@@ -46,6 +53,10 @@ bout::MainMenu::MainMenu()
     quitButton.SetOnHoverSound(SoundName::ButtonHover);
     quitButton.SetOnPressSound(SoundName::ButtonPress);
     quitButton.SetOnReleasedSound(SoundName::ButtonRelease);
+
+    // Reset time scale
+    bin::GameTime::SetTimeScale(1.0f);
+    SetDifficulty(GameState::GetInstance().m_Difficulty);
 
 
     // Animate Title
@@ -75,13 +86,19 @@ bout::MainMenu::MainMenu()
         },
         subTitle);
 
+    constexpr float showButtonDelay = 1.5f;
+    constexpr float buttonBetweenDelay = 0.3f;
+    constexpr float animateDuration = 0.8f;
+    constexpr float buttonOffset = 1.0f;
+    constexpr float buttonBottemPadding = 3.0f;
+
     // Animate Start Button
     bin::TweenEngine::Start(
         {
-            .delay = 1.5f,
+            .delay = showButtonDelay,
             .from = startButton.GetLocalPosition().y,
-            .to = 1.0f,
-            .duration = 0.8f,
+            .to = buttonOffset,
+            .duration = animateDuration,
             .easeType = bin::EaseType::SineOut,
             .onUpdate =
                 [&startButton](float value) {
@@ -90,13 +107,29 @@ bout::MainMenu::MainMenu()
         },
         startButton);
 
+
+    // Animate Difficulty Button
+    bin::TweenEngine::Start(
+        {
+            .delay = buttonBetweenDelay * 1 + showButtonDelay,
+            .from = quitButton.GetLocalPosition().y,
+            .to = buttonOffset - buttonBottemPadding * 1,
+            .duration = animateDuration,
+            .easeType = bin::EaseType::SineOut,
+            .onUpdate =
+                [&difficultyButton](float value) {
+                    difficultyButton.SetLocalPosition({ 0.0f, value });
+                },
+        },
+        difficultyButton);
+
     // Animate Quit Button
     bin::TweenEngine::Start(
         {
-            .delay = 0.3f + 1.5f,
+            .delay = buttonBetweenDelay * 2 + showButtonDelay,
             .from = quitButton.GetLocalPosition().y,
-            .to = -3.0f,
-            .duration = 0.8f,
+            .to = buttonOffset - buttonBottemPadding * 2,
+            .duration = animateDuration,
             .easeType = bin::EaseType::SineOut,
             .onUpdate =
                 [&quitButton](float value) {
@@ -126,10 +159,46 @@ void bout::MainMenu::OnStartButtonPress()
                             *this);
 }
 
+void bout::MainMenu::OnDifficultyButtonPress()
+{
+    // Todo could be done automatically with a enum and size
+    // but kept for simplicty
+    switch(GameState::GetInstance().m_Difficulty)
+    {
+        case bout::Difficulty::Noob:
+            SetDifficulty(Difficulty::Easy);
+            break;
+        case bout::Difficulty::Easy:
+            SetDifficulty(Difficulty::Hard);
+            break;
+        case bout::Difficulty::Hard:
+            SetDifficulty(Difficulty::Noob);
+            break;
+    }
+}
+
 void bout::MainMenu::OnQuitButtonPress()
 {
     if(m_StartingGame)
         return;
 
     SDL_Quit();
+}
+
+void bout::MainMenu::SetDifficulty(Difficulty difficulty)
+{
+    GameState::GetInstance().m_Difficulty = difficulty;
+
+    switch(difficulty)
+    {
+        case bout::Difficulty::Noob:
+            m_DifficultyButtonText->SetText("NOOB");
+            break;
+        case bout::Difficulty::Easy:
+            m_DifficultyButtonText->SetText("EASY");
+            break;
+        case bout::Difficulty::Hard:
+            m_DifficultyButtonText->SetText("HARD");
+            break;
+    }
 }
