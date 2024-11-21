@@ -14,6 +14,7 @@
 #include <TweenEngine.h>
 
 #include "Ball.h"
+#include "GameState.h"
 #include "GlobalSettings.h"
 #include "HUD.h"
 #include "PauseMenu.h"
@@ -39,7 +40,7 @@ bout::Breakout::Breakout()
     m_PaddlePtr->SetParent(m_PlayfieldPtr);
     m_PaddlePtr->SetLocalPosition({ 0, -m_PlayfieldPtr->GetSize().y / 2.0f });
 
-    auto& hud = bin::SceneGraph::AddNode<HUD>(m_GameStatsPtr);
+    auto& hud = bin::SceneGraph::AddNode<HUD>();
     hud.SetParent(this);
 
     // Bind events
@@ -138,7 +139,7 @@ void bout::Breakout::OnBallLostEvent()
 {
     bin::Audio::Play(bin::Resources::GetSound(SoundName::BallLost));
 
-    if(m_GameStatsPtr.HasBallsLeft())
+    if(GameState::GetInstance().HasBallsLeft())
         TySpawnBall();
     else
         EndGame(false);
@@ -152,12 +153,12 @@ void bout::Breakout::TySpawnBall()
     if(m_PaddlePtr->IsHoldingBall())
         return;
 
-    if(not m_GameStatsPtr.HasBallsLeft())
+    if(not GameState::GetInstance().HasBallsLeft())
         return;
 
     auto& ball = bin::SceneGraph::AddNode<Ball>();
     m_PaddlePtr->HoldBall(ball);
-    m_GameStatsPtr.RemoveBall();
+    GameState::GetInstance().RemoveBall();
 
     // NOTE: We use a OnBallLost instead of on destroyed
     //       this is because if we do on destroyed we get in to a

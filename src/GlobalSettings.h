@@ -4,10 +4,30 @@
 #include <MathExtensions.h>
 
 #include <cstdint>
-
+#include <unordered_map>
 
 namespace bout
 {
+    enum class Difficulty
+    {
+        // TODO: Give these funny names
+        Easy,
+        Hard
+    };
+
+    struct DifficultyPreset
+    {
+        // TODO: Add ball move speed
+        int startingBallCount{};
+    };
+
+    const std::unordered_map<Difficulty, DifficultyPreset> DIFFICULTY_SETTINGS{
+        {Difficulty::Easy, { 10 }},
+
+        {Difficulty::Hard, { 10 }}
+    };
+
+
     enum class MessageType
     {
         BallCollided,

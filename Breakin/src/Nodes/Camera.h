@@ -26,14 +26,12 @@ namespace bin
 
         void SetOrthoSize(float orthoSize);
 
-        // TODO: All These functions are non const, this is because it needs the camera
-        //       world position. GetWorldPosition() can't be const because it updates the flag
-        [[nodiscard]] glm::ivec2 WorldToScreenScale(const glm::vec2& worldScale);
-        [[nodiscard]] glm::ivec2 WorldToScreenPosition(const glm::vec2& worldPosition);
-        [[nodiscard]] glm::vec2 ScreenToWorldPosition(const glm::ivec2& screenPosition);
+        [[nodiscard]] glm::ivec2 WorldToScreenScale(const glm::vec2& worldScale) const;
+        [[nodiscard]] glm::ivec2 WorldToScreenPosition(const glm::vec2& worldPosition) const;
+        [[nodiscard]] glm::vec2 ScreenToWorldPosition(const glm::ivec2& screenPosition) const;
 
-        [[nodiscard]] glm::mat4 GetViewProjectionMatrix();
-        [[nodiscard]] glm::vec2 GetViewWorldSize();
+        [[nodiscard]] glm::mat4 GetViewProjectionMatrix() const;
+        [[nodiscard]] glm::vec2 GetViewWorldSize() const;
 
         SDL_Color m_ClearColor{ 25, 25, 25, 0 };  // NOLINT - C.131: Avoid trivial getters and setters
         int m_Priority{ 0 };                      // NOLINT - C.131: Avoid trivial getters and setters

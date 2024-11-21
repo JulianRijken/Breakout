@@ -16,12 +16,12 @@ namespace bin
 
 namespace bout
 {
-    class GameStats;
+    class GameState;
 
     class HUD final : public bin::Node, public bin::IEventListener
     {
     public:
-        HUD(GameStats& gameStats);
+        HUD();
         ~HUD() override;
 
         HUD(HUD&&) = delete;

@@ -44,7 +44,7 @@ void bin::Renderer::Render() const
 
 void bin::Renderer::DrawLine(const glm::vec2& from, const glm::vec2& to, const SDL_Color& color) const
 {
-    Camera* camera = SceneGraph::GetInstance().GetBestCamera();
+    const Camera* camera = SceneGraph::GetInstance().GetBestCamera();
     assert(camera && "Camera is null, you are probably drawing outside of Draw()");
 
     const glm::ivec2 fromScreen = camera->WorldToScreenPosition(from);
@@ -59,7 +59,7 @@ void bin::Renderer::DrawTexture(const Texture* texture, const glm::vec2& positio
 {
     assert(texture != nullptr && "Texture is null!");
 
-    Camera* camera = SceneGraph::GetInstance().GetBestCamera();
+    const Camera* camera = SceneGraph::GetInstance().GetBestCamera();
     assert(camera && "Camera is null, you are probably drawing outside of Draw()");
 
     const glm::ivec2 textureSize = texture->GetSize();
@@ -79,7 +79,7 @@ void bin::Renderer::DrawTexture(const Texture* texture, const glm::vec2& positio
 void bin::Renderer::DrawRectRotated(const glm::vec2& position, const glm::vec2& scale, const glm::vec2& pivot,
                                     float angle, const SDL_Color& color) const
 {
-    Camera* camera = SceneGraph::GetInstance().GetBestCamera();
+    const Camera* camera = SceneGraph::GetInstance().GetBestCamera();
     assert(camera && "Camera is null, you are probably drawing outside of Draw()");
 
     const glm::vec2 offsetPosition = position - scale * pivot;
@@ -104,7 +104,7 @@ void bin::Renderer::DrawRectRotated(const glm::vec2& position, const glm::vec2& 
 void bin::Renderer::DrawRect(const glm::vec2& position, const glm::vec2& scale, const glm::vec2& pivot,
                              const SDL_Color& color) const
 {
-    Camera* camera = SceneGraph::GetInstance().GetBestCamera();
+    const Camera* camera = SceneGraph::GetInstance().GetBestCamera();
     assert(camera && "Camera is null, you are probably drawing outside of Draw()");
 
     const glm::vec2 offsetPosition = position - scale * pivot;
@@ -120,7 +120,7 @@ void bin::Renderer::DrawRect(const glm::vec2& position, const glm::vec2& scale, 
 void bin::Renderer::DrawWireRect(const glm::vec2& position, const glm::vec2& scale, const glm::vec2& pivot,
                                  const SDL_Color& color) const
 {
-    Camera* camera = SceneGraph::GetInstance().GetBestCamera();
+    const Camera* camera = SceneGraph::GetInstance().GetBestCamera();
     assert(camera && "Camera is null, you are probably drawing outside of Draw()");
 
     const glm::vec2 offsetPosition = position - scale * pivot;
@@ -163,7 +163,7 @@ SDL_Texture* bin::Renderer::CreateTextureFromSurface(SDL_Surface* surface)
 
 void bin::Renderer::DrawUnitGrid() const
 {
-    Camera* camera = SceneGraph::GetInstance().GetBestCamera();
+    const Camera* camera = SceneGraph::GetInstance().GetBestCamera();
     assert(camera && "Camera is null, you are probably drawing outside of Draw()");
 
     const glm::vec2 worldSize = camera->GetViewWorldSize();

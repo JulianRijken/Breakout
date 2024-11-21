@@ -12,7 +12,7 @@ float bin::Camera::GetOrthoSize() const { return m_OrthoSize; }
 
 void bin::Camera::SetOrthoSize(float orthoSize) { m_OrthoSize = std::max(0.0f, orthoSize); }
 
-glm::ivec2 bin::Camera::WorldToScreenScale(const glm::vec2& worldScale)
+glm::ivec2 bin::Camera::WorldToScreenScale(const glm::vec2& worldScale) const
 {
     const glm::vec2 worldSize = GetViewWorldSize();
     const glm::ivec2 windowSize = bin::Renderer::GetWindowSize();
@@ -22,7 +22,7 @@ glm::ivec2 bin::Camera::WorldToScreenScale(const glm::vec2& worldScale)
              -std::ceil(static_cast<float>(windowSize.y) / worldSize.y * worldScale.y) };
 }
 
-glm::ivec2 bin::Camera::WorldToScreenPosition(const glm::vec2& worldPosition)
+glm::ivec2 bin::Camera::WorldToScreenPosition(const glm::vec2& worldPosition) const
 {
     const glm::ivec2 windowSize = bin::Renderer::GetWindowSize();
     const glm::vec4 clipSpacePos = GetViewProjectionMatrix() * glm::vec4(worldPosition, 0.0f, 1.0f);
@@ -32,7 +32,7 @@ glm::ivec2 bin::Camera::WorldToScreenPosition(const glm::vec2& worldPosition)
              std::round((1.0f - clipSpacePos.y) * 0.5f * static_cast<float>(windowSize.y)) };
 }
 
-glm::vec2 bin::Camera::ScreenToWorldPosition(const glm::ivec2& screenPosition)
+glm::vec2 bin::Camera::ScreenToWorldPosition(const glm::ivec2& screenPosition) const
 {
     const glm::ivec2 windowSize = bin::Renderer::GetWindowSize();
 
@@ -45,7 +45,7 @@ glm::vec2 bin::Camera::ScreenToWorldPosition(const glm::ivec2& screenPosition)
     return { worldPosition.x, worldPosition.y };
 }
 
-glm::mat4 bin::Camera::GetViewProjectionMatrix()
+glm::mat4 bin::Camera::GetViewProjectionMatrix() const
 {
     const float aspectRatio = bin::Renderer::GetAspectRatio();
 
@@ -57,7 +57,7 @@ glm::mat4 bin::Camera::GetViewProjectionMatrix()
     return projection * view;
 }
 
-glm::vec2 bin::Camera::GetViewWorldSize()
+glm::vec2 bin::Camera::GetViewWorldSize() const
 {
     return { m_OrthoSize * 2.0f * bin::Renderer::GetAspectRatio(), m_OrthoSize * 2.0f };
 }

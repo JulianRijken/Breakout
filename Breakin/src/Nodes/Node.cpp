@@ -15,7 +15,7 @@ void bin::Node::SetLocalPosition(const glm::vec2& position)
         return;
 
     m_LocalPosition = position;
-    PropegateDirtyTransform();
+    PropagateDirtyTransform();
 }
 
 void bin::Node::SetLocalAngle(float angle)
@@ -24,7 +24,7 @@ void bin::Node::SetLocalAngle(float angle)
         return;
 
     m_LocalAngle = angle;
-    PropegateDirtyTransform();
+    PropagateDirtyTransform();
 }
 
 void bin::Node::SetLocalScale(const glm::vec2& scale)
@@ -33,7 +33,7 @@ void bin::Node::SetLocalScale(const glm::vec2& scale)
         return;
 
     m_LocalScale = scale;
-    PropegateDirtyTransform();
+    PropagateDirtyTransform();
 }
 
 void bin::Node::SetWorldPosition(const glm::vec2& position)
@@ -66,7 +66,7 @@ float bin::Node::GetLocalAngle() const { return m_LocalAngle; }
 
 const glm::vec2& bin::Node::GetLocalScale() const { return m_LocalScale; }
 
-const glm::mat3x3& bin::Node::GetWorldMatrix()
+const glm::mat3x3& bin::Node::GetWorldMatrix() const
 {
     if(m_TransformDirty)
         UpdateWorldTransform();
@@ -74,7 +74,7 @@ const glm::mat3x3& bin::Node::GetWorldMatrix()
     return m_WorldTransformationMatrix;
 }
 
-const glm::vec2& bin::Node::GetWorldPosition()
+const glm::vec2& bin::Node::GetWorldPosition() const
 {
     if(m_TransformDirty)
         UpdateWorldTransform();
@@ -82,7 +82,7 @@ const glm::vec2& bin::Node::GetWorldPosition()
     return m_WorldPosition;
 }
 
-float bin::Node::GetWorldAngle()
+float bin::Node::GetWorldAngle() const
 {
     if(m_TransformDirty)
         UpdateWorldTransform();
@@ -90,7 +90,7 @@ float bin::Node::GetWorldAngle()
     return m_WorldAngle;
 }
 
-const glm::vec2& bin::Node::GetWorldScale()
+const glm::vec2& bin::Node::GetWorldScale() const
 {
     if(m_TransformDirty)
         UpdateWorldTransform();
@@ -112,16 +112,16 @@ bool bin::Node::IsMarkedForDestroy() const { return m_MarkedForDestroy; }
 
 bool bin::Node::IsGettingDestroyed() const { return m_GettingDestroyed; }
 
-void bin::Node::PropegateDirtyTransform()
+void bin::Node::PropagateDirtyTransform()
 {
     m_TransformDirty = true;
 
     for(Node* childPtr : m_ChildPtrs)
         if(not childPtr->m_TransformDirty)
-            childPtr->PropegateDirtyTransform();
+            childPtr->PropagateDirtyTransform();
 }
 
-void bin::Node::UpdateWorldTransform()
+void bin::Node::UpdateWorldTransform() const
 {
     if(m_ParentPtr == nullptr)
     {
@@ -179,7 +179,7 @@ void bin::Node::SetParent(Node* newParentPtr, bool worldPositionStays)
         }
     }
 
-    PropegateDirtyTransform();
+    PropagateDirtyTransform();
 }
 
 void bin::Node::MarkForDestroy(bool destroy) { m_MarkedForDestroy = destroy; }

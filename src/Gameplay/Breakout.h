@@ -3,8 +3,6 @@
 
 #include <Node.h>
 
-#include "GameStats.h"
-
 namespace bin
 {
     class Shaker;
@@ -61,7 +59,6 @@ namespace bout
         bout::PauseMenu* m_PauseMenuPtr{};
         bout::Playfield* m_PlayfieldPtr{};
         bout::Paddle* m_PaddlePtr{};
-        bout::GameStats m_GameStatsPtr{};
 
         bin::Shaker* m_CameraShakerPtr{};
         bin::Camera* m_CameraPtr{};

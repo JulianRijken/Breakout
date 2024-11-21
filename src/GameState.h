@@ -1,6 +1,8 @@
 #ifndef GAMESTATS_H
 #define GAMESTATS_H
 
+#include <Singleton.h>
+
 #include "Event.h"
 
 namespace bin
@@ -10,16 +12,16 @@ namespace bin
 
 namespace bout
 {
-    class GameStats final
+    class GameState final : public bin::Singleton<GameState>
     {
     public:
-        GameStats();
-        ~GameStats();
+        GameState();
+        ~GameState() = default;
 
-        GameStats(GameStats&&) = delete;
-        GameStats(const GameStats&) = delete;
-        GameStats& operator=(GameStats&&) = delete;
-        GameStats& operator=(const GameStats&) = delete;
+        GameState(GameState&&) = delete;
+        GameState(const GameState&) = delete;
+        GameState& operator=(GameState&&) = delete;
+        GameState& operator=(const GameState&) = delete;
 
         [[nodiscard]] bool HasBallsLeft() const;
         void RemoveBall();

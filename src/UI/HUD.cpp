@@ -8,10 +8,11 @@
 #include <Text.h>
 #include <TweenEngine.h>
 
-#include "GameStats.h"
+#include "GameState.h"
 #include "GlobalSettings.h"
 #include "MathExtensions.h"
-bout::HUD::HUD(GameStats& gameStats)
+
+bout::HUD::HUD()
 {
     m_ScoreText = &bin::SceneGraph::AddNode<bin::Text>(
         "SCORE 0", bin::Resources::GetFont(FontName::NES_Font), glm::vec2{ 0.5f, 0.5f }, 1.8f);
@@ -37,8 +38,8 @@ bout::HUD::HUD(GameStats& gameStats)
     m_LaunchBallText->SetLocalPosition({ 0, -5 });
 
 
-    gameStats.m_OnScoreChanged.AddListener(this, &bout::HUD::OnScoreChanged);
-    gameStats.m_OnBallsLeftChanged.AddListener(this, &bout::HUD::OnBallsLeftChanged);
+    GameState::GetInstance().m_OnScoreChanged.AddListener(this, &bout::HUD::OnScoreChanged);
+    GameState::GetInstance().m_OnBallsLeftChanged.AddListener(this, &bout::HUD::OnBallsLeftChanged);
 
     bin::MessageQueue::AddListener(MessageType::BallLaunched, this, &HUD::OnBallLaunchedMessage);
     bin::MessageQueue::AddListener(MessageType::BallSpawned, this, &HUD::OnBallSpawnedMessage);

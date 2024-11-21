@@ -56,10 +56,10 @@ namespace bin
         [[nodiscard]] float GetLocalAngle() const;
         [[nodiscard]] const glm::vec2& GetLocalScale() const;
 
-        [[nodiscard]] const glm::mat3x3& GetWorldMatrix();
-        [[nodiscard]] const glm::vec2& GetWorldPosition();
-        [[nodiscard]] float GetWorldAngle();
-        [[nodiscard]] const glm::vec2& GetWorldScale();
+        [[nodiscard]] const glm::mat3x3& GetWorldMatrix() const;
+        [[nodiscard]] const glm::vec2& GetWorldPosition() const;
+        [[nodiscard]] float GetWorldAngle() const;
+        [[nodiscard]] const glm::vec2& GetWorldScale() const;
 
         void SetParent(Node* newParentPtr, bool worldPositionStays = true);
         void MarkForDestroy(bool destroy = true);
@@ -76,9 +76,9 @@ namespace bin
 
 
     private:
-        void PropegateDirtyTransform();
+        void PropagateDirtyTransform();
 
-        void UpdateWorldTransform();
+        void UpdateWorldTransform() const;
 
         void PropagateGettingDestroyed();
         void ClearFromSceneGraph();
@@ -88,14 +88,12 @@ namespace bin
         glm::vec2 m_LocalScale{ 1.0f, 1.0f };     // Primary Data
 
         // Indicates if a re calculation of the derived data is needed
-        bool m_TransformDirty{ true };
-
-        glm::mat3x3 m_WorldTransformationMatrix{};  // Derived Data
-
-        glm::vec2 m_WorldPosition{};  // Derived Data
-        float m_WorldAngle{};         // Derived Data
-        glm::vec2 m_WorldScale{};     // Derived Data
-
+        // Mutable to make Get...() const
+        mutable bool m_TransformDirty{ true };
+        mutable glm::mat3x3 m_WorldTransformationMatrix{};  // Derived Data
+        mutable glm::vec2 m_WorldPosition{};                // Derived Data
+        mutable float m_WorldAngle{};                       // Derived Data
+        mutable glm::vec2 m_WorldScale{};                   // Derived Data
 
         bool m_MarkedForDestroy{ false };  // Marked by the user does not propagate
         bool m_GettingDestroyed{ false };  // Used by the SceneGraph
