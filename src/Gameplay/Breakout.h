@@ -5,7 +5,6 @@
 
 #include "GameStats.h"
 
-
 namespace bin
 {
     class Sprite;
@@ -31,10 +30,10 @@ namespace bout
         Breakout& operator=(Breakout&&) = delete;
         Breakout& operator=(const Breakout&) = delete;
 
+    private:
         void FixedUpdate() override;
         void Update() override;
 
-    private:
         void OnFireBallInput(const bin::InputContext& context);
         void OnCheatSpawnBallInput(const bin::InputContext& context);
         void OnCheatClearFieldInput(const bin::InputContext& context);
@@ -45,17 +44,17 @@ namespace bout
         void OnBallLostEvent();
         void OnPlayfieldClearedEvent();
 
+        void OffsetPlayfield();
+        void MovePaddle();
         void TySpawnBall();
         void ShakeCamera();
-
-        void OnGameOver(bool hasWon);
+        void EndGame(bool hasWon);
 
         static constexpr int BRICK_BREAK_FLASH_ALPHA{ 20 };
         static constexpr float BRICK_BREAK_FLASH_DURATION{ 0.14f };
-
         static constexpr float CAMERA_PADDING{ 3 };
-        float m_ShakeTimer{};
 
+        float m_ShakeTimer{};
         bool m_GameOver{ false };
         bin::Sprite* m_BackgroundFlashSpritePtr{};
         Playfield* m_PlayfieldPtr{};

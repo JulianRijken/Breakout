@@ -19,6 +19,12 @@ namespace bout
     public:
         Brick(int pointsWorth, const SDL_Color& brickColor);
 
+        ~Brick() override = default;
+        Brick(Brick&&) = delete;
+        Brick(const Brick&) = delete;
+        Brick& operator=(Brick&&) = delete;
+        Brick& operator=(const Brick&) = delete;
+
         void Break();
 
     private:

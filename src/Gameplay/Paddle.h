@@ -18,6 +18,12 @@ namespace bout
     public:
         Paddle();
 
+        ~Paddle() override = default;
+        Paddle(Paddle&&) = delete;
+        Paddle(const Paddle&) = delete;
+        Paddle& operator=(Paddle&&) = delete;
+        Paddle& operator=(const Paddle&) = delete;
+
         void SetPaddleTargetPosition(float targetPosition);
 
         void HoldBall(bout::Ball& ball);

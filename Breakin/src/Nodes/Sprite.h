@@ -12,6 +12,12 @@ namespace bin
     public:
         Sprite(const SDL_Color& color = { 255, 255, 255, 255 });
 
+        ~Sprite() override = default;
+        Sprite(Sprite&&) = delete;
+        Sprite(const Sprite&) = delete;
+        Sprite& operator=(Sprite&&) = delete;
+        Sprite& operator=(const Sprite&) = delete;
+
         [[nodiscard]] const SDL_Color& GetColor() const;
         void SetColor(const SDL_Color& color);
 

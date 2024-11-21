@@ -18,6 +18,12 @@ namespace bout
     public:
         MainMenu();
 
+        ~MainMenu() override = default;
+        MainMenu(MainMenu&&) = delete;
+        MainMenu(const MainMenu&) = delete;
+        MainMenu& operator=(MainMenu&&) = delete;
+        MainMenu& operator=(const MainMenu&) = delete;
+
     private:
         bool m_StartingGame{ false };
         void OnStartButtonPress();

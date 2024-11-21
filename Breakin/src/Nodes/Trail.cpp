@@ -5,17 +5,7 @@
 
 void bin::Trail::SetTrailColor(SDL_Color newColor) { m_TrailColor = newColor; }
 
-void bin::Trail::FixedUpdate()
-{
-    // Needs to be done in fixed update because this allows for equal spacing
-    // could be solved with more math
-    constexpr int maxFramesBack{ 30 };
-
-    m_PastPoints.emplace_back(GetWorldPosition(), m_TrailColor);
-
-    if(m_PastPoints.size() > maxFramesBack)
-        m_PastPoints.pop_front();
-}
+void bin::Trail::FixedUpdate() { IncrementPastPoints(); }
 
 void bin::Trail::Draw(const bin::Renderer& renderer)
 {
@@ -41,4 +31,16 @@ void bin::Trail::Draw(const bin::Renderer& renderer)
                          { 0.5f, 0.5f },
                          SDL_Color{ drawColor.r, drawColor.g, drawColor.b, colorAlpha });
     }
+}
+
+void bin::Trail::IncrementPastPoints()
+{
+    // Needs to be done in fixed update because this allows for equal spacing
+    // could be solved with more math
+    constexpr int maxFramesBack{ 30 };
+
+    m_PastPoints.emplace_back(GetWorldPosition(), m_TrailColor);
+
+    if(m_PastPoints.size() > maxFramesBack)
+        m_PastPoints.pop_front();
 }

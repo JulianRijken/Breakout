@@ -55,24 +55,9 @@ void bout::Paddle::TryLaunchBall(Node& parent)
 
 bool bout::Paddle::IsHoldingBall() const { return m_HoldingBallPtr != nullptr; }
 
-void bout::Paddle::FixedUpdate()
-{
-    m_PaddlePosition =
-        bin::math::LerpSmooth(m_PaddlePosition, m_PaddleTargetPosition, MOVE_DURATION, bin::GameTime::GetDeltaTime());
+void bout::Paddle::FixedUpdate() { UpdatePaddlePosition(); }
 
-    SetLocalPosition({ m_PaddlePosition, GetLocalPosition().y });
-}
-
-void bout::Paddle::Update()
-{
-    const float delta = GetWorldPosition().x - m_LastPosition;
-    m_LastPosition = GetWorldPosition().x;
-
-    m_PaddleAngle = bin::math::LerpSmooth(
-        m_PaddleAngle, -delta * ANGLE_DISTANCE, ANGLE_SMOOTH_DURATION, bin::GameTime::GetDeltaTime());
-
-    SetLocalAngle(m_PaddleAngle);
-}
+void bout::Paddle::Update() { UpdatePaddleVisualAngle(); }
 
 void bout::Paddle::OnHit(const bin::Manifold&)
 {
@@ -88,4 +73,23 @@ void bout::Paddle::OnHit(const bin::Manifold&)
                                   spritePtrCopy->SetLocalPosition({ 0, curve * BUMP_HEIGHT });
                               } },
                             *spritePtrCopy);
+}
+
+void bout::Paddle::UpdatePaddleVisualAngle()
+{
+    const float delta = GetWorldPosition().x - m_LastPosition;
+    m_LastPosition = GetWorldPosition().x;
+
+    m_PaddleAngle = bin::math::LerpSmooth(
+        m_PaddleAngle, -delta * ANGLE_DISTANCE, ANGLE_SMOOTH_DURATION, bin::GameTime::GetDeltaTime());
+
+    SetLocalAngle(m_PaddleAngle);
+}
+
+void bout::Paddle::UpdatePaddlePosition()
+{
+    m_PaddlePosition =
+        bin::math::LerpSmooth(m_PaddlePosition, m_PaddleTargetPosition, MOVE_DURATION, bin::GameTime::GetDeltaTime());
+
+    SetLocalPosition({ m_PaddlePosition, GetLocalPosition().y });
 }

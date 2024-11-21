@@ -21,6 +21,12 @@ namespace bout
     public:
         Playfield(const glm::vec2& size);
 
+        ~Playfield() override = default;
+        Playfield(Playfield&&) = delete;
+        Playfield(const Playfield&) = delete;
+        Playfield& operator=(Playfield&&) = delete;
+        Playfield& operator=(const Playfield&) = delete;
+
         [[nodiscard]] const glm::vec2& GetSize() const;
 
         bin::Event<> m_OnFieldCleared{};
@@ -35,6 +41,8 @@ namespace bout
 
         void OnBrickDestroyedEvent(Node& brick);
         void OnPlayfieldCleared();
+
+        void CorrectTopWallSize();
 
         static constexpr float WALL_WIDTH = 100.0f;
 

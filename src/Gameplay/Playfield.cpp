@@ -163,7 +163,22 @@ void bout::Playfield::HideWalls()
         *this);
 }
 
-void bout::Playfield::LateUpdate()
+void bout::Playfield::LateUpdate() { CorrectTopWallSize(); }
+
+void bout::Playfield::OnBrickDestroyedEvent(Node& brick)
+{
+    auto* brickPtr = dynamic_cast<Brick*>(&brick);
+    assert(brickPtr != nullptr);
+
+    m_BrickPtrs.erase(brickPtr);
+
+    if(m_BrickPtrs.empty())
+        OnPlayfieldCleared();
+}
+
+void bout::Playfield::OnPlayfieldCleared() { m_OnFieldCleared.Invoke(); }
+
+void bout::Playfield::CorrectTopWallSize()
 {
     // This is probably the most hacky thing about the project...
     // So the top wall needs to scale exactly to match the side walls!
@@ -181,16 +196,3 @@ void bout::Playfield::LateUpdate()
     m_TopWallPtr->SetLocalScale({ distance, m_TopWallPtr->GetLocalScale().y });
     m_TopWallPtr->SetWorldPosition({ center, m_TopWallPtr->GetWorldPosition().y });
 }
-
-void bout::Playfield::OnBrickDestroyedEvent(Node& brick)
-{
-    auto* brickPtr = dynamic_cast<Brick*>(&brick);
-    assert(brickPtr != nullptr);
-
-    m_BrickPtrs.erase(brickPtr);
-
-    if(m_BrickPtrs.empty())
-        OnPlayfieldCleared();
-}
-
-void bout::Playfield::OnPlayfieldCleared() { m_OnFieldCleared.Invoke(); }

@@ -18,6 +18,12 @@ namespace bout
     public:
         Ball();
 
+        ~Ball() override = default;
+        Ball(Ball&&) = delete;
+        Ball(const Ball&) = delete;
+        Ball& operator=(Ball&&) = delete;
+        Ball& operator=(const Ball&) = delete;
+
         void HoldBall();
         void LaunchBall();
 
@@ -40,10 +46,10 @@ namespace bout
         float m_TimeSinceHit{ 0.0f };
 
         bool m_HoldingBall{ true };
-        bin::Trail* m_TrailPtr{};
-        glm::vec2 m_MoveDirection{ 1, 1 };
-        bin::BoxCollider* m_BoxColliderPtr{};
         SDL_Color m_BallColor{};
+        glm::vec2 m_MoveDirection{ 1, 1 };
+        bin::Trail* m_TrailPtr{};
+        bin::BoxCollider* m_BoxColliderPtr{};
     };
 }  // namespace bout
 #endif  // BALL_H

@@ -15,6 +15,12 @@ namespace bin
         Text(std::string text, Font* font, const glm::vec2& alignment = { 0, 0 }, float size = 1.0f,
              SDL_Color color = { 255, 255, 255, 255 });
 
+        ~Text() override = default;
+        Text(Text&&) = delete;
+        Text(const Text&) = delete;
+        Text& operator=(Text&&) = delete;
+        Text& operator=(const Text&) = delete;
+
         [[nodiscard]] float GetSize() const;
 
         void SetText(const std::string& text);

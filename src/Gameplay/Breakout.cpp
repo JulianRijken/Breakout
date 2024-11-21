@@ -67,15 +67,8 @@ bout::Breakout::~Breakout() { bin::MessageQueue::RemoveListenerInstance(this); }
 
 void bout::Breakout::FixedUpdate()
 {
-    const glm::vec2 mousePositionWorld = m_CameraPtr->ScreenToWorldPosition(bin::Input::GetMousePosition());
-    m_PaddlePtr->SetPaddleTargetPosition(mousePositionWorld.x);
-
-    constexpr glm::vec2 mouseMovePlayfieldStrength{ -0.02f, -0.02f };
-    constexpr float paddleMovePlayfieldStrength{ -0.04f };
-
-    const glm::vec2 mouseOffset{ mousePositionWorld * mouseMovePlayfieldStrength };
-    const glm::vec2 paddleOffset{ m_PaddlePtr->GetLocalPosition().x * paddleMovePlayfieldStrength, 0 };
-    m_PlayfieldPtr->SetLocalPosition(mouseOffset + paddleOffset);
+    MovePaddle();
+    OffsetPlayfield();
 }
 
 void bout::Breakout::Update()
@@ -114,7 +107,7 @@ void bout::Breakout::OnBallLostEvent()
     if(m_GameStats.HasBallsLeft())
         TySpawnBall();
     else
-        OnGameOver(false);
+        EndGame(false);
 }
 
 void bout::Breakout::TySpawnBall()
@@ -139,13 +132,12 @@ void bout::Breakout::TySpawnBall()
 
 void bout::Breakout::ShakeCamera() { m_ShakeTimer = 0.0f; }
 
-void bout::Breakout::OnGameOver(bool hasWon)
+void bout::Breakout::EndGame(bool hasWon)
 {
     if(m_GameOver)
         return;
 
     m_GameOver = true;
-
 
     // Slow down time
     bin::TweenEngine::Start({ .from = bin::GameTime::GetTimeScale(),
@@ -229,4 +221,21 @@ void bout::Breakout::OnCheatClearFieldInput(const bin::InputContext& context)
     m_PlayfieldPtr->BreakAllBricks();
 }
 
-void bout::Breakout::OnPlayfieldClearedEvent() { OnGameOver(true); }
+void bout::Breakout::OnPlayfieldClearedEvent() { EndGame(true); }
+
+void bout::Breakout::OffsetPlayfield()
+{
+    constexpr glm::vec2 mouseMovePlayfieldStrength{ -0.02f, -0.02f };
+    constexpr float paddleMovePlayfieldStrength{ -0.04f };
+
+    const glm::vec2 mousePositionWorld = m_CameraPtr->ScreenToWorldPosition(bin::Input::GetMousePosition());
+    const glm::vec2 mouseOffset{ mousePositionWorld * mouseMovePlayfieldStrength };
+    const glm::vec2 paddleOffset{ m_PaddlePtr->GetLocalPosition().x * paddleMovePlayfieldStrength, 0 };
+    m_PlayfieldPtr->SetLocalPosition(mouseOffset + paddleOffset);
+}
+
+void bout::Breakout::MovePaddle()
+{
+    const glm::vec2 mousePositionWorld = m_CameraPtr->ScreenToWorldPosition(bin::Input::GetMousePosition());
+    m_PaddlePtr->SetPaddleTargetPosition(mousePositionWorld.x);
+}

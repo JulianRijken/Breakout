@@ -13,11 +13,20 @@ namespace bin
         using PastPoint = std::pair<glm::vec2, SDL_Color>;
 
     public:
+        Trail() = default;
+        ~Trail() override = default;
+        Trail(Trail&&) = delete;
+        Trail(const Trail&) = delete;
+        Trail& operator=(Trail&&) = delete;
+        Trail& operator=(const Trail&) = delete;
+
         void SetTrailColor(SDL_Color newColor);
 
     private:
         void FixedUpdate() override;
         void Draw(const bin::Renderer& renderer) override;
+
+        void IncrementPastPoints();
 
         SDL_Color m_TrailColor{ 255, 255, 255, 255 };
         std::deque<PastPoint> m_PastPoints{};
