@@ -25,21 +25,22 @@ namespace bout
         GameState& operator=(const GameState&) = delete;
 
         void ResetGame();
+        void RemoveBall();
 
         [[nodiscard]] const DifficultyPreset& GetDifficultyPreset() const;
         [[nodiscard]] int GetGetScore() const;
 
         [[nodiscard]] bool HasBallsLeft() const;
         [[nodiscard]] int GetBallsLeft() const;
-        void RemoveBall();
 
         bin::Event<int> m_OnScoreChanged{};
         bin::Event<int> m_OnBallsLeftChanged{};
 
+        Difficulty m_Difficulty{ Difficulty::Easy };  // NOLINT - C.131: Avoid trivial getters and setters
+
     private:
         void OnBrickBreakMessage(const bin::Message& message);
 
-        Difficulty m_Difficulty{ Difficulty::Easy };
 
         int m_BallsLeft{};
         int m_Score{};

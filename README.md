@@ -14,7 +14,7 @@ The game was made from the ground up and took inspiration from the original Brea
 * Friends are used to stop the user from using engine specific behaviour, should be reconsidered
 * Use of floats instead of double
 * non type consistent int, should consider int32_t
-* Events need to be public and can't be returned const as the events do changes when adding a listener
+* Events need to be public and can't be returned const as the events do changes when adding a listener. Actually better yet they need mutable data like the nodes so they can be made const!
 * Consider always having a root node to remove checking for parent allowing for less checks and more readable code 
 * Sound should further be abstracted to allow for playing a random set of sounds 
 * The matrix math for world to screen is done very very insufficiently and should be done on the GPU! 
