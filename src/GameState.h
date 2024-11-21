@@ -3,6 +3,8 @@
 
 #include <Singleton.h>
 
+#include <chrono>
+
 #include "Event.h"
 #include "GlobalSettings.h"
 
@@ -24,14 +26,26 @@ namespace bout
         GameState& operator=(GameState&&) = delete;
         GameState& operator=(const GameState&) = delete;
 
+        // NOTE: Breakout and the GameState are tightly coupled
+        //       for this reason I don't use events here
+
         void ResetGame();
         void RemoveBall();
+        void IncrementPaddleBounces();
+        void IncrementBallsLost();
+        void UseCheat();
 
         [[nodiscard]] const DifficultyPreset& GetDifficultyPreset() const;
+
+        [[nodiscard]] int GetBallsLeft() const;
         [[nodiscard]] int GetGetScore() const;
+        [[nodiscard]] int GetBallsLost() const;
+        [[nodiscard]] int GetBricksBroken() const;
+        [[nodiscard]] int GetPaddleBounces() const;
+        [[nodiscard]] int GetScecondsSinceGameReset() const;
 
         [[nodiscard]] bool HasBallsLeft() const;
-        [[nodiscard]] int GetBallsLeft() const;
+        [[nodiscard]] bool HasCheated() const;
 
         bin::Event<int> m_OnScoreChanged{};
         bin::Event<int> m_OnBallsLeftChanged{};
@@ -43,6 +57,13 @@ namespace bout
 
         int m_BallsLeft{};
         int m_Score{};
+        int m_BallsLost{};
+        int m_BricksBroken{};
+        int m_PaddleBounces{};
+        bool m_HasCheated{};
+
+        // This is why we hate chrono
+        std::chrono::high_resolution_clock::time_point m_StartTime{ std::chrono::high_resolution_clock::now() };
     };
 }  // namespace bout
 #endif  // GAMESTATS_H

@@ -14,6 +14,7 @@
 
 #include "Ball.h"
 #include "BoxCollider.h"
+#include "GameState.h"
 #include "GlobalSettings.h"
 
 bout::Paddle::Paddle()
@@ -62,7 +63,7 @@ void bout::Paddle::Update() { UpdatePaddleVisualAngle(); }
 void bout::Paddle::OnHit(const bin::Manifold&)
 {
     bin::Audio::Play(bin::Resources::GetSound(SoundName::PaddleHit));
-
+    GameState::GetInstance().IncrementPaddleBounces();
 
     // Needed for the lambda capture
     bin::Sprite* spritePtrCopy = m_SpritePtr;

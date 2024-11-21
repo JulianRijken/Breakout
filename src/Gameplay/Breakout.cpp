@@ -103,6 +103,7 @@ void bout::Breakout::OnCheatSpawnBallInput(const bin::InputContext& context)
     ball.LaunchBall();
     ball.SetMoveDirection({ bin::math::RandomRange(-1.0f, 1.0f), 1.0f });
     ball.SetWorldPosition(m_PaddlePtr->GetWorldPosition() + glm::vec2{ 0, 2 });
+    GameState::GetInstance().UseCheat();
 }
 
 void bout::Breakout::OnCheatClearFieldInput(const bin::InputContext& context)
@@ -111,6 +112,7 @@ void bout::Breakout::OnCheatClearFieldInput(const bin::InputContext& context)
         return;
 
     m_PlayfieldPtr->BreakAllBricks();
+    GameState::GetInstance().UseCheat();
 }
 
 void bout::Breakout::OnPauseGameInput(const bin::InputContext& context)
@@ -142,6 +144,7 @@ void bout::Breakout::OnBrickBreakMessage(const bin::Message& /*unused*/) { Flash
 void bout::Breakout::OnBallLostEvent()
 {
     bin::Audio::Play(bin::Resources::GetSound(SoundName::BallLost));
+    GameState::GetInstance().IncrementBallsLost();
 
     if(GameState::GetInstance().HasBallsLeft())
         TySpawnBall();

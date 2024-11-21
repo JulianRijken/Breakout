@@ -238,20 +238,5 @@ void bout::MainMenu::OnQuitButtonPress()
 void bout::MainMenu::SetDifficulty(Difficulty difficulty)
 {
     GameState::GetInstance().m_Difficulty = difficulty;
-
-    switch(difficulty)
-    {
-        case bout::Difficulty::Noob:
-            m_DifficultyButtonText->SetText("NOOB");
-            break;
-        case bout::Difficulty::Easy:
-            m_DifficultyButtonText->SetText("EASY");
-            break;
-        case bout::Difficulty::Hard:
-            m_DifficultyButtonText->SetText("HARD");
-            break;
-        case bout::Difficulty::Nerd:
-            m_DifficultyButtonText->SetText("NERD");
-            break;
-    }
+    m_DifficultyButtonText->SetText(GameState::GetInstance().GetDifficultyPreset().name);
 }

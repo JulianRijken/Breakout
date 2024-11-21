@@ -19,19 +19,29 @@ namespace bout
 
     struct DifficultyPreset
     {
+        std::string name{};
         int startingBallCount{};
         float ballMoveSpeed{};
         SDL_Color ballHitColor{};
     };
 
     const std::unordered_map<Difficulty, DifficultyPreset> DIFFICULTY_SETTINGS{
-        {Difficulty::Noob, { .startingBallCount = 10, .ballMoveSpeed = 10.0f, .ballHitColor = { 65, 224, 70, 255 } }},
+        {Difficulty::Noob,
+         {
+         .name = "NOOB",
+         .startingBallCount = 10,
+         .ballMoveSpeed = 10.0f,
+         .ballHitColor = { 65, 224, 70, 255 },
+         }                                                                                                        },
 
-        {Difficulty::Easy, { .startingBallCount = 5, .ballMoveSpeed = 16.0f, .ballHitColor = { 45, 172, 214, 255 } }},
+        {Difficulty::Easy,
+         { .name = "EASY", .startingBallCount = 5, .ballMoveSpeed = 16.0f, .ballHitColor = { 45, 172, 214, 255 } }},
 
-        {Difficulty::Hard,  { .startingBallCount = 3, .ballMoveSpeed = 22.0f, .ballHitColor = { 235, 59, 59, 255 } }},
+        {Difficulty::Hard,
+         { .name = "HARD", .startingBallCount = 3, .ballMoveSpeed = 23.0f, .ballHitColor = { 235, 59, 59, 255 } } },
 
-        {Difficulty::Nerd,      { .startingBallCount = 1, .ballMoveSpeed = 30.0f, .ballHitColor = { 0, 0, 0, 255 } }}
+        {Difficulty::Nerd,
+         { .name = "NERD", .startingBallCount = 1, .ballMoveSpeed = 28.0f, .ballHitColor = { 0, 0, 0, 255 } }     }
     };
 
 

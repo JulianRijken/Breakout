@@ -5,10 +5,14 @@
 
 namespace bout
 {
-    class ScoreScreen final : public bin::Node
+    class ScoreScreen final : public bin::Node, public bin::IEventListener
     {
     public:
         ScoreScreen();
+
+    private:
+        void ShowStats();
+        void ExitScren();
     };
 
 }  // namespace bout
