@@ -13,7 +13,8 @@ namespace bout
     {
         Noob,
         Easy,
-        Hard
+        Hard,
+        Nerd
     };
 
     struct DifficultyPreset
@@ -28,7 +29,9 @@ namespace bout
 
         {Difficulty::Easy,  { .startingBallCount = 5, .ballMoveSpeed = 16.0f, .ballHitColor = { 0, 50, 255, 255 } }},
 
-        {Difficulty::Hard,   { .startingBallCount = 3, .ballMoveSpeed = 22.0f, .ballHitColor = { 255, 0, 0, 255 } }}
+        {Difficulty::Hard,  { .startingBallCount = 3, .ballMoveSpeed = 22.0f, .ballHitColor = { 255, 50, 0, 255 } }},
+
+        {Difficulty::Nerd,     { .startingBallCount = 1, .ballMoveSpeed = 30.0f, .ballHitColor = { 0, 0, 0, 255 } }}
     };
 
 

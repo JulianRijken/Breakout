@@ -113,9 +113,6 @@ void bout::Breakout::OnPauseGameInput(const bin::InputContext& context)
     if(context.state != bin::ButtonState::Down)
         return;
 
-    if(m_GameOver)
-        return;
-
 
     if(m_PauseMenuPtr == nullptr)
     {

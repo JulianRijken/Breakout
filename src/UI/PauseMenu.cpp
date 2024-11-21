@@ -25,13 +25,21 @@ bout::PauseMenu::PauseMenu()
     title.SetParent(this);
     title.SetLocalPosition({ 0, 4 });
 
-    auto& returnButton = prefabs::TextButton({ 10, 2 }, "QUIT", *this);
+    auto& returnButton = prefabs::TextButton({ 11, 2.2f }, "QUIT", *this);
     returnButton.SetParent(this);
-    returnButton.SetLocalPosition({ 0, 0 });
+    returnButton.SetLocalPosition({ 0, -4 });
     returnButton.m_OnReleased.AddListener([] { bin::SceneGraph::LoadScene(SceneName::MainMenu); });
     returnButton.SetOnHoverSound(SoundName::ButtonHover);
     returnButton.SetOnPressSound(SoundName::ButtonPress);
     returnButton.SetOnReleasedSound(SoundName::ButtonRelease);
+
+    auto& restartButton = prefabs::TextButton({ 11, 2.2f }, "AGAIN", *this);
+    restartButton.SetParent(this);
+    restartButton.SetLocalPosition({ 0, 0 });
+    restartButton.m_OnReleased.AddListener([] { bin::SceneGraph::LoadScene(SceneName::Game); });
+    restartButton.SetOnHoverSound(SoundName::ButtonHover);
+    restartButton.SetOnPressSound(SoundName::ButtonPress);
+    restartButton.SetOnReleasedSound(SoundName::ButtonRelease);
 
     bin::TweenEngine::Start(
         {

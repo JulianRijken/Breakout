@@ -176,6 +176,9 @@ void bout::MainMenu::OnDifficultyButtonPress()
             SetDifficulty(Difficulty::Hard);
             break;
         case bout::Difficulty::Hard:
+            SetDifficulty(Difficulty::Nerd);
+            break;
+        case bout::Difficulty::Nerd:
             SetDifficulty(Difficulty::Noob);
             break;
     }
@@ -203,6 +206,9 @@ void bout::MainMenu::SetDifficulty(Difficulty difficulty)
             break;
         case bout::Difficulty::Hard:
             m_DifficultyButtonText->SetText("HARD");
+            break;
+        case bout::Difficulty::Nerd:
+            m_DifficultyButtonText->SetText("NERD");
             break;
     }
 }
