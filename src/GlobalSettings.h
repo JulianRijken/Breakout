@@ -21,9 +21,14 @@ namespace bout
 
     enum class InputActionName
     {
-        CheatForceRestart,
+        CheatOpenMainMenu,
+        CheatOpenGame,
+        CheatOpenWinScreen,
+        CheatOpenLoseScreen,
+        CheatOpenScoreScreen,
         CheatSpawnBall,
         CheatClearField,
+        PauseGame,
         FireBall
     };
 
@@ -31,9 +36,10 @@ namespace bout
     {
         TestingSceneGraph,
         Game,
-        MainMenu,
+        MainMenuScreen,
         GameLostScreen,
-        GameWonScreen
+        GameWonScreen,
+        ScoreScreen,
     };
 
     enum class FontName

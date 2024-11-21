@@ -5,11 +5,13 @@
 #include <MainMenu.h>
 #include <SceneGraph.h>
 #include <Sprite.h>
+#include <Text.h>
 #include <TweenEngine.h>
 
 #include "Breakout.h"
 #include "GlobalSettings.h"
 #include "Resources.h"
+#include "ScoreScreen.h"
 
 void bin::Core::PreInit(bin::InitSettings& settings)
 {
@@ -35,31 +37,80 @@ void bin::Core::GameEntry()
     Resources::LoadSound(bout::SoundName::GameWon, "Sounds/SFX 1.ogg");
 
 
-    Input::AddInputAction(bout::InputActionName::FireBall, { { SDL_SCANCODE_SPACE }, true });
-    Input::AddInputAction(bout::InputActionName::CheatForceRestart,
-                               {
-                                   {SDL_SCANCODE_R, SDL_SCANCODE_ESCAPE}
+    Input::AddInputAction(bout::InputActionName::CheatOpenMainMenu, { { SDL_SCANCODE_1 } });
+    Input::AddInputAction(bout::InputActionName::CheatOpenGame, { { SDL_SCANCODE_2 } });
+    Input::AddInputAction(bout::InputActionName::CheatOpenWinScreen, { { SDL_SCANCODE_3 } });
+    Input::AddInputAction(bout::InputActionName::CheatOpenLoseScreen, { { SDL_SCANCODE_4 } });
+    Input::AddInputAction(bout::InputActionName::CheatOpenScoreScreen, { { SDL_SCANCODE_5 } });
+
+
+    Input::AddInputAction(bout::InputActionName::CheatSpawnBall, { { SDL_SCANCODE_B } });
+    Input::AddInputAction(bout::InputActionName::CheatClearField, { { SDL_SCANCODE_C } });
+
+    Input::AddInputAction(bout::InputActionName::PauseGame,
+                          {
+                              {SDL_SCANCODE_P, SDL_SCANCODE_ESCAPE}
     });
-    Input::AddInputAction(bout::InputActionName::CheatSpawnBall, { { SDL_SCANCODE_1 } });
-    Input::AddInputAction(bout::InputActionName::CheatClearField, { { SDL_SCANCODE_2 } });
+    Input::AddInputAction(bout::InputActionName::FireBall, { { SDL_SCANCODE_SPACE }, true });
+
 
     SceneGraph::BindScene(bout::SceneName::Game, []() { bin::SceneGraph::AddNode<bout::Breakout>(); });
 
-    SceneGraph::BindScene(bout::SceneName::MainMenu, []() { bin::SceneGraph::AddNode<bout::MainMenu>(); });
+    SceneGraph::BindScene(bout::SceneName::MainMenuScreen, []() { bin::SceneGraph::AddNode<bout::MainMenu>(); });
 
-    SceneGraph::BindScene(bout::SceneName::GameWonScreen,
-                               []()
-                               {
-                                   bin::SceneGraph::LoadScene(bout::SceneName::MainMenu);
-                                   //
-                               });
+    SceneGraph::BindScene(
+        bout::SceneName::GameWonScreen,
+        []()
+        {
+            bin::SceneGraph::AddNode<bin::Camera>();
+            // bin::SceneGraph::AddNode<bin::ScoreScreen>();
+
+            auto& winnerText = bin::SceneGraph::AddNode<bin::Text>(
+                "YOU WIN!", bin::Resources::GetFont(bout::FontName::NES_Font), glm::vec2{ 0.5f, 0.5f }, 3.0f);
+
+            // Show text
+            bin::TweenEngine::Start({ .from = -15.0f,
+                                      .to = 0.0f,
+                                      .duration = 1.0f,
+                                      .easeType = EaseType::ElasticOut,
+                                      .onUpdate =
+                                          [&winnerText](float value) {
+                                              winnerText.SetLocalPosition({ 0, value });
+                                          } },
+                                    winnerText);
+
+            // Hide text
+            bin::TweenEngine::Start({ .delay = 2.0f,
+                                      .from = winnerText.GetLocalPosition().y,
+                                      .to = 15.0f,
+                                      .duration = 1.0f,
+                                      .easeType = EaseType::SineIn,
+                                      .onUpdate =
+                                          [&winnerText](float value) {
+                                              winnerText.SetLocalPosition({ 0, value });
+                                          },
+                                      .onEnd = []() { bin::SceneGraph::LoadScene(bout::SceneName::MainMenuScreen); } },
+                                    winnerText);
+
+
+            //
+            //
+        });
 
     SceneGraph::BindScene(bout::SceneName::GameLostScreen,
-                               []()
-                               {
-                                   bin::SceneGraph::LoadScene(bout::SceneName::MainMenu);
-                                   //
-                               });
+                          []()
+                          {
+                              bin::SceneGraph::LoadScene(bout::SceneName::MainMenuScreen);
+                              //
+                          });
+
+
+    SceneGraph::BindScene(bout::SceneName::ScoreScreen,
+                          []()
+                          {
+                              bin::SceneGraph::LoadScene(bout::SceneName::MainMenuScreen);
+                              //
+                          });
 
 
     SceneGraph::BindScene(bout::SceneName::TestingSceneGraph,
@@ -102,15 +153,51 @@ void bin::Core::GameEntry()
                                                            spriteOne);
                                });
 
-    // Make sure the user can always restart
-    Input::Bind(bout::InputActionName::CheatForceRestart,
-                     [](const InputContext& context)
-                     {
-                         if(context.state != bin::ButtonState::Down)
-                             return;
 
-                         bin::SceneGraph::LoadScene(bout::SceneName::MainMenu);
-                     });
+    Input::Bind(bout::InputActionName::CheatOpenMainMenu,
+                [](const InputContext& context)
+                {
+                    if(context.state != bin::ButtonState::Down)
+                        return;
 
-    SceneGraph::LoadScene(bout::SceneName::MainMenu);
+                    bin::SceneGraph::LoadScene(bout::SceneName::MainMenuScreen);
+                });
+
+    Input::Bind(bout::InputActionName::CheatOpenGame,
+                [](const InputContext& context)
+                {
+                    if(context.state != bin::ButtonState::Down)
+                        return;
+
+                    bin::SceneGraph::LoadScene(bout::SceneName::Game);
+                });
+
+    Input::Bind(bout::InputActionName::CheatOpenWinScreen,
+                [](const InputContext& context)
+                {
+                    if(context.state != bin::ButtonState::Down)
+                        return;
+
+                    bin::SceneGraph::LoadScene(bout::SceneName::GameWonScreen);
+                });
+
+    Input::Bind(bout::InputActionName::CheatOpenLoseScreen,
+                [](const InputContext& context)
+                {
+                    if(context.state != bin::ButtonState::Down)
+                        return;
+
+                    bin::SceneGraph::LoadScene(bout::SceneName::GameLostScreen);
+                });
+
+    Input::Bind(bout::InputActionName::CheatOpenScoreScreen,
+                [](const InputContext& context)
+                {
+                    if(context.state != bin::ButtonState::Down)
+                        return;
+
+                    bin::SceneGraph::LoadScene(bout::SceneName::ScoreScreen);
+                });
+
+    SceneGraph::LoadScene(bout::SceneName::MainMenuScreen);
 }

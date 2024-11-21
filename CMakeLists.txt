@@ -13,15 +13,16 @@ option(USE_ASAN "Use ASAN" FALSE)
 # Adds the source files to the executible
 set(SOURCE_FILES
 
-    ${SOURCE_DIR}/Gameplay/Ball.h            ${SOURCE_DIR}/Gameplay/Ball.cpp
-    ${SOURCE_DIR}/Gameplay/Breakout.h        ${SOURCE_DIR}/Gameplay/Breakout.cpp
-    ${SOURCE_DIR}/Gameplay/Brick.h           ${SOURCE_DIR}/Gameplay/Brick.cpp
-    ${SOURCE_DIR}/Gameplay/Paddle.h          ${SOURCE_DIR}/Gameplay/Paddle.cpp
-    ${SOURCE_DIR}/Gameplay/Playfield.h       ${SOURCE_DIR}/Gameplay/Playfield.cpp
-    ${SOURCE_DIR}/Gameplay/Wall.h            ${SOURCE_DIR}/Gameplay/Wall.cpp
+    ${SOURCE_DIR}/Gameplay/Ball.h           ${SOURCE_DIR}/Gameplay/Ball.cpp
+    ${SOURCE_DIR}/Gameplay/Breakout.h       ${SOURCE_DIR}/Gameplay/Breakout.cpp
+    ${SOURCE_DIR}/Gameplay/Brick.h          ${SOURCE_DIR}/Gameplay/Brick.cpp
+    ${SOURCE_DIR}/Gameplay/Paddle.h         ${SOURCE_DIR}/Gameplay/Paddle.cpp
+    ${SOURCE_DIR}/Gameplay/Playfield.h      ${SOURCE_DIR}/Gameplay/Playfield.cpp
+    ${SOURCE_DIR}/Gameplay/Wall.h           ${SOURCE_DIR}/Gameplay/Wall.cpp
 
     ${SOURCE_DIR}/UI/HUD.h                  ${SOURCE_DIR}/UI/HUD.cpp
     ${SOURCE_DIR}/UI/MainMenu.h             ${SOURCE_DIR}/UI/MainMenu.cpp
+    ${SOURCE_DIR}/UI/ScoreScreen.h          ${SOURCE_DIR}/UI/ScoreScreen.cpp
 
                                             ${SOURCE_DIR}/GameEntry.cpp
     ${SOURCE_DIR}/Prefabs.h                 ${SOURCE_DIR}/Prefabs.cpp

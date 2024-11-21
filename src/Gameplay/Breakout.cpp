@@ -141,6 +141,7 @@ void bout::Breakout::EndGame(bool hasWon)
 
     m_GameOver = true;
 
+
     // Slow down time
     bin::TweenEngine::Start({ .from = bin::GameTime::GetTimeScale(),
                               .to = 0.0f,
@@ -157,6 +158,7 @@ void bout::Breakout::EndGame(bool hasWon)
 
                                   m_PlayfieldPtr->HideWalls();
 
+                                  // Done here as it should play right away
                                   if(hasWon)
                                       bin::Audio::Play(bin::Resources::GetSound(SoundName::GameWon));
                                   else
@@ -187,6 +189,9 @@ void bout::Breakout::EndGame(bool hasWon)
                                           .onEnd =
                                               [hasWon]()
                                           {
+                                              bin::GameTime::SetTimeScale(1.0f);
+
+
                                               if(hasWon)
                                                   bin::SceneGraph::LoadScene(SceneName::GameWonScreen);
                                               else

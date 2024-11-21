@@ -12,7 +12,7 @@ namespace bin
     class Text final : public Node
     {
     public:
-        Text(std::string text, Font* font, const glm::vec2& alignment = { 0, 0 }, float size = 1.0f,
+        Text(std::string text, Font* font, const glm::vec2& alignment = { 0.5f, 0.5f }, float size = 1.0f,
              SDL_Color color = { 255, 255, 255, 255 });
 
         ~Text() override = default;
