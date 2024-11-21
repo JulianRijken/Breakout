@@ -33,7 +33,7 @@ bout::MainMenu::MainMenu()
     auto infoText = [this](const std::string& content, float offset, float size, SDL_Color color) -> bin::Text&
     {
         constexpr float infoTextSpacing = 0.9f;
-        constexpr glm::vec2 infoTextPosition = { -16.0f, 1.0f };
+        constexpr glm::vec2 infoTextPosition = { -16.0f, 2.0f };
 
         auto& text = bin::SceneGraph::AddNode<bin::Text>(
             content, bin::Resources::GetFont(FontName::NES_Font), glm::vec2{ 0.0f, 0.5f }, size);
@@ -67,7 +67,7 @@ bout::MainMenu::MainMenu()
     constexpr float infoTextSize = 0.4f;
     infoText("HOW TO PLAY", 1, infoTextHeaderSize, SDL_Color(200, 200, 200, 255));
     infoText("- USE MOUSE TO FIRE", 2, infoTextSize, SDL_Color(150, 150, 150, 255));
-    infoText("- USE R TO PAUSE", 3, infoTextSize, SDL_Color(150, 150, 150, 255));
+    infoText("- USE ESCAPE TO PAUSE", 3, infoTextSize, SDL_Color(150, 150, 150, 255));
     infoText("- USE C TO CHEAT CLEAR", 4, infoTextSize, SDL_Color(150, 150, 150, 255));
     infoText("- USE B TO CHEAT BALL", 5, infoTextSize, SDL_Color(150, 150, 150, 255));
     infoText("- USE 1-5 TO FORCE SCENE", 6, infoTextSize, SDL_Color(150, 150, 150, 255));
