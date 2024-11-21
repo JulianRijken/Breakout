@@ -53,6 +53,8 @@ void bout::Ball::LaunchBall()
     m_HoldingBall = false;
 }
 
+void bout::Ball::SetMoveDirection(glm::vec2 moveDirection) { m_MoveDirection = moveDirection; }
+
 void bout::Ball::OnHitWall()
 {
     m_TimeSinceHit = 0;

@@ -122,7 +122,7 @@ namespace bin::math
     template<typename Type, typename TimeType>
     Type Lerp(const Type& a, const Type& b, TimeType t)
     {
-        return std::lerp(a, b, t);
+        return glm::mix(a, b, t);
     }
 
     template<typename TimeType>

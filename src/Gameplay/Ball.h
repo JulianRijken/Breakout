@@ -27,6 +27,7 @@ namespace bout
 
         void HoldBall();
         void LaunchBall();
+        void SetMoveDirection(glm::vec2 moveDirection);
 
         bin::Event<> m_OnBallLostEvent{};
 

@@ -22,6 +22,7 @@ namespace bin
         Text& operator=(const Text&) = delete;
 
         [[nodiscard]] float GetSize() const;
+        [[nodiscard]] SDL_Color GetColor() const;
 
         void SetText(const std::string& text);
         void SetSize(float size);

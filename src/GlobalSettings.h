@@ -25,13 +25,13 @@ namespace bout
     };
 
     const std::unordered_map<Difficulty, DifficultyPreset> DIFFICULTY_SETTINGS{
-        {Difficulty::Noob, { .startingBallCount = 10, .ballMoveSpeed = 10.0f, .ballHitColor = { 50, 255, 0, 255 } }},
+        {Difficulty::Noob, { .startingBallCount = 10, .ballMoveSpeed = 10.0f, .ballHitColor = { 65, 224, 70, 255 } }},
 
-        {Difficulty::Easy,  { .startingBallCount = 5, .ballMoveSpeed = 16.0f, .ballHitColor = { 0, 50, 255, 255 } }},
+        {Difficulty::Easy, { .startingBallCount = 5, .ballMoveSpeed = 16.0f, .ballHitColor = { 45, 172, 214, 255 } }},
 
-        {Difficulty::Hard,  { .startingBallCount = 3, .ballMoveSpeed = 22.0f, .ballHitColor = { 255, 50, 0, 255 } }},
+        {Difficulty::Hard,  { .startingBallCount = 3, .ballMoveSpeed = 22.0f, .ballHitColor = { 235, 59, 59, 255 } }},
 
-        {Difficulty::Nerd,     { .startingBallCount = 1, .ballMoveSpeed = 30.0f, .ballHitColor = { 0, 0, 0, 255 } }}
+        {Difficulty::Nerd,      { .startingBallCount = 1, .ballMoveSpeed = 30.0f, .ballHitColor = { 0, 0, 0, 255 } }}
     };
 
 

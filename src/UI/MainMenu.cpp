@@ -29,6 +29,49 @@ bout::MainMenu::MainMenu()
     subTitle.SetParent(this);
     subTitle.SetLocalPosition({ 0, 4 });
 
+
+    auto infoText = [this](const std::string& content, float offset, float size, SDL_Color color) -> bin::Text&
+    {
+        constexpr float infoTextSpacing = 0.9f;
+        constexpr glm::vec2 infoTextPosition = { -16.0f, 1.0f };
+
+        auto& text = bin::SceneGraph::AddNode<bin::Text>(
+            content, bin::Resources::GetFont(FontName::NES_Font), glm::vec2{ 0.0f, 0.5f }, size);
+        text.SetParent(this);
+        text.SetLocalPosition({ 1000, 1000 });  // TODO: add setting active to nodes lol
+
+        const glm::vec2 targetPosition = { infoTextPosition.x, infoTextPosition.y - infoTextSpacing * offset };
+
+        // Animate Slide In
+        bin::TweenEngine::Start(
+            {
+                .delay = offset * 0.5f + 2.0f,
+                .duration = 1.0f,
+                .easeType = bin::EaseType::SineOut,
+                .onUpdate =
+                    [&text, targetPosition, color](float value)
+                {
+                    constexpr float slideInDistance = 30.0f;
+                    const std::string toText = bin::math::TextCutoff("BREAKOUT", value);
+                    text.SetLocalPosition(
+                        bin::math::Lerp(targetPosition - glm::vec2{ slideInDistance, 0.0f }, targetPosition, value));
+                    text.SetColor(bin::math::Lerp({ color.r, color.g, color.b, 0 }, color, value));
+                },
+            },
+            text);
+
+        return text;
+    };
+
+    constexpr float infoTextHeaderSize = 0.65f;
+    constexpr float infoTextSize = 0.4f;
+    infoText("HOW TO PLAY", 1, infoTextHeaderSize, SDL_Color(200, 200, 200, 255));
+    infoText("- USE MOUSE TO FIRE", 2, infoTextSize, SDL_Color(150, 150, 150, 255));
+    infoText("- USE R TO PAUSE", 3, infoTextSize, SDL_Color(150, 150, 150, 255));
+    infoText("- USE C TO CHEAT CLEAR", 4, infoTextSize, SDL_Color(150, 150, 150, 255));
+    infoText("- USE B TO CHEAT BALL", 5, infoTextSize, SDL_Color(150, 150, 150, 255));
+
+
     auto& startButton = prefabs::TextButton({ 10, 2 }, "START", *this);
     startButton.SetParent(this);
     startButton.SetLocalPosition({ 0, -15 });

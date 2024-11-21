@@ -15,6 +15,8 @@ bin::Text::Text(std::string text, Font* font, const glm::vec2& alignment, float 
 
 float bin::Text::GetSize() const { return m_Size; }
 
+SDL_Color bin::Text::GetColor() const { return m_Color; }
+
 
 void bin::Text::SetText(const std::string& text)
 {
@@ -29,8 +31,8 @@ void bin::Text::SetSize(float size) { m_Size = std::max(0.0f, size); }
 
 void bin::Text::SetColor(const SDL_Color& color)
 {
-    UpdateTextTexture();
     m_Color = color;
+    UpdateTextTexture();
 }
 
 void bin::Text::UpdateTextTexture()

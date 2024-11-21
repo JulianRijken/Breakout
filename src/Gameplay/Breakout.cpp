@@ -96,8 +96,13 @@ void bout::Breakout::OnCheatSpawnBallInput(const bin::InputContext& context)
     if(context.state != bin::ButtonState::Down)
         return;
 
+    if(m_GameOver)
+        return;
+
     auto& ball = bin::SceneGraph::AddNode<Ball>();
     ball.LaunchBall();
+    ball.SetMoveDirection({ bin::math::RandomRange(-1.0f, 1.0f), 1.0f });
+    ball.SetWorldPosition(m_PaddlePtr->GetWorldPosition() + glm::vec2{ 0, 2 });
 }
 
 void bout::Breakout::OnCheatClearFieldInput(const bin::InputContext& context)
