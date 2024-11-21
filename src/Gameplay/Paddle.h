@@ -2,6 +2,7 @@
 #define PADDLE_H
 
 #include <Node.h>
+#include <SDL_pixels.h>
 
 namespace bin
 {
@@ -47,6 +48,11 @@ namespace bout
         static constexpr float ANGLE_DISTANCE = 30.0f;
         static constexpr float BUMP_DURATION = 0.3f;
         static constexpr float BUMP_HEIGHT = 0.4f;
+
+        static constexpr SDL_Color IDLE_COLOR = { 200, 200, 220, 240 };
+        static constexpr SDL_Color HIT_COLOR = { 255, 255, 255, 255 };
+        static constexpr glm::vec2 HIT_SCALE_ADDITION = { 0.65f, -0.3f };
+
 
         bout::Ball* m_HoldingBallPtr{};
         bin::Sprite* m_SpritePtr{};

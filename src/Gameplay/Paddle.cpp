@@ -22,7 +22,7 @@ bout::Paddle::Paddle()
     boxCollider.SetParent(this);
     boxCollider.m_OnHit.AddListener(this, &Paddle::OnHit);
 
-    m_SpritePtr = &bin::SceneGraph::AddNode<bin::Sprite>();
+    m_SpritePtr = &bin::SceneGraph::AddNode<bin::Sprite>(IDLE_COLOR);
     m_SpritePtr->SetLocalScale(PADDLE_SIZE);
     m_SpritePtr->SetParent(this);
 }
@@ -63,14 +63,20 @@ void bout::Paddle::OnHit(const bin::Manifold&)
 {
     bin::Audio::Play(bin::Resources::GetSound(SoundName::PaddleHit));
 
+
     // Needed for the lambda capture
     bin::Sprite* spritePtrCopy = m_SpritePtr;
+
+    // Animate paddle on hit
     bin::TweenEngine::Start({ .duration = BUMP_DURATION,
                               .onUpdate =
                                   [spritePtrCopy](float value)
                               {
                                   const float curve = bin::math::EvaluateCubicBezier(BUMP_CURVE, value).y;
-                                  spritePtrCopy->SetLocalPosition({ 0, curve * BUMP_HEIGHT });
+                                  const SDL_Color color = bin::math::Lerp(IDLE_COLOR, HIT_COLOR, curve);
+
+                                  spritePtrCopy->SetLocalScale(PADDLE_SIZE + HIT_SCALE_ADDITION * curve);
+                                  spritePtrCopy->SetColor(color);
                               } },
                             *spritePtrCopy);
 }
