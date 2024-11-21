@@ -141,7 +141,6 @@ void bout::Breakout::EndGame(bool hasWon)
 
     m_GameOver = true;
 
-
     // Slow down time
     bin::TweenEngine::Start({ .from = bin::GameTime::GetTimeScale(),
                               .to = 0.0f,
@@ -190,7 +189,6 @@ void bout::Breakout::EndGame(bool hasWon)
                                               [hasWon]()
                                           {
                                               bin::GameTime::SetTimeScale(1.0f);
-
 
                                               if(hasWon)
                                                   bin::SceneGraph::LoadScene(SceneName::GameWonScreen);

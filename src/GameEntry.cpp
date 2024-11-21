@@ -63,10 +63,12 @@ void bin::Core::GameEntry()
         []()
         {
             bin::SceneGraph::AddNode<bin::Camera>();
-            // bin::SceneGraph::AddNode<bin::ScoreScreen>();
 
-            auto& winnerText = bin::SceneGraph::AddNode<bin::Text>(
-                "YOU WIN!", bin::Resources::GetFont(bout::FontName::NES_Font), glm::vec2{ 0.5f, 0.5f }, 3.0f);
+            auto& winnerText = bin::SceneGraph::AddNode<bin::Text>("YOU WIN!",
+                                                                   bin::Resources::GetFont(bout::FontName::NES_Font),
+                                                                   glm::vec2{ 0.5f, 0.5f },
+                                                                   3.0f,
+                                                                   SDL_Color{ 60, 240, 100, 255 });
 
             // Show text
             bin::TweenEngine::Start({ .from = -15.0f,
@@ -89,28 +91,49 @@ void bin::Core::GameEntry()
                                           [&winnerText](float value) {
                                               winnerText.SetLocalPosition({ 0, value });
                                           },
-                                      .onEnd = []() { bin::SceneGraph::LoadScene(bout::SceneName::MainMenuScreen); } },
+                                      .onEnd = []() { bin::SceneGraph::LoadScene(bout::SceneName::ScoreScreen); } },
                                     winnerText);
-
-
-            //
-            //
         });
 
-    SceneGraph::BindScene(bout::SceneName::GameLostScreen,
-                          []()
-                          {
-                              bin::SceneGraph::LoadScene(bout::SceneName::MainMenuScreen);
-                              //
-                          });
+    SceneGraph::BindScene(
+        bout::SceneName::GameLostScreen,
+        []()
+        {
+            bin::SceneGraph::AddNode<bin::Camera>();
+
+            auto& winnerText = bin::SceneGraph::AddNode<bin::Text>("YOU LOSE",
+                                                                   bin::Resources::GetFont(bout::FontName::NES_Font),
+                                                                   glm::vec2{ 0.5f, 0.5f },
+                                                                   3.0f,
+                                                                   SDL_Color{ 240, 60, 100, 255 });
+
+            // Show text
+            bin::TweenEngine::Start({ .from = -15.0f,
+                                      .to = 0.0f,
+                                      .duration = 1.0f,
+                                      .easeType = EaseType::SineOut,
+                                      .onUpdate =
+                                          [&winnerText](float value) {
+                                              winnerText.SetLocalPosition({ 0, value });
+                                          } },
+                                    winnerText);
+
+            // Hide text
+            bin::TweenEngine::Start({ .delay = 2.0f,
+                                      .from = winnerText.GetLocalPosition().y,
+                                      .to = 15.0f,
+                                      .duration = 1.0f,
+                                      .easeType = EaseType::SineIn,
+                                      .onUpdate =
+                                          [&winnerText](float value) {
+                                              winnerText.SetLocalPosition({ 0, value });
+                                          },
+                                      .onEnd = []() { bin::SceneGraph::LoadScene(bout::SceneName::ScoreScreen); } },
+                                    winnerText);
+        });
 
 
-    SceneGraph::BindScene(bout::SceneName::ScoreScreen,
-                          []()
-                          {
-                              bin::SceneGraph::LoadScene(bout::SceneName::MainMenuScreen);
-                              //
-                          });
+    SceneGraph::BindScene(bout::SceneName::ScoreScreen, []() { bin::SceneGraph::AddNode<bin::ScoreScreen>(); });
 
 
     SceneGraph::BindScene(bout::SceneName::TestingSceneGraph,
