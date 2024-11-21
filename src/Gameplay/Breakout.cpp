@@ -144,7 +144,7 @@ void bout::Breakout::OnBrickBreakMessage(const bin::Message& /*unused*/) { Flash
 void bout::Breakout::OnFieldClearOfBallsMessage(const bin::Message& /*unused*/)
 {
     bin::Audio::Play(bin::Resources::GetSound(SoundName::BallLost));
-    GameState::GetInstance().IncrementBallsUsed();
+    GameState::GetInstance().IncrementBallsLost();
 
     if(GameState::GetInstance().HasBallsLeft())
         TySpawnBall();

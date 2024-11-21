@@ -32,14 +32,14 @@ namespace bout
         void ResetGame();
         void RemoveBall();
         void IncrementPaddleBounces();
-        void IncrementBallsUsed();
+        void IncrementBallsLost();
         void UseCheat();
 
         [[nodiscard]] const DifficultyPreset& GetDifficultyPreset() const;
 
         [[nodiscard]] int GetBallsLeft() const;
         [[nodiscard]] int GetGetScore() const;
-        [[nodiscard]] int GetBallsUsed() const;
+        [[nodiscard]] int GetBallsLost() const;
         [[nodiscard]] int GetBricksBroken() const;
         [[nodiscard]] int GetPaddleBounces() const;
         [[nodiscard]] int GetScecondsSinceGameReset() const;
@@ -59,7 +59,7 @@ namespace bout
 
         int m_BallsLeft{};
         int m_Score{};
-        int m_BallsUsed{};
+        int m_BallsLost{};
         int m_BricksBroken{};
         int m_PaddleBounces{};
         int m_BallsInScene{};

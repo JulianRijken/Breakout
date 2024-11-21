@@ -29,16 +29,16 @@ namespace bout
         {Difficulty::Noob,
          {
          .name = "NOOB",
-         .startingBallCount = 10,
+         .startingBallCount = 12,
          .ballMoveSpeed = 10.0f,
          .ballHitColor = { 65, 224, 70, 255 },
          }                                                                                                        },
 
         {Difficulty::Easy,
-         { .name = "EASY", .startingBallCount = 5, .ballMoveSpeed = 16.0f, .ballHitColor = { 45, 172, 214, 255 } }},
+         { .name = "EASY", .startingBallCount = 5, .ballMoveSpeed = 18.0f, .ballHitColor = { 45, 172, 214, 255 } }},
 
         {Difficulty::Hard,
-         { .name = "HARD", .startingBallCount = 3, .ballMoveSpeed = 23.0f, .ballHitColor = { 235, 59, 59, 255 } } },
+         { .name = "HARD", .startingBallCount = 3, .ballMoveSpeed = 24.0f, .ballHitColor = { 235, 59, 59, 255 } } },
 
         {Difficulty::Nerd,
          { .name = "NERD", .startingBallCount = 1, .ballMoveSpeed = 28.0f, .ballHitColor = { 0, 0, 0, 255 } }     }

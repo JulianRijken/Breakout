@@ -70,6 +70,7 @@ bout::MainMenu::MainMenu()
     infoText("- USE R TO PAUSE", 3, infoTextSize, SDL_Color(150, 150, 150, 255));
     infoText("- USE C TO CHEAT CLEAR", 4, infoTextSize, SDL_Color(150, 150, 150, 255));
     infoText("- USE B TO CHEAT BALL", 5, infoTextSize, SDL_Color(150, 150, 150, 255));
+    infoText("- USE 1-5 TO FORCE SCENE", 6, infoTextSize, SDL_Color(150, 150, 150, 255));
 
 
     auto& startButton = prefabs::TextButton({ 10, 2 }, "START", *this);
