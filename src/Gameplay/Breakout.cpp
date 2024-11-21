@@ -8,6 +8,7 @@
 #include <Paddle.h>
 #include <Resources.h>
 #include <SceneGraph.h>
+#include <Shaker.h>
 #include <Sprite.h>
 #include <Text.h>
 #include <TweenEngine.h>
@@ -27,7 +28,10 @@ bout::Breakout::Breakout()
     m_PlayfieldPtr = &bin::SceneGraph::AddNode<Playfield>(glm::vec2{ 24, 22 });
     m_PlayfieldPtr->SetParent(this);
 
+    m_CameraShakerPtr = &bin::SceneGraph::AddNode<bin::Shaker>();
+
     m_CameraPtr = &bin::SceneGraph::AddNode<bin::Camera>();
+    m_CameraPtr->SetParent(m_CameraShakerPtr);
     m_CameraPtr->SetOrthoSize(m_PlayfieldPtr->GetSize().y / 2.0f + CAMERA_PADDING);
     m_CameraPtr->SetLocalPosition({ 0, 0 });
 
@@ -35,7 +39,7 @@ bout::Breakout::Breakout()
     m_PaddlePtr->SetParent(m_PlayfieldPtr);
     m_PaddlePtr->SetLocalPosition({ 0, -m_PlayfieldPtr->GetSize().y / 2.0f });
 
-    auto& hud = bin::SceneGraph::AddNode<HUD>(m_GameStats);
+    auto& hud = bin::SceneGraph::AddNode<HUD>(m_GameStatsPtr);
     hud.SetParent(this);
 
     // Bind events
@@ -69,64 +73,91 @@ bout::Breakout::Breakout()
 
 bout::Breakout::~Breakout() { bin::MessageQueue::RemoveListenerInstance(this); }
 
+
 void bout::Breakout::FixedUpdate()
 {
     MovePaddle();
     OffsetPlayfield();
 }
 
-void bout::Breakout::Update()
+void bout::Breakout::OnFireBallInput(const bin::InputContext& context)
 {
-    constexpr float decayRate = 0.1f;
+    if(context.state != bin::ButtonState::Down)
+        return;
 
-    m_ShakeTimer += bin::GameTime::GetDeltaTime();
-    constexpr float shakeStrength = 0.3f;
-
-    const glm::vec2 offset = { bin::math::RandomRange(-1.0f, 1.0f), bin::math::RandomRange(-1.0f, 1.0f) };
-    const float decay = std::exp(-m_ShakeTimer / decayRate);
-
-    const glm::vec2 cameraOffset = shakeStrength * offset * decay;
-    m_CameraPtr->SetLocalPosition(cameraOffset);
+    m_PaddlePtr->TryLaunchBall(*m_PlayfieldPtr);
 }
 
-void bout::Breakout::OnWallHitMessage(const bin::Message& /*unused*/) { ShakeCamera(); }
-
-void bout::Breakout::OnBrickBreakMessage(const bin::Message& /*unused*/)
+void bout::Breakout::OnCheatSpawnBallInput(const bin::InputContext& context)
 {
-    // Flash screen
-    bin::TweenEngine::Start(
-        { .duration = BRICK_BREAK_FLASH_DURATION,
-          .onUpdate =
-              [this](float value)
-          {
-              const float curve = bin::math::EvaluateCubicBezier(BUMP_CURVE, value).y;
-              const SDL_Color color = { 255, 255, 255, static_cast<Uint8>(curve * BRICK_BREAK_FLASH_ALPHA) };
-              m_BackgroundFlashSpritePtr->SetColor(color);
-          } },
-        *this);
+    if(context.state != bin::ButtonState::Down)
+        return;
+
+    auto& ball = bin::SceneGraph::AddNode<Ball>();
+    ball.LaunchBall();
 }
+
+void bout::Breakout::OnCheatClearFieldInput(const bin::InputContext& context)
+{
+    if(context.state != bin::ButtonState::Down)
+        return;
+
+    m_PlayfieldPtr->BreakAllBricks();
+}
+
+void bout::Breakout::OnPauseGameInput(const bin::InputContext& context)
+{
+    if(context.state != bin::ButtonState::Down)
+        return;
+
+    if(m_GameOver)
+        return;
+
+
+    if(m_PauseMenuPtr == nullptr)
+    {
+        m_PauseMenuPtr = &bin::SceneGraph::AddNode<PauseMenu>();
+        bin::GameTime::SetTimeScale(0.0f);
+        bin::Audio::Play(bin::Resources::GetSound(SoundName::PauseGame));
+    }
+    else
+    {
+        bin::GameTime::SetTimeScale(1.0f);
+        m_PauseMenuPtr->HideAndDestroy();
+        m_PauseMenuPtr = nullptr;
+        bin::Audio::Play(bin::Resources::GetSound(SoundName::UnPauseGame));
+    }
+}
+
+void bout::Breakout::OnWallHitMessage(const bin::Message& /*unused*/) { m_CameraShakerPtr->StartShake(); }
+
+void bout::Breakout::OnBrickBreakMessage(const bin::Message& /*unused*/) { FlashScreen(); }
+
 
 void bout::Breakout::OnBallLostEvent()
 {
     bin::Audio::Play(bin::Resources::GetSound(SoundName::BallLost));
 
-    if(m_GameStats.HasBallsLeft())
+    if(m_GameStatsPtr.HasBallsLeft())
         TySpawnBall();
     else
         EndGame(false);
 }
+
+void bout::Breakout::OnPlayfieldClearedEvent() { EndGame(true); }
+
 
 void bout::Breakout::TySpawnBall()
 {
     if(m_PaddlePtr->IsHoldingBall())
         return;
 
-    if(not m_GameStats.HasBallsLeft())
+    if(not m_GameStatsPtr.HasBallsLeft())
         return;
 
     auto& ball = bin::SceneGraph::AddNode<Ball>();
     m_PaddlePtr->HoldBall(ball);
-    m_GameStats.RemoveBall();
+    m_GameStatsPtr.RemoveBall();
 
     // NOTE: We use a OnBallLost instead of on destroyed
     //       this is because if we do on destroyed we get in to a
@@ -136,7 +167,22 @@ void bout::Breakout::TySpawnBall()
     bin::MessageQueue::Broadcast(MessageType::BallSpawned);
 }
 
-void bout::Breakout::ShakeCamera() { m_ShakeTimer = 0.0f; }
+void bout::Breakout::OffsetPlayfield()
+{
+    constexpr glm::vec2 mouseMovePlayfieldStrength{ -0.02f, -0.02f };
+    constexpr float paddleMovePlayfieldStrength{ -0.04f };
+
+    const glm::vec2 mousePositionWorld = m_CameraPtr->ScreenToWorldPosition(bin::Input::GetMousePosition());
+    const glm::vec2 mouseOffset{ mousePositionWorld * mouseMovePlayfieldStrength };
+    const glm::vec2 paddleOffset{ m_PaddlePtr->GetLocalPosition().x * paddleMovePlayfieldStrength, 0 };
+    m_PlayfieldPtr->SetLocalPosition(mouseOffset + paddleOffset);
+}
+
+void bout::Breakout::MovePaddle()
+{
+    const glm::vec2 mousePositionWorld = m_CameraPtr->ScreenToWorldPosition(bin::Input::GetMousePosition());
+    m_PaddlePtr->SetPaddleTargetPosition(mousePositionWorld.x);
+}
 
 void bout::Breakout::EndGame(bool hasWon)
 {
@@ -205,70 +251,16 @@ void bout::Breakout::EndGame(bool hasWon)
                             *this);
 }
 
-void bout::Breakout::OnFireBallInput(const bin::InputContext& context)
+void bout::Breakout::FlashScreen()
 {
-    if(context.state != bin::ButtonState::Down)
-        return;
-
-    m_PaddlePtr->TryLaunchBall(*m_PlayfieldPtr);
-}
-
-void bout::Breakout::OnCheatSpawnBallInput(const bin::InputContext& context)
-{
-    if(context.state != bin::ButtonState::Down)
-        return;
-
-    auto& ball = bin::SceneGraph::AddNode<Ball>();
-    ball.LaunchBall();
-}
-
-void bout::Breakout::OnCheatClearFieldInput(const bin::InputContext& context)
-{
-    if(context.state != bin::ButtonState::Down)
-        return;
-
-    m_PlayfieldPtr->BreakAllBricks();
-}
-
-void bout::Breakout::OnPauseGameInput(const bin::InputContext& context)
-{
-    if(context.state != bin::ButtonState::Down)
-        return;
-
-    if(m_GameOver)
-        return;
-
-
-    if(m_PauseMenuPtr == nullptr)
-    {
-        m_PauseMenuPtr = &bin::SceneGraph::AddNode<PauseMenu>();
-        bin::GameTime::SetTimeScale(0.0f);
-        bin::Audio::Play(bin::Resources::GetSound(SoundName::PauseGame));
-    }
-    else
-    {
-        bin::GameTime::SetTimeScale(1.0f);
-        m_PauseMenuPtr->HideAndDestroy();
-        m_PauseMenuPtr = nullptr;
-        bin::Audio::Play(bin::Resources::GetSound(SoundName::UnPauseGame));
-    }
-}
-
-void bout::Breakout::OnPlayfieldClearedEvent() { EndGame(true); }
-
-void bout::Breakout::OffsetPlayfield()
-{
-    constexpr glm::vec2 mouseMovePlayfieldStrength{ -0.02f, -0.02f };
-    constexpr float paddleMovePlayfieldStrength{ -0.04f };
-
-    const glm::vec2 mousePositionWorld = m_CameraPtr->ScreenToWorldPosition(bin::Input::GetMousePosition());
-    const glm::vec2 mouseOffset{ mousePositionWorld * mouseMovePlayfieldStrength };
-    const glm::vec2 paddleOffset{ m_PaddlePtr->GetLocalPosition().x * paddleMovePlayfieldStrength, 0 };
-    m_PlayfieldPtr->SetLocalPosition(mouseOffset + paddleOffset);
-}
-
-void bout::Breakout::MovePaddle()
-{
-    const glm::vec2 mousePositionWorld = m_CameraPtr->ScreenToWorldPosition(bin::Input::GetMousePosition());
-    m_PaddlePtr->SetPaddleTargetPosition(mousePositionWorld.x);
+    bin::TweenEngine::Start(
+        { .duration = BRICK_BREAK_FLASH_DURATION,
+          .onUpdate =
+              [this](float value)
+          {
+              const float curve = bin::math::EvaluateCubicBezier(BUMP_CURVE, value).y;
+              const SDL_Color color = { 255, 255, 255, static_cast<Uint8>(curve * BRICK_BREAK_FLASH_ALPHA) };
+              m_BackgroundFlashSpritePtr->SetColor(color);
+          } },
+        *this);
 }

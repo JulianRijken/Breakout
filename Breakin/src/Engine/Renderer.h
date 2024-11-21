@@ -44,9 +44,6 @@ namespace bin
         [[nodiscard]] static glm::ivec2 GetWindowSize();
         [[nodiscard]] static float GetAspectRatio();
 
-        [[nodiscard]] static glm::ivec2 GetWindowSizeClamped();
-        [[nodiscard]] static float GetAspectRatioClamped();
-
         [[nodiscard]] static SDL_Texture* CreateTextureFromSurface(SDL_Surface* surface);
 
     private:

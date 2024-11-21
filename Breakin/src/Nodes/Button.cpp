@@ -19,7 +19,7 @@ void bin::Button::Update()
     const glm::ivec2 mousePosition = Input::GetMousePosition();
     const Uint32 mouseState = Input::GetMouseState();
 
-    const Camera* camera = SceneGraph::GetInstance().GetBestCamera();
+    Camera* camera = SceneGraph::GetInstance().GetBestCamera();
 
     if(camera == nullptr)
         return;

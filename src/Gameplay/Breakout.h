@@ -7,10 +7,11 @@
 
 namespace bin
 {
+    class Shaker;
     class Sprite;
+    class Camera;
     struct InputContext;
     struct Message;
-    class Camera;
 }
 
 namespace bout
@@ -33,7 +34,6 @@ namespace bout
 
     private:
         void FixedUpdate() override;
-        void Update() override;
 
         void OnFireBallInput(const bin::InputContext& context);
         void OnCheatSpawnBallInput(const bin::InputContext& context);
@@ -49,22 +49,23 @@ namespace bout
         void OffsetPlayfield();
         void MovePaddle();
         void TySpawnBall();
-        void ShakeCamera();
         void EndGame(bool hasWon);
+        void FlashScreen();
 
         static constexpr int BRICK_BREAK_FLASH_ALPHA{ 20 };
         static constexpr float BRICK_BREAK_FLASH_DURATION{ 0.14f };
         static constexpr float CAMERA_PADDING{ 3 };
 
-        float m_ShakeTimer{};
         bool m_GameOver{ false };
 
         bout::PauseMenu* m_PauseMenuPtr{};
-        bin::Sprite* m_BackgroundFlashSpritePtr{};
         bout::Playfield* m_PlayfieldPtr{};
-        bin::Camera* m_CameraPtr{};
         bout::Paddle* m_PaddlePtr{};
-        bout::GameStats m_GameStats{};
+        bout::GameStats m_GameStatsPtr{};
+
+        bin::Shaker* m_CameraShakerPtr{};
+        bin::Camera* m_CameraPtr{};
+        bin::Sprite* m_BackgroundFlashSpritePtr{};
     };
 
 }  // namespace bin

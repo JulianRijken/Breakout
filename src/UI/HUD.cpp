@@ -4,14 +4,13 @@
 #include <MessageQueue.h>
 #include <Resources.h>
 #include <SceneGraph.h>
+#include <Shaker.h>
 #include <Text.h>
 #include <TweenEngine.h>
 
 #include "GameStats.h"
 #include "GlobalSettings.h"
 #include "MathExtensions.h"
-
-
 bout::HUD::HUD(GameStats& gameStats)
 {
     m_ScoreText = &bin::SceneGraph::AddNode<bin::Text>(
@@ -20,9 +19,12 @@ bout::HUD::HUD(GameStats& gameStats)
     m_ScoreText->SetLocalPosition({ 0, 9 });
 
 
+    m_BallsLeftShaker = &bin::SceneGraph::AddNode<bin::Shaker>(0.0f, 0.04f, 0.05f, false);
+    m_BallsLeftShaker->SetParent(this);
+
     m_BallsLeftText = &bin::SceneGraph::AddNode<bin::Text>(
         "BALLS LEFT _", bin::Resources::GetFont(FontName::NES_Font), glm::vec2{ 0.5f, 0.5f }, 0.8f, FULL_BALLS_COLOR);
-    m_BallsLeftText->SetParent(this);
+    m_BallsLeftText->SetParent(m_BallsLeftShaker);
     m_BallsLeftText->SetLocalPosition({ 0, 7.0f });
 
 
@@ -59,11 +61,14 @@ void bout::HUD::OnScoreChanged(int score)
 
 void bout::HUD::OnBallsLeftChanged(int ballsLeft)
 {
-    const std::string text = ballsLeft > 0 ? fmt::format("BALLS LEFT {}", ballsLeft) : "NO BALLS";
+    const std::string text = ballsLeft > 0 ? fmt::format("BALLS LEFT {}", ballsLeft) : "NO BALLS LEFT";
     m_BallsLeftText->SetText(text);
 
-    // TODO: Get rid of magic number
-    m_BallsLeftText->SetColor(bin::math::Lerp(NO_BALLS_COLOR, FULL_BALLS_COLOR, static_cast<float>(ballsLeft) / 4.0f));
+    // TODO: Get rid of magic number 4.0f which is the balls count
+    float alpha = static_cast<float>(ballsLeft) / 4.0f;
+
+    m_BallsLeftText->SetColor(bin::math::Lerp(NO_BALLS_COLOR, FULL_BALLS_COLOR, alpha));
+    m_BallsLeftShaker->SetStrength(bin::math::Lerp(NO_BALLS_SHAKE_STRENGTH, FULL_BALLS_SHAKE_STRENGTH, alpha));
 }
 
 void bout::HUD::OnBallLaunchedMessage(const bin::Message& /*unused*/)

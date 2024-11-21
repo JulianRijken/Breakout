@@ -9,6 +9,13 @@ namespace bout
     {
     public:
         PauseMenu();
+
+        ~PauseMenu() override = default;
+        PauseMenu(PauseMenu&&) = delete;
+        PauseMenu(const PauseMenu&) = delete;
+        PauseMenu& operator=(PauseMenu&&) = delete;
+        PauseMenu& operator=(const PauseMenu&) = delete;
+
         void HideAndDestroy();
 
     private:
