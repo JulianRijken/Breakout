@@ -32,6 +32,7 @@ set(SOURCE_FILES
 
 add_executable(${TARGET_NAME}
     ${SOURCE_FILES}
+    src/Scenes.h src/Scenes.cpp
 )
 
 target_include_directories(${TARGET_NAME} PUBLIC

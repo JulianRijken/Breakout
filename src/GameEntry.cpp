@@ -11,7 +11,7 @@
 #include "Breakout.h"
 #include "GlobalSettings.h"
 #include "Resources.h"
-#include "ScoreScreen.h"
+#include "Scenes.h"
 
 void bin::Core::PreInit(bin::InitSettings& settings)
 {
@@ -25,7 +25,6 @@ void bin::Core::GameEntry()
     Audio::SetGlobalVolume(0.3f);
 
     Resources::LoadFont(bout::FontName::NES_Font, "Fonts/NES_Font.ttf", 8);
-
     Resources::LoadSound(bout::SoundName::WallHit, "Sounds/SFX 3.ogg");
     Resources::LoadSound(bout::SoundName::PaddleHit, "Sounds/Custom_PaddleHit.ogg");
     Resources::LoadSound(bout::SoundName::BrickBreak, "Sounds/Custom_BrickBreak.ogg");
@@ -35,18 +34,15 @@ void bin::Core::GameEntry()
     Resources::LoadSound(bout::SoundName::GameStart, "Sounds/SFX 10.ogg");
     Resources::LoadSound(bout::SoundName::GameLost, "Sounds/SFX 11.ogg");
     Resources::LoadSound(bout::SoundName::GameWon, "Sounds/SFX 1.ogg");
-
+    Resources::LoadSound(bout::SoundName::GameStartup, "Sounds/BubbleBobble_Startup.ogg");
 
     Input::AddInputAction(bout::InputActionName::CheatOpenMainMenu, { { SDL_SCANCODE_1 } });
     Input::AddInputAction(bout::InputActionName::CheatOpenGame, { { SDL_SCANCODE_2 } });
     Input::AddInputAction(bout::InputActionName::CheatOpenWinScreen, { { SDL_SCANCODE_3 } });
     Input::AddInputAction(bout::InputActionName::CheatOpenLoseScreen, { { SDL_SCANCODE_4 } });
     Input::AddInputAction(bout::InputActionName::CheatOpenScoreScreen, { { SDL_SCANCODE_5 } });
-
-
     Input::AddInputAction(bout::InputActionName::CheatSpawnBall, { { SDL_SCANCODE_B } });
     Input::AddInputAction(bout::InputActionName::CheatClearField, { { SDL_SCANCODE_C } });
-
     Input::AddInputAction(bout::InputActionName::PauseGame,
                           {
                               {SDL_SCANCODE_P, SDL_SCANCODE_ESCAPE}
@@ -54,173 +50,51 @@ void bin::Core::GameEntry()
     Input::AddInputAction(bout::InputActionName::FireBall, { { SDL_SCANCODE_SPACE }, true });
 
 
-    SceneGraph::BindScene(bout::SceneName::Game, []() { bin::SceneGraph::AddNode<bout::Breakout>(); });
-
-    SceneGraph::BindScene(bout::SceneName::MainMenuScreen, []() { bin::SceneGraph::AddNode<bout::MainMenu>(); });
-
-    SceneGraph::BindScene(
-        bout::SceneName::GameWonScreen,
-        []()
-        {
-            bin::SceneGraph::AddNode<bin::Camera>();
-
-            auto& winnerText = bin::SceneGraph::AddNode<bin::Text>("YOU WIN!",
-                                                                   bin::Resources::GetFont(bout::FontName::NES_Font),
-                                                                   glm::vec2{ 0.5f, 0.5f },
-                                                                   3.0f,
-                                                                   SDL_Color{ 60, 240, 100, 255 });
-
-            // Show text
-            bin::TweenEngine::Start({ .from = -15.0f,
-                                      .to = 0.0f,
-                                      .duration = 1.0f,
-                                      .easeType = EaseType::ElasticOut,
-                                      .onUpdate =
-                                          [&winnerText](float value) {
-                                              winnerText.SetLocalPosition({ 0, value });
-                                          } },
-                                    winnerText);
-
-            // Hide text
-            bin::TweenEngine::Start({ .delay = 2.0f,
-                                      .from = winnerText.GetLocalPosition().y,
-                                      .to = 15.0f,
-                                      .duration = 1.0f,
-                                      .easeType = EaseType::SineIn,
-                                      .onUpdate =
-                                          [&winnerText](float value) {
-                                              winnerText.SetLocalPosition({ 0, value });
-                                          },
-                                      .onEnd = []() { bin::SceneGraph::LoadScene(bout::SceneName::ScoreScreen); } },
-                                    winnerText);
-        });
-
-    SceneGraph::BindScene(
-        bout::SceneName::GameLostScreen,
-        []()
-        {
-            bin::SceneGraph::AddNode<bin::Camera>();
-
-            auto& winnerText = bin::SceneGraph::AddNode<bin::Text>("YOU LOSE",
-                                                                   bin::Resources::GetFont(bout::FontName::NES_Font),
-                                                                   glm::vec2{ 0.5f, 0.5f },
-                                                                   3.0f,
-                                                                   SDL_Color{ 240, 60, 100, 255 });
-
-            // Show text
-            bin::TweenEngine::Start({ .from = -15.0f,
-                                      .to = 0.0f,
-                                      .duration = 1.0f,
-                                      .easeType = EaseType::SineOut,
-                                      .onUpdate =
-                                          [&winnerText](float value) {
-                                              winnerText.SetLocalPosition({ 0, value });
-                                          } },
-                                    winnerText);
-
-            // Hide text
-            bin::TweenEngine::Start({ .delay = 2.0f,
-                                      .from = winnerText.GetLocalPosition().y,
-                                      .to = 15.0f,
-                                      .duration = 1.0f,
-                                      .easeType = EaseType::SineIn,
-                                      .onUpdate =
-                                          [&winnerText](float value) {
-                                              winnerText.SetLocalPosition({ 0, value });
-                                          },
-                                      .onEnd = []() { bin::SceneGraph::LoadScene(bout::SceneName::ScoreScreen); } },
-                                    winnerText);
-        });
-
-
-    SceneGraph::BindScene(bout::SceneName::ScoreScreen, []() { bin::SceneGraph::AddNode<bin::ScoreScreen>(); });
-
-
-    SceneGraph::BindScene(bout::SceneName::TestingSceneGraph,
-                               []()
-                               {
-                                   bin::SceneGraph::AddNode<Camera>();
-
-
-                                   auto& spriteOne = bin::SceneGraph::AddNode<Sprite>();
-
-                                   auto& spriteTwo = bin::SceneGraph::AddNode<Sprite>();
-                                   spriteTwo.SetParent(&spriteOne);
-                                   spriteTwo.SetLocalPosition({ 0, 2 });
-
-                                   auto& spriteThree = bin::SceneGraph::AddNode<Sprite>();
-                                   spriteThree.SetParent(&spriteTwo);
-                                   spriteThree.SetLocalPosition({ -5, 5 });
-
-                                   spriteThree.SetWorldAngle(0.0f);
-                                   spriteThree.SetWorldPosition({ -5, 5 });
-                                   spriteThree.SetWorldScale({ 1, 1 });
-
-                                   spriteThree.m_UseAbsoluteAngle = true;
-
-
-                                   bin::TweenEngine::Start({ .duration = 2.0f,
-                                                             .onUpdate =
-                                                                 [&spriteOne, &spriteTwo](float value)
-                                                             {
-                                                                 spriteOne.SetLocalScale({ 1.0f, value * 2 });
-                                                                 spriteOne.SetLocalPosition({ value, value });
-                                                                 spriteOne.SetLocalAngle(value * 360.0f);
-                                                                 spriteTwo.SetLocalPosition({ -value * 2, -value * 2 });
-                                                                 spriteTwo.SetLocalAngle(value * 180.0f);
-
-                                                                 // spriteThree.SetWorldAngle(0.0f);
-                                                                 // spriteThree.SetWorldPosition({ -5, 5 });
-                                                                 // spriteThree.SetWorldScale({ 1, 1 });
-                                                             } },
-                                                           spriteOne);
-                               });
+    SceneGraph::BindScene(bout::SceneName::Game, bout::scenes::GameScene);
+    SceneGraph::BindScene(bout::SceneName::MainMenu, bout::scenes::MainMenuScene);
+    SceneGraph::BindScene(bout::SceneName::GameWon, bout::scenes::GameWonScene);
+    SceneGraph::BindScene(bout::SceneName::GameLost, bout::scenes::GameLostScene);
+    SceneGraph::BindScene(bout::SceneName::Score, bout::scenes::ScoreScene);
 
 
     Input::Bind(bout::InputActionName::CheatOpenMainMenu,
                 [](const InputContext& context)
                 {
-                    if(context.state != bin::ButtonState::Down)
-                        return;
-
-                    bin::SceneGraph::LoadScene(bout::SceneName::MainMenuScreen);
+                    if(context.state == bin::ButtonState::Down)
+                        bin::SceneGraph::LoadScene(bout::SceneName::MainMenu);
                 });
 
     Input::Bind(bout::InputActionName::CheatOpenGame,
                 [](const InputContext& context)
                 {
-                    if(context.state != bin::ButtonState::Down)
-                        return;
-
-                    bin::SceneGraph::LoadScene(bout::SceneName::Game);
+                    if(context.state == bin::ButtonState::Down)
+                        bin::SceneGraph::LoadScene(bout::SceneName::Game);
                 });
 
     Input::Bind(bout::InputActionName::CheatOpenWinScreen,
                 [](const InputContext& context)
                 {
-                    if(context.state != bin::ButtonState::Down)
-                        return;
-
-                    bin::SceneGraph::LoadScene(bout::SceneName::GameWonScreen);
+                    if(context.state == bin::ButtonState::Down)
+                        bin::SceneGraph::LoadScene(bout::SceneName::GameWon);
                 });
 
     Input::Bind(bout::InputActionName::CheatOpenLoseScreen,
                 [](const InputContext& context)
                 {
-                    if(context.state != bin::ButtonState::Down)
-                        return;
-
-                    bin::SceneGraph::LoadScene(bout::SceneName::GameLostScreen);
+                    if(context.state == bin::ButtonState::Down)
+                        bin::SceneGraph::LoadScene(bout::SceneName::GameLost);
                 });
 
     Input::Bind(bout::InputActionName::CheatOpenScoreScreen,
                 [](const InputContext& context)
                 {
-                    if(context.state != bin::ButtonState::Down)
-                        return;
-
-                    bin::SceneGraph::LoadScene(bout::SceneName::ScoreScreen);
+                    if(context.state == bin::ButtonState::Down)
+                        bin::SceneGraph::LoadScene(bout::SceneName::Score);
                 });
 
-    SceneGraph::LoadScene(bout::SceneName::MainMenuScreen);
+    // Play little sound for the user to know it works
+    Audio::Play(bout::SoundName::GameStartup);
+
+    // Load main scene by default
+    SceneGraph::LoadScene(bout::SceneName::MainMenu);
 }

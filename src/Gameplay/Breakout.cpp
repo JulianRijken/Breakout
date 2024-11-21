@@ -191,9 +191,9 @@ void bout::Breakout::EndGame(bool hasWon)
                                               bin::GameTime::SetTimeScale(1.0f);
 
                                               if(hasWon)
-                                                  bin::SceneGraph::LoadScene(SceneName::GameWonScreen);
+                                                  bin::SceneGraph::LoadScene(SceneName::GameWon);
                                               else
-                                                  bin::SceneGraph::LoadScene(SceneName::GameLostScreen);
+                                                  bin::SceneGraph::LoadScene(SceneName::GameLost);
                                           },
                                       },
                                       *this);

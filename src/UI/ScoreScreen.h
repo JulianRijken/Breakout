@@ -3,16 +3,15 @@
 
 #include <Node.h>
 
-namespace bin
+namespace bout
 {
-
-    class ScoreScreen final : public Node
+    class ScoreScreen final : public bin::Node
     {
     public:
         ScoreScreen();
     };
 
-}  // namespace bin
+}  // namespace bout
 
 
 #endif  // SCORESCREEN_H
