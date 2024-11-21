@@ -49,6 +49,7 @@ bout::Breakout::Breakout()
     m_PlayfieldPtr->m_OnFieldCleared.AddListener(this, &Breakout::OnPlayfieldClearedEvent);
     bin::MessageQueue::AddListener(MessageType::BallCollided, this, &Breakout::OnWallHitMessage);
     bin::MessageQueue::AddListener(MessageType::BrickBreak, this, &Breakout::OnBrickBreakMessage);
+    bin::MessageQueue::AddListener(MessageType::FieldClearOfBalls, this, &Breakout::OnFieldClearOfBallsMessage);
     bin::Input::Bind(InputActionName::FireBall, this, &Breakout::OnFireBallInput);
     bin::Input::Bind(InputActionName::CheatSpawnBall, this, &Breakout::OnCheatSpawnBallInput);
     bin::Input::Bind(InputActionName::CheatClearField, this, &Breakout::OnCheatClearFieldInput);
@@ -140,11 +141,10 @@ void bout::Breakout::OnWallHitMessage(const bin::Message& /*unused*/) { m_Camera
 
 void bout::Breakout::OnBrickBreakMessage(const bin::Message& /*unused*/) { FlashScreen(); }
 
-
-void bout::Breakout::OnBallLostEvent()
+void bout::Breakout::OnFieldClearOfBallsMessage(const bin::Message& /*unused*/)
 {
     bin::Audio::Play(bin::Resources::GetSound(SoundName::BallLost));
-    GameState::GetInstance().IncrementBallsLost();
+    GameState::GetInstance().IncrementBallsUsed();
 
     if(GameState::GetInstance().HasBallsLeft())
         TySpawnBall();
@@ -163,20 +163,13 @@ void bout::Breakout::TySpawnBall()
     if(not GameState::GetInstance().HasBallsLeft())
         return;
 
-
     const float moveSpeed = GameState::GetInstance().GetDifficultyPreset().ballMoveSpeed;
     const SDL_Color ballHitColor = GameState::GetInstance().GetDifficultyPreset().ballHitColor;
 
     auto& ball = bin::SceneGraph::AddNode<Ball>(moveSpeed, ballHitColor);
     m_PaddlePtr->HoldBall(ball);
+    bin::MessageQueue::Broadcast(MessageType::BallSetToLaunch);
     GameState::GetInstance().RemoveBall();
-
-    // NOTE: We use a OnBallLost instead of on destroyed
-    //       this is because if we do on destroyed we get in to a
-    //       destroy and create loop
-    ball.m_OnBallLostEvent.AddListener(this, &Breakout::OnBallLostEvent);
-
-    bin::MessageQueue::Broadcast(MessageType::BallSpawned);
 }
 
 void bout::Breakout::OffsetPlayfield()

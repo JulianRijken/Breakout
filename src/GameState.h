@@ -32,14 +32,14 @@ namespace bout
         void ResetGame();
         void RemoveBall();
         void IncrementPaddleBounces();
-        void IncrementBallsLost();
+        void IncrementBallsUsed();
         void UseCheat();
 
         [[nodiscard]] const DifficultyPreset& GetDifficultyPreset() const;
 
         [[nodiscard]] int GetBallsLeft() const;
         [[nodiscard]] int GetGetScore() const;
-        [[nodiscard]] int GetBallsLost() const;
+        [[nodiscard]] int GetBallsUsed() const;
         [[nodiscard]] int GetBricksBroken() const;
         [[nodiscard]] int GetPaddleBounces() const;
         [[nodiscard]] int GetScecondsSinceGameReset() const;
@@ -54,12 +54,15 @@ namespace bout
 
     private:
         void OnBrickBreakMessage(const bin::Message& message);
+        void OnBallLostMessage(const bin::Message& message);
+        void OnBallSpawnedMessage(const bin::Message& message);
 
         int m_BallsLeft{};
         int m_Score{};
-        int m_BallsLost{};
+        int m_BallsUsed{};
         int m_BricksBroken{};
         int m_PaddleBounces{};
+        int m_BallsInScene{};
         bool m_HasCheated{};
 
         // This is why we hate chrono

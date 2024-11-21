@@ -34,7 +34,7 @@ namespace bout
         void OnBallsLeftChangedEvent(int ballsLeft);
 
         void OnBallLaunchedMessage(const bin::Message& message);
-        void OnBallSpawnedMessage(const bin::Message& message);
+        void OnBallSetToLaunch(const bin::Message& message);
 
         void UpdateBallsLeftText(int ballsLeft);
         void UpdateScoreText(int score);

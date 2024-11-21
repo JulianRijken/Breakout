@@ -22,6 +22,8 @@ bout::Ball::Ball(float moveSpeed, SDL_Color hitColor, SDL_Color normalColor) :
 
     m_TrailPtr = &bin::SceneGraph::AddNode<bin::Trail>();
     m_TrailPtr->SetParent(this);
+
+    bin::MessageQueue::Broadcast(MessageType::BallSpawned);
 }
 
 void bout::Ball::Update() { UpdateBallColor(); }
@@ -63,7 +65,10 @@ void bout::Ball::OnHitWall()
 
 void bout::Ball::OnBallUnderMap()
 {
-    m_OnBallLostEvent.Invoke();
+    if(IsMarkedForDestroy())
+        return;
+
+    bin::MessageQueue::Broadcast(MessageType::BallLost);
     MarkForDestroy();
 }
 

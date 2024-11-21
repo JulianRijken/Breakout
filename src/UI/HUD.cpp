@@ -42,7 +42,7 @@ bout::HUD::HUD()
     GameState::GetInstance().m_OnBallsLeftChanged.AddListener(this, &bout::HUD::OnBallsLeftChangedEvent);
 
     bin::MessageQueue::AddListener(MessageType::BallLaunched, this, &HUD::OnBallLaunchedMessage);
-    bin::MessageQueue::AddListener(MessageType::BallSpawned, this, &HUD::OnBallSpawnedMessage);
+    bin::MessageQueue::AddListener(MessageType::BallSetToLaunch, this, &HUD::OnBallSetToLaunch);
 
     UpdateBallsLeftText(GameState::GetInstance().GetBallsLeft());
     UpdateScoreText(GameState::GetInstance().GetGetScore());
@@ -84,7 +84,7 @@ void bout::HUD::OnBallLaunchedMessage(const bin::Message& /*unused*/)
                             *this);
 }
 
-void bout::HUD::OnBallSpawnedMessage(const bin::Message& /*unused*/)
+void bout::HUD::OnBallSetToLaunch(const bin::Message& /*unused*/)
 {
     bin::TweenEngine::Start({ .from = 0.0f,
                               .to = LAUNCH_BALL_TEXT_SIZE,

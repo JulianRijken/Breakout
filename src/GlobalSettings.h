@@ -53,7 +53,10 @@ namespace bout
         BrickBreak,
 
         BallSpawned,
-        BallLaunched
+        BallLost,
+        FieldClearOfBalls,
+        BallLaunched,
+        BallSetToLaunch
     };
 
     enum class InputActionName

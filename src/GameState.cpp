@@ -6,6 +6,8 @@
 bout::GameState::GameState()
 {
     bin::MessageQueue::AddListener(MessageType::BrickBreak, this, &GameState::OnBrickBreakMessage);
+    bin::MessageQueue::AddListener(MessageType::BallSpawned, this, &GameState::OnBallSpawnedMessage);
+    bin::MessageQueue::AddListener(MessageType::BallLost, this, &GameState::OnBallLostMessage);
 }
 
 void bout::GameState::ResetGame()
@@ -17,6 +19,7 @@ void bout::GameState::ResetGame()
     m_PaddleBounces = 0;
     m_BricksBroken = 0;
     m_BallsLost = 0;
+    m_BallsInScene = 0;
 }
 
 const bout::DifficultyPreset& bout::GameState::GetDifficultyPreset() const
@@ -66,3 +69,14 @@ void bout::GameState::OnBrickBreakMessage(const bin::Message& message)
     m_Score += pointsWorth;
     m_OnScoreChanged.Invoke(m_Score);
 }
+
+void bout::GameState::OnBallLostMessage(const bin::Message&)
+{
+    m_BallsInScene--;
+    assert(m_BallsInScene >= 0 && "Ball lost without getting spawned");
+
+    if(m_BallsInScene == 0)
+        bin::MessageQueue::Broadcast(MessageType::FieldClearOfBalls);
+}
+
+void bout::GameState::OnBallSpawnedMessage(const bin::Message&) { m_BallsInScene++; }

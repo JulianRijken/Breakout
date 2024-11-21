@@ -29,8 +29,6 @@ namespace bout
         void LaunchBall();
         void SetMoveDirection(glm::vec2 moveDirection);
 
-        bin::Event<> m_OnBallLostEvent{};
-
     private:
         void Update() override;
         void FixedUpdate() override;

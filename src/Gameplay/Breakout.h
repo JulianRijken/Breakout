@@ -40,8 +40,8 @@ namespace bout
 
         void OnWallHitMessage(const bin::Message& message);
         void OnBrickBreakMessage(const bin::Message& message);
+        void OnFieldClearOfBallsMessage(const bin::Message& message);
 
-        void OnBallLostEvent();
         void OnPlayfieldClearedEvent();
 
         void OffsetPlayfield();

@@ -51,6 +51,9 @@ bout::Playfield::Playfield(const glm::vec2& size) :
 
             assert(brickSpawned != nullptr && "Brick does not exist");
 
+            if((x + 4) % 6 == 0 and (y + 1) % 2 == 0)
+                brickSpawned->HoldBall();
+
             brickSpawned->SetLocalPosition(spawnPosition);
 
             m_BrickPtrs.insert(brickSpawned);
