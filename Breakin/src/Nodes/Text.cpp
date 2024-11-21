@@ -53,7 +53,7 @@ void bin::Text::UpdateTextTexture()
     if(texture == nullptr)
         throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
 
-    m_TexturePtr = std::make_unique<bin::Texture>(texture);
+    m_TexturePtr = std::make_unique<Texture>(texture);
 }
 
 void bin::Text::Draw(const Renderer& renderer)

@@ -37,20 +37,20 @@ void bin::Shaker::Update()
 void bin::Shaker::IncrementShake()
 {
     // Handle shake offset
-    m_OffsetTimer += bin::GameTime::GetDeltaTime();
+    m_OffsetTimer += GameTime::GetDeltaTime();
     if(m_OffsetTimer > m_OffsetInterval)
     {
-        m_Offset = { bin::math::RandomRange(-1.0f, 1.0f), bin::math::RandomRange(-1.0f, 1.0f) };
+        m_Offset = { math::RandomRange(-1.0f, 1.0f), math::RandomRange(-1.0f, 1.0f) };
         m_OffsetTimer -= m_OffsetInterval;
     }
 
-    // We defaul to no decay aka 1.0f
+    // We default to no decay aka 1.0f
     m_Decay = 1.0f;
 
     // Handle decay
     if(m_DoesDecay)
     {
-        m_ShakeTimer += bin::GameTime::GetDeltaTime();
+        m_ShakeTimer += GameTime::GetDeltaTime();
         m_Decay = std::exp(-m_ShakeTimer / m_DecayRate);
 
         constexpr float epsilon = 0.001f;
@@ -64,6 +64,6 @@ void bin::Shaker::UpdatePosition()
     // Center when we don't shake
     const glm::vec2 targetPosition = m_IsShaking ? m_ShakeStrength * m_Offset * m_Decay : glm::vec2{ 0.0f, 0.0f };
     const glm::vec2 smoothPosition =
-        bin::math::LerpSmooth(GetLocalPosition(), targetPosition, m_SmoothStrength, bin::GameTime::GetDeltaTime());
+        math::LerpSmooth(GetLocalPosition(), targetPosition, m_SmoothStrength, GameTime::GetDeltaTime());
     SetLocalPosition(smoothPosition);
 }

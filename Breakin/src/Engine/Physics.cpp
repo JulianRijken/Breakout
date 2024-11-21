@@ -6,9 +6,9 @@
 
 #include "MathExtensions.h"
 
-void bin::Physics::RegisterCollider(bin::BoxCollider* boxCollider) { m_Colliders.insert(boxCollider); }
+void bin::Physics::RegisterCollider(BoxCollider* boxCollider) { m_Colliders.insert(boxCollider); }
 
-void bin::Physics::UnregisterCollider(bin::BoxCollider* boxCollider) { m_Colliders.erase(boxCollider); }
+void bin::Physics::UnregisterCollider(BoxCollider* boxCollider) { m_Colliders.erase(boxCollider); }
 
 std::pair<bool, bin::Manifold> bin::Physics::DoesOverlap(bin::BoxCollider* a, bin::BoxCollider* b)
 {
@@ -26,7 +26,7 @@ std::pair<bool, bin::Manifold> bin::Physics::DoesOverlap(bin::BoxCollider* a, bi
     const glm::vec2 maxB = posB + sizeB * 0.5f;
 
     const glm::bvec2 overlap =
-        bin::math::AABB(a->GetWorldPosition(), a->GetSize(), b->GetWorldPosition(), b->GetSize());
+        math::AABB(a->GetWorldPosition(), a->GetSize(), b->GetWorldPosition(), b->GetSize());
 
     Manifold m{};
 

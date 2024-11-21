@@ -16,19 +16,20 @@ namespace bin
         glm::ivec2 normal;
     };
 
-    class Physics final : public bin::Service
+    class Physics final : public Service
     {
-        friend class bin::BoxCollider;
+        // Allow the box collider to register and unregister itself
+        friend class BoxCollider;
 
     public:
-        [[nodiscard]] static std::pair<bool, Manifold> DoesOverlap(bin::BoxCollider* a, bin::BoxCollider* b);
-        [[nodiscard]] const std::unordered_set<bin::BoxCollider*>& GetColliders() const;
+        [[nodiscard]] static std::pair<bool, Manifold> DoesOverlap(BoxCollider* a, BoxCollider* b);
+        [[nodiscard]] const std::unordered_set<BoxCollider*>& GetColliders() const;
 
     private:
-        void RegisterCollider(bin::BoxCollider* boxCollider);
-        void UnregisterCollider(bin::BoxCollider* boxCollider);
+        void RegisterCollider(BoxCollider* boxCollider);
+        void UnregisterCollider(BoxCollider* boxCollider);
 
-        std::unordered_set<bin::BoxCollider*> m_Colliders{};
+        std::unordered_set<BoxCollider*> m_Colliders{};
     };
 }  // namespace bin
 

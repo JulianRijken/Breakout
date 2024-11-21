@@ -1,6 +1,5 @@
 #include "Camera.h"
 
-#include "Locator.h"
 #include "Renderer.h"
 #include "SceneGraph.h"
 

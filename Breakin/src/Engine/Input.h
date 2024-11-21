@@ -1,7 +1,6 @@
 #ifndef INPUT_H
 #define INPUT_H
 
-#include <SDL_events.h>
 #include <SDL_scancode.h>
 
 #include <glm/vec2.hpp>
@@ -47,7 +46,7 @@ namespace bin
         }
 
         InputAction* inputActionPtr{};
-        bin::Event<const InputContext&> inputEvent{};
+        Event<const InputContext&> inputEvent{};
     };
 
     class Input final : public Singleton<Input>

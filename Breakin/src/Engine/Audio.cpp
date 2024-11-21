@@ -30,7 +30,7 @@ void bin::Audio::Play(Sound* sound)
 {
     assert(sound != nullptr && "Sound is null");
 
-    // TODO: Make voule a global setting
+    // TODO: Make volume a global setting
     const int volume = static_cast<int>(std::ceil(Locator::Get<Audio>().m_GlobalVolume * MIX_MAX_VOLUME));
     Mix_VolumeChunk(sound->m_MixChunk, volume);
     Mix_Volume(-1, volume);

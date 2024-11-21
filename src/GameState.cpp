@@ -29,7 +29,7 @@ const bout::DifficultyPreset& bout::GameState::GetDifficultyPreset() const
 
 int bout::GameState::GetBallsLeft() const { return m_BallsLeft; }
 
-int bout::GameState::GetGetScore() const { return m_Score; }
+int bout::GameState::GetScore() const { return m_Score; }
 
 int bout::GameState::GetBallsLost() const { return m_BallsLost; }
 

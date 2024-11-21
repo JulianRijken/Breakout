@@ -2,7 +2,6 @@
 #define NODE_H
 
 #include <Event.h>
-
 #include <glm/mat3x3.hpp>
 #include <glm/vec2.hpp>
 #include <unordered_set>
@@ -40,7 +39,6 @@ namespace bin
 
             return nullptr;
         }
-
 
         void Translate(const glm::vec2& delta);
 

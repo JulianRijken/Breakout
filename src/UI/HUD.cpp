@@ -45,7 +45,7 @@ bout::HUD::HUD()
     bin::MessageQueue::AddListener(MessageType::BallSetToLaunch, this, &HUD::OnBallSetToLaunch);
 
     UpdateBallsLeftText(GameState::GetInstance().GetBallsLeft());
-    UpdateScoreText(GameState::GetInstance().GetGetScore());
+    UpdateScoreText(GameState::GetInstance().GetScore());
 }
 
 bout::HUD::~HUD() { bin::MessageQueue::RemoveListenerInstance(this); }

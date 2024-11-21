@@ -29,14 +29,18 @@ namespace bin
         // Requires to be public for Emscripten
         void IncrementFrame();
 
+        // TODO: Not ideal to have this static
+        //       this is for g_IsApplicationQuitting
+        //       in the future consider a different way for the game to communicate it wants to quit
         static void QuitGame();
 
     private:
         // Is implemented by the game
         void PreInit(InitSettings& initSettings);
+
+        // Is implemented by the game
         void GameEntry();
 
-        // We are Breakin' and Entering!
         void Run();
 
         // We hate this being static!

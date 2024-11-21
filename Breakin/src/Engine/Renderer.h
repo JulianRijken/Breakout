@@ -14,7 +14,6 @@ struct SDL_Surface;
 
 namespace bin
 {
-
     class Texture;
 
     class Renderer final : public bin::Service

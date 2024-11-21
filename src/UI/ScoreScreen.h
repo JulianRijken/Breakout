@@ -12,7 +12,7 @@ namespace bout
 
     private:
         void ShowStats();
-        void ExitScren();
+        void ExitScreen();
     };
 
 }  // namespace bout

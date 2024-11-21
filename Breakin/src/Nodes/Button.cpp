@@ -19,14 +19,14 @@ void bin::Button::Update()
     const glm::ivec2 mousePosition = Input::GetMousePosition();
     const Uint32 mouseState = Input::GetMouseState();
 
-    Camera* camera = SceneGraph::GetInstance().GetBestCamera();
+    const Camera* camera = SceneGraph::GetInstance().GetBestCamera();
 
     if(camera == nullptr)
         return;
 
     const glm::vec2 mouseWorldPosition = camera->ScreenToWorldPosition(mousePosition);
 
-    bool wasMouseOver = m_IsMouseOver;
+    const bool wasMouseOver = m_IsMouseOver;
     m_IsMouseOver = math::ABB(mouseWorldPosition, GetWorldPosition(), m_Size * GetWorldScale());
 
     if(wasMouseOver == false and m_IsMouseOver == true)
@@ -39,7 +39,6 @@ void bin::Button::Update()
         bin::math::LerpSmooth(m_CurrentScale, targetScale, m_ScaleLerpDuration, GameTime::GetUnscaledDeltaTime());
     SetLocalScale(glm::vec2(1.0f) * m_CurrentScale);
 
-
     // TODO: Holding mouse down and hovering over also triggers now
     if(m_IsMouseDown)
     {
@@ -48,7 +47,6 @@ void bin::Button::Update()
             m_IsPressed = false;
             return;
         }
-
 
         if(m_IsPressed)
             return;

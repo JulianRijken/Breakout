@@ -41,9 +41,9 @@ namespace bin
             m_ButtonReleasedSound = Resources::GetSound(sound);
         }
 
-        bin::Event<> m_OnHover{};
-        bin::Event<> m_OnPress{};
-        bin::Event<> m_OnReleased{};
+        Event<> m_OnHover{};
+        Event<> m_OnPress{};
+        Event<> m_OnReleased{};
 
         float m_PressedScale{ 1.0f };                     // NOLINT - C.131: Avoid trivial getters and setters
         float m_SelectedScale{ 1.2f };                    // NOLINT - C.131: Avoid trivial getters and setters
@@ -60,11 +60,9 @@ namespace bin
         void OnPress();
         void OnReleased();
 
-
         Sound* m_ButtonHoverSound{};
         Sound* m_ButtonPressSound{};
         Sound* m_ButtonReleasedSound{};
-
 
         bool m_IsMouseOver{};
         bool m_IsMouseDown{};

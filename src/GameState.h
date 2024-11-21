@@ -38,7 +38,7 @@ namespace bout
         [[nodiscard]] const DifficultyPreset& GetDifficultyPreset() const;
 
         [[nodiscard]] int GetBallsLeft() const;
-        [[nodiscard]] int GetGetScore() const;
+        [[nodiscard]] int GetScore() const;
         [[nodiscard]] int GetBallsLost() const;
         [[nodiscard]] int GetBricksBroken() const;
         [[nodiscard]] int GetPaddleBounces() const;

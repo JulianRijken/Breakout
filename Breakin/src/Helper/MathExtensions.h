@@ -144,7 +144,7 @@ namespace bin::math
 
         t = Clamp01(t);
 
-        auto charCount = static_cast<size_t>(std::ceil(t * text.size()));
+        const auto charCount = static_cast<size_t>(std::ceil(t * text.size()));
         result = text.substr(0, charCount);
 
         return result;

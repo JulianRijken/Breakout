@@ -91,7 +91,7 @@ void bin::SceneGraph::LoadSceneSetToLoad()
     // Add nodes instantly
     MoveAddedNodesToActiveNodes();
 
-    // TODO: We force reset the time scale
+    // TODO: We force reset the timescale
     //       this should be an option when calling load scene
     bin::GameTime::SetTimeScale(1.0f);
 }

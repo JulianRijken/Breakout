@@ -38,7 +38,7 @@ bout::ScoreScreen::ScoreScreen()
     auto& returnButton = prefabs::TextButton({ 10, 2 }, "RETURN", *this);
     returnButton.SetParent(this);
     returnButton.SetLocalPosition({ 0, -7 });
-    returnButton.m_OnReleased.AddListener(this, &ScoreScreen::ExitScren);
+    returnButton.m_OnReleased.AddListener(this, &ScoreScreen::ExitScreen);
     returnButton.SetOnHoverSound(SoundName::ButtonHover);
     returnButton.SetOnPressSound(SoundName::ButtonPress);
     returnButton.SetOnReleasedSound(SoundName::ButtonRelease);
@@ -56,16 +56,25 @@ bout::ScoreScreen::ScoreScreen()
 void bout::ScoreScreen::ShowStats()
 {
     constexpr float textSpacing = 1.5f;
-    constexpr float textPosition = 3.0f;
+    constexpr float textPosition = 3.5f;
+
+    auto& scoreText = bin::SceneGraph::AddNode<bin::Text>(fmt::format("SCORE: {}", GameState::GetInstance().GetScore()),
+                                            bin::Resources::GetFont(FontName::NES_Font),
+                                            glm::vec2{ 0.5f, 0.5f },
+                                            0.8f,
+                                            SDL_Color(200, 200, 200, 255));
+    scoreText.SetParent(this);
+    scoreText.SetLocalPosition({ 0, textPosition - textSpacing * 0 });
+
 
     auto& difficultyText = bin::SceneGraph::AddNode<bin::Text>(
-        fmt::format("DIFFUCULTY: {}", GameState::GetInstance().GetDifficultyPreset().name),
+        fmt::format("DIFFICULTY: {}", GameState::GetInstance().GetDifficultyPreset().name),
         bin::Resources::GetFont(FontName::NES_Font),
         glm::vec2{ 0.5f, 0.5f },
         0.8f,
         SDL_Color(200, 200, 200, 255));
     difficultyText.SetParent(this);
-    difficultyText.SetLocalPosition({ 0, textPosition - textSpacing * 0 });
+    difficultyText.SetLocalPosition({ 0, textPosition - textSpacing * 1 });
 
 
     const int timePlayedInSeconds = GameState::GetInstance().GetScecondsSinceGameReset();
@@ -78,16 +87,16 @@ void bout::ScoreScreen::ShowStats()
                                             0.8f,
                                             SDL_Color(200, 200, 200, 255));
     timePlayedText.SetParent(this);
-    timePlayedText.SetLocalPosition({ 0, textPosition - textSpacing * 1 });
+    timePlayedText.SetLocalPosition({ 0, textPosition - textSpacing * 2 });
 
-    auto& ballsLost =
+    auto& ballsLostText =
         bin::SceneGraph::AddNode<bin::Text>(fmt::format("BALLS LOST: {}", GameState::GetInstance().GetBallsLost()),
                                             bin::Resources::GetFont(FontName::NES_Font),
                                             glm::vec2{ 0.5f, 0.5f },
                                             0.8f,
                                             SDL_Color(200, 200, 200, 255));
-    ballsLost.SetParent(this);
-    ballsLost.SetLocalPosition({ 0, textPosition - textSpacing * 2 });
+    ballsLostText.SetParent(this);
+    ballsLostText.SetLocalPosition({ 0, textPosition - textSpacing * 3 });
 
     auto& bricksBrokenText = bin::SceneGraph::AddNode<bin::Text>(
         fmt::format("BRICKS BROKEN: {}", GameState::GetInstance().GetBricksBroken()),
@@ -96,7 +105,7 @@ void bout::ScoreScreen::ShowStats()
         0.8f,
         SDL_Color(200, 200, 200, 255));
     bricksBrokenText.SetParent(this);
-    bricksBrokenText.SetLocalPosition({ 0, textPosition - textSpacing * 3 });
+    bricksBrokenText.SetLocalPosition({ 0, textPosition - textSpacing * 4 });
 
 
     auto& paddleBouncesText = bin::SceneGraph::AddNode<bin::Text>(
@@ -106,16 +115,16 @@ void bout::ScoreScreen::ShowStats()
         0.8f,
         SDL_Color(200, 200, 200, 255));
     paddleBouncesText.SetParent(this);
-    paddleBouncesText.SetLocalPosition({ 0, textPosition - textSpacing * 4 });
+    paddleBouncesText.SetLocalPosition({ 0, textPosition - textSpacing * 5 });
 }
 
-void bout::ScoreScreen::ExitScren()
+void bout::ScoreScreen::ExitScreen()
 {
     // Animate screen out
     bin::TweenEngine::Start({ .from = 1.0f,
                               .to = 0.0f,
-                              .duration = 1.5f,
-                              .easeType = bin::EaseType::ElasticIn,
+                              .duration = 1.0f,
+                              .easeType = bin::EaseType::SineIn,
                               .onUpdate =
                                   [this](float value) {
                                       SetLocalScale({ value, value });
