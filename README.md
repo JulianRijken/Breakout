@@ -18,6 +18,7 @@ The game was made from the ground up and took inspiration from the original Brea
 * Consider always having a root node to remove checking for parent allowing for less checks and more readable code 
 * Sound should further be abstracted to allow for playing a random set of sounds 
 * The matrix math for world to screen is done very very insufficiently and should be done on the GPU! 
+* The Service Locator pattern is not correctly implemented and is currently just a fake Singleton. It is however there for future maintenance 
 
 
 ## Future game improvements / notes
