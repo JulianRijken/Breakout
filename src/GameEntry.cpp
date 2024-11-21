@@ -20,15 +20,15 @@ void bin::Core::GameEntry()
     Audio::SetGlobalVolume(0.4f);
 
     Resources::LoadFont(bout::FontName::NES_Font, "Fonts/NES_Font.ttf", 8);
-    Resources::LoadSound(bout::SoundName::WallHit, "Sounds/SFX 3.ogg");
+    Resources::LoadSound(bout::SoundName::WallHit, "Sounds/Tetris_WallHit.ogg");
     Resources::LoadSound(bout::SoundName::PaddleHit, "Sounds/Custom_PaddleHit.ogg");
     Resources::LoadSound(bout::SoundName::BrickBreak, "Sounds/Custom_BrickBreak.ogg");
     Resources::LoadSound(bout::SoundName::ButtonPress, "Sounds/Kenney_ButtonPress.ogg");
     Resources::LoadSound(bout::SoundName::ButtonRelease, "Sounds/Kenney_ButtonRelease.ogg");
-    Resources::LoadSound(bout::SoundName::ButtonHover, "Sounds/SFX 13.ogg");
-    Resources::LoadSound(bout::SoundName::GameStart, "Sounds/SFX 10.ogg");
-    Resources::LoadSound(bout::SoundName::GameLost, "Sounds/SFX 11.ogg");
-    Resources::LoadSound(bout::SoundName::GameWon, "Sounds/SFX 1.ogg");
+    Resources::LoadSound(bout::SoundName::ButtonHover, "Sounds/Tetris_ButtonHover.ogg");
+    Resources::LoadSound(bout::SoundName::GameStart, "Sounds/Tetris_GameStart.ogg");
+    Resources::LoadSound(bout::SoundName::GameLost, "Sounds/Tetris_GameLost.ogg");
+    Resources::LoadSound(bout::SoundName::GameWon, "Sounds/Tetris_GameWon.ogg");
     Resources::LoadSound(bout::SoundName::GameStartup, "Sounds/BubbleBobble_Startup.ogg");
     Resources::LoadSound(bout::SoundName::PauseGame, "Sounds/Kenney_ButtonPress.ogg");
     Resources::LoadSound(bout::SoundName::UnPauseGame, "Sounds/Kenney_ButtonRelease.ogg");
