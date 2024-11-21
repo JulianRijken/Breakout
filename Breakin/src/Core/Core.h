@@ -29,6 +29,8 @@ namespace bin
         // Requires to be public for Emscripten
         void IncrementFrame();
 
+        static void QuitGame();
+
     private:
         // Is implemented by the game
         void PreInit(InitSettings& initSettings);
@@ -37,8 +39,12 @@ namespace bin
         // We are Breakin' and Entering!
         void Run();
 
+        // We hate this being static!
+        // But the game needs it to communicate it wants to quit :(
+        // TODO: Solve this in the future... :)
+        inline static bool g_IsApplicationQuitting{ false };
+
         float m_Lag{ 0.0f };
-        bool m_IsApplicationQuitting{ false };
         SDL_Window* m_WindowPtr{ nullptr };
     };
 }  // namespace bin

@@ -56,7 +56,7 @@ void bin::Core::Run()
     emscripten_set_main_loop_arg(&LoopCallback, this, 0, true);
 #else
 
-    while(not m_IsApplicationQuitting)
+    while(not g_IsApplicationQuitting)
         IncrementFrame();
 #endif
 }
@@ -75,7 +75,7 @@ void bin::Core::IncrementFrame()
     SceneGraph::GetInstance().MoveAddedNodesToActiveNodes();
 
     // Input
-    Input::GetInstance().ProcessInput(m_IsApplicationQuitting);
+    Input::GetInstance().ProcessInput(g_IsApplicationQuitting);
 
     // Fixed Update Loop
     while(m_Lag >= GameTime::GetFixedDeltaTime())
@@ -99,6 +99,8 @@ void bin::Core::IncrementFrame()
     // Render
     Locator::Get<Renderer>().Render();
 }
+
+void bin::Core::QuitGame() { g_IsApplicationQuitting = true; }
 
 bin::Core::~Core()
 {

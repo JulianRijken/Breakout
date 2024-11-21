@@ -2,6 +2,7 @@
 
 #include <Audio.h>
 #include <Button.h>
+#include <Core.h>
 #include <Font.h>
 #include <GameTime.h>
 #include <Resources.h>
@@ -161,6 +162,9 @@ void bout::MainMenu::OnStartButtonPress()
 
 void bout::MainMenu::OnDifficultyButtonPress()
 {
+    if(m_StartingGame)
+        return;
+
     // Todo could be done automatically with a enum and size
     // but kept for simplicty
     switch(GameState::GetInstance().m_Difficulty)
@@ -182,7 +186,7 @@ void bout::MainMenu::OnQuitButtonPress()
     if(m_StartingGame)
         return;
 
-    SDL_Quit();
+    bin::Core::QuitGame();
 }
 
 void bout::MainMenu::SetDifficulty(Difficulty difficulty)
