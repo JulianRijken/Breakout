@@ -23,16 +23,17 @@ set(SOURCE_FILES
     ${SOURCE_DIR}/UI/HUD.h                  ${SOURCE_DIR}/UI/HUD.cpp
     ${SOURCE_DIR}/UI/MainMenu.h             ${SOURCE_DIR}/UI/MainMenu.cpp
     ${SOURCE_DIR}/UI/ScoreScreen.h          ${SOURCE_DIR}/UI/ScoreScreen.cpp
+    ${SOURCE_DIR}/UI/PauseMenu.h            ${SOURCE_DIR}/UI/PauseMenu.cpp
 
                                             ${SOURCE_DIR}/GameEntry.cpp
     ${SOURCE_DIR}/Prefabs.h                 ${SOURCE_DIR}/Prefabs.cpp
+    ${SOURCE_DIR}/Scenes.h                  ${SOURCE_DIR}/Scenes.cpp
     ${SOURCE_DIR}/GameStats.h               ${SOURCE_DIR}/GameStats.cpp
     ${SOURCE_DIR}/GlobalSettings.h
 )
 
 add_executable(${TARGET_NAME}
     ${SOURCE_FILES}
-    src/Scenes.h src/Scenes.cpp
 )
 
 target_include_directories(${TARGET_NAME} PUBLIC

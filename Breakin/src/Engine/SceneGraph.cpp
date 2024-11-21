@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <iterator>
 
+#include "GameTime.h"
 
 void bin::SceneGraph::UpdateAll() const
 {
@@ -89,6 +90,10 @@ void bin::SceneGraph::LoadSceneSetToLoad()
 
     // Add nodes instantly
     MoveAddedNodesToActiveNodes();
+
+    // TODO: We force reset the time scale
+    //       this should be an option when calling load scene
+    bin::GameTime::SetTimeScale(1.0f);
 }
 
 void bin::SceneGraph::ClearScene()
