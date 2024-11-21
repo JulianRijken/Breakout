@@ -12,20 +12,21 @@ option(USE_ASAN "Use ASAN" FALSE)
 
 # Adds the source files to the executible
 set(SOURCE_FILES
-    ${SOURCE_DIR}/Breakout.h        ${SOURCE_DIR}/Breakout.cpp
-    ${SOURCE_DIR}/Paddle.h          ${SOURCE_DIR}/Paddle.cpp
-                                    ${SOURCE_DIR}/GameEntry.cpp
-    ${SOURCE_DIR}/Ball.h            ${SOURCE_DIR}/Ball.cpp
-    ${SOURCE_DIR}/Playfield.h       ${SOURCE_DIR}/Playfield.cpp
-    ${SOURCE_DIR}/Brick.h           ${SOURCE_DIR}/Brick.cpp
-    ${SOURCE_DIR}/Trail.h           ${SOURCE_DIR}/Trail.cpp
-    ${SOURCE_DIR}/HUD.h             ${SOURCE_DIR}/HUD.cpp
-    ${SOURCE_DIR}/Prefabs.h         ${SOURCE_DIR}/Prefabs.cpp
-    ${SOURCE_DIR}/HUD.h             ${SOURCE_DIR}/HUD.cpp
-    ${SOURCE_DIR}/GameStats.h       ${SOURCE_DIR}/GameStats.cpp
-    ${SOURCE_DIR}/MainMenu.h        ${SOURCE_DIR}/MainMenu.cpp
+
+    ${SOURCE_DIR}/Gameplay/Ball.h            ${SOURCE_DIR}/Gameplay/Ball.cpp
+    ${SOURCE_DIR}/Gameplay/Breakout.h        ${SOURCE_DIR}/Gameplay/Breakout.cpp
+    ${SOURCE_DIR}/Gameplay/Brick.h           ${SOURCE_DIR}/Gameplay/Brick.cpp
+    ${SOURCE_DIR}/Gameplay/Paddle.h          ${SOURCE_DIR}/Gameplay/Paddle.cpp
+    ${SOURCE_DIR}/Gameplay/Playfield.h       ${SOURCE_DIR}/Gameplay/Playfield.cpp
+    ${SOURCE_DIR}/Gameplay/Wall.h            ${SOURCE_DIR}/Gameplay/Wall.cpp
+
+    ${SOURCE_DIR}/UI/HUD.h                  ${SOURCE_DIR}/UI/HUD.cpp
+    ${SOURCE_DIR}/UI/MainMenu.h             ${SOURCE_DIR}/UI/MainMenu.cpp
+
+                                            ${SOURCE_DIR}/GameEntry.cpp
+    ${SOURCE_DIR}/Prefabs.h                 ${SOURCE_DIR}/Prefabs.cpp
+    ${SOURCE_DIR}/GameStats.h               ${SOURCE_DIR}/GameStats.cpp
     ${SOURCE_DIR}/GlobalSettings.h
-    ${SOURCE_DIR}/Wall.h            ${SOURCE_DIR}/Wall.cpp
 )
 
 add_executable(${TARGET_NAME}
@@ -34,6 +35,8 @@ add_executable(${TARGET_NAME}
 
 target_include_directories(${TARGET_NAME} PUBLIC
     ${SOURCE_DIR}
+    ${SOURCE_DIR}/UI
+    ${SOURCE_DIR}/Gameplay
 )
 
 if(USE_ASAN)

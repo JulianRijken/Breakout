@@ -56,6 +56,7 @@ namespace bout
         static constexpr float CAMERA_PADDING{ 3 };
         float m_ShakeTimer{};
 
+        bool m_GameOver{ false };
         bin::Sprite* m_BackgroundFlashSpritePtr{};
         Playfield* m_PlayfieldPtr{};
         bin::Camera* m_CameraPtr{};

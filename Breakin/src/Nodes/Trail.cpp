@@ -3,10 +3,9 @@
 #include <MathExtensions.h>
 #include <Renderer.h>
 
+void bin::Trail::SetTrailColor(SDL_Color newColor) { m_TrailColor = newColor; }
 
-void bout::Trail::SetTrailColor(SDL_Color newColor) { m_TrailColor = newColor; }
-
-void bout::Trail::FixedUpdate()
+void bin::Trail::FixedUpdate()
 {
     // Needs to be done in fixed update because this allows for equal spacing
     // could be solved with more math
@@ -18,7 +17,7 @@ void bout::Trail::FixedUpdate()
         m_PastPoints.pop_front();
 }
 
-void bout::Trail::Draw(const bin::Renderer& renderer)
+void bin::Trail::Draw(const bin::Renderer& renderer)
 {
     if(m_PastPoints.empty())
         return;

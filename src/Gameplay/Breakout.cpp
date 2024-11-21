@@ -141,6 +141,12 @@ void bout::Breakout::ShakeCamera() { m_ShakeTimer = 0.0f; }
 
 void bout::Breakout::OnGameOver(bool hasWon)
 {
+    if(m_GameOver)
+        return;
+
+    m_GameOver = true;
+
+
     // Slow down time
     bin::TweenEngine::Start({ .from = bin::GameTime::GetTimeScale(),
                               .to = 0.0f,

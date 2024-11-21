@@ -17,7 +17,7 @@ bout::Ball::Ball()
     m_BoxColliderPtr = &bin::SceneGraph::AddNode<bin::BoxCollider>(glm::vec2{ 0.5f, 0.5f });
     m_BoxColliderPtr->SetParent(this);
 
-    m_TrailPtr = &bin::SceneGraph::AddNode<bout::Trail>();
+    m_TrailPtr = &bin::SceneGraph::AddNode<bin::Trail>();
     m_TrailPtr->SetParent(this);
 }
 

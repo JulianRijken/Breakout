@@ -40,7 +40,7 @@ namespace bout
         float m_TimeSinceHit{ 0.0f };
 
         bool m_HoldingBall{ true };
-        bout::Trail* m_TrailPtr{};
+        bin::Trail* m_TrailPtr{};
         glm::vec2 m_MoveDirection{ 1, 1 };
         bin::BoxCollider* m_BoxColliderPtr{};
         SDL_Color m_BallColor{};

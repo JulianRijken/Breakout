@@ -6,7 +6,7 @@
 
 #include <deque>
 
-namespace bout
+namespace bin
 {
     class Trail final : public bin::Node
     {
