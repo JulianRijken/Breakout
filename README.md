@@ -19,6 +19,7 @@ The game was made from the ground up and took inspiration from the original Brea
 * Sound should further be abstracted to allow for playing a random set of sounds 
 * The matrix math for world to screen is done very very insufficiently and should be done on the GPU! 
 * The Service Locator pattern is not correctly implemented and is currently just a fake Singleton. It is however there for future maintenance 
+* I only use std::runtime_error or assert, proper hard and soft error handling would be great
 
 
 ## Future game improvements / notes
