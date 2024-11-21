@@ -15,6 +15,7 @@
 #include "Ball.h"
 #include "GlobalSettings.h"
 #include "HUD.h"
+#include "PauseMenu.h"
 #include "Playfield.h"
 
 bout::Breakout::Breakout()
@@ -44,6 +45,7 @@ bout::Breakout::Breakout()
     bin::Input::Bind(InputActionName::FireBall, this, &Breakout::OnFireBallInput);
     bin::Input::Bind(InputActionName::CheatSpawnBall, this, &Breakout::OnCheatSpawnBallInput);
     bin::Input::Bind(InputActionName::CheatClearField, this, &Breakout::OnCheatClearFieldInput);
+    bin::Input::Bind(InputActionName::PauseGame, this, &Breakout::OnPauseGameInput);
 
     bin::Audio::Play(bin::Resources::GetSound(SoundName::GameStart));
 
@@ -106,6 +108,8 @@ void bout::Breakout::OnBrickBreakMessage(const bin::Message& /*unused*/)
 
 void bout::Breakout::OnBallLostEvent()
 {
+    bin::Audio::Play(bin::Resources::GetSound(SoundName::BallLost));
+
     if(m_GameStats.HasBallsLeft())
         TySpawnBall();
     else
@@ -224,6 +228,30 @@ void bout::Breakout::OnCheatClearFieldInput(const bin::InputContext& context)
         return;
 
     m_PlayfieldPtr->BreakAllBricks();
+}
+
+void bout::Breakout::OnPauseGameInput(const bin::InputContext& context)
+{
+    if(context.state != bin::ButtonState::Down)
+        return;
+
+    if(m_GameOver)
+        return;
+
+
+    if(m_PauseMenuPtr == nullptr)
+    {
+        m_PauseMenuPtr = &bin::SceneGraph::AddNode<PauseMenu>();
+        bin::GameTime::SetTimeScale(0.0f);
+        bin::Audio::Play(bin::Resources::GetSound(SoundName::PauseGame));
+    }
+    else
+    {
+        bin::GameTime::SetTimeScale(1.0f);
+        m_PauseMenuPtr->HideAndDestroy();
+        m_PauseMenuPtr = nullptr;
+        bin::Audio::Play(bin::Resources::GetSound(SoundName::UnPauseGame));
+    }
 }
 
 void bout::Breakout::OnPlayfieldClearedEvent() { EndGame(true); }

@@ -30,6 +30,9 @@ void bin::Core::GameEntry()
     Resources::LoadSound(bout::SoundName::GameLost, "Sounds/SFX 11.ogg");
     Resources::LoadSound(bout::SoundName::GameWon, "Sounds/SFX 1.ogg");
     Resources::LoadSound(bout::SoundName::GameStartup, "Sounds/BubbleBobble_Startup.ogg");
+    Resources::LoadSound(bout::SoundName::PauseGame, "Sounds/Kenney_ButtonPress.ogg");
+    Resources::LoadSound(bout::SoundName::UnPauseGame, "Sounds/Kenney_ButtonRelease.ogg");
+    Resources::LoadSound(bout::SoundName::BallLost, "Sounds/BubbleBobble_BallLost.ogg");
 
     Input::AddInputAction(bout::InputActionName::CheatOpenMainMenu, { { SDL_SCANCODE_1 } });
     Input::AddInputAction(bout::InputActionName::CheatOpenGame, { { SDL_SCANCODE_2 } });

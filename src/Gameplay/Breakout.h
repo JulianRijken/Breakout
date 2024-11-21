@@ -15,6 +15,7 @@ namespace bin
 
 namespace bout
 {
+    class PauseMenu;
     class Playfield;
     class Paddle;
     class Ball;
@@ -37,6 +38,7 @@ namespace bout
         void OnFireBallInput(const bin::InputContext& context);
         void OnCheatSpawnBallInput(const bin::InputContext& context);
         void OnCheatClearFieldInput(const bin::InputContext& context);
+        void OnPauseGameInput(const bin::InputContext& context);
 
         void OnWallHitMessage(const bin::Message& message);
         void OnBrickBreakMessage(const bin::Message& message);
@@ -56,11 +58,13 @@ namespace bout
 
         float m_ShakeTimer{};
         bool m_GameOver{ false };
+
+        bout::PauseMenu* m_PauseMenuPtr{};
         bin::Sprite* m_BackgroundFlashSpritePtr{};
-        Playfield* m_PlayfieldPtr{};
+        bout::Playfield* m_PlayfieldPtr{};
         bin::Camera* m_CameraPtr{};
-        Paddle* m_PaddlePtr{};
-        GameStats m_GameStats{};
+        bout::Paddle* m_PaddlePtr{};
+        bout::GameStats m_GameStats{};
     };
 
 }  // namespace bin

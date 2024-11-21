@@ -58,6 +58,9 @@ namespace bout
         GameLost,
         GameWon,
         GameStartup,
+        PauseGame,
+        UnPauseGame,
+        BallLost
     };
 
     namespace collisionLayer
