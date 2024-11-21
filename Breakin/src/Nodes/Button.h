@@ -7,6 +7,8 @@
 
 #include "Event.h"
 #include "Node.h"
+#include "Resources.h"
+#include "Sound.h"
 
 namespace bin
 {
@@ -21,6 +23,25 @@ namespace bin
         Button& operator=(Button&&) = delete;
         Button& operator=(const Button&) = delete;
 
+        template<typename SoundName>
+        void SetOnHoverSound(SoundName sound)
+        {
+            m_ButtonHoverSound = Resources::GetSound(sound);
+        }
+
+        template<typename SoundName>
+        void SetOnPressSound(SoundName sound)
+        {
+            m_ButtonPressSound = Resources::GetSound(sound);
+        }
+
+        template<typename SoundName>
+        void SetOnReleasedSound(SoundName sound)
+        {
+            m_ButtonReleasedSound = Resources::GetSound(sound);
+        }
+
+        bin::Event<> m_OnHover{};
         bin::Event<> m_OnPress{};
         bin::Event<> m_OnReleased{};
 
@@ -34,8 +55,13 @@ namespace bin
         void Update() override;
         void Draw(const Renderer& renderer) override;
 
+        void OnHover();
         void OnPress();
         void OnReleased();
+
+        Sound* m_ButtonHoverSound{};
+        Sound* m_ButtonPressSound{};
+        Sound* m_ButtonReleasedSound{};
 
 
         bool m_IsMouseOver{};

@@ -27,10 +27,10 @@ void bin::Core::GameEntry()
     Resources::LoadSound(bout::SoundName::WallHit, "Sounds/SFX 3.ogg");
     Resources::LoadSound(bout::SoundName::PaddleHit, "Sounds/Custom_PaddleHit.ogg");
     Resources::LoadSound(bout::SoundName::BrickBreak, "Sounds/Custom_BrickBreak.ogg");
-    Resources::LoadSound(bout::SoundName::ButtonPress, "Sounds/SFX 3.ogg");
-    Resources::LoadSound(bout::SoundName::ButtonRelease, "Sounds/SFX 3.ogg");
-    Resources::LoadSound(bout::SoundName::ButtonHover, "Sounds/SFX 4.ogg");
-    Resources::LoadSound(bout::SoundName::GameStart, "Sounds/SFX 3.ogg");
+    Resources::LoadSound(bout::SoundName::ButtonPress, "Sounds/Kenney_ButtonPress.ogg");
+    Resources::LoadSound(bout::SoundName::ButtonRelease, "Sounds/Kenney_ButtonRelease.ogg");
+    Resources::LoadSound(bout::SoundName::ButtonHover, "Sounds/SFX 13.ogg");
+    Resources::LoadSound(bout::SoundName::GameStart, "Sounds/SFX 10.ogg");
     Resources::LoadSound(bout::SoundName::GameLost, "Sounds/SFX 11.ogg");
     Resources::LoadSound(bout::SoundName::GameWon, "Sounds/SFX 1.ogg");
 

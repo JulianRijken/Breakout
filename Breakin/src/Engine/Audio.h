@@ -2,6 +2,8 @@
 #define AUDIO_H
 
 #include "Locator.h"
+#include "Resources.h"
+
 
 namespace bin
 {
@@ -20,7 +22,15 @@ namespace bin
         Audio& operator=(const Audio&) = delete;
         Audio& operator=(Audio&&) noexcept = delete;
 
+        // Plays resource directly
         static void Play(Sound* sound);
+
+        // Loads from resources
+        template<typename SoundName>
+        static void Play(SoundName sound)
+        {
+            Play(Resources::GetSound(sound));
+        }
 
         // 0 to 1
         static void SetGlobalVolume(float volume);

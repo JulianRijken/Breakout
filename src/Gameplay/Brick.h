@@ -27,6 +27,8 @@ namespace bout
 
         void Break();
 
+        bin::Event<Brick&> m_OnBreakEvent{};
+
     private:
         void OnHit(const bin::Manifold& manifold);
 

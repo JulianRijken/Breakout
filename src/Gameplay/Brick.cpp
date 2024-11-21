@@ -25,9 +25,11 @@ bout::Brick::Brick(int pointsWorth, const SDL_Color& brickColor) :
 
 void bout::Brick::Break()
 {
+    // Make sure we can't break multiple times
     if(m_BoxColliderPtr == nullptr)
         return;
 
+    m_OnBreakEvent.Invoke(*this);
     bin::MessageQueue::Broadcast(MessageType::BrickBreak, { m_PointsWorth });
     bin::Audio::Play(bin::Resources::GetSound(SoundName::BrickBreak));
 

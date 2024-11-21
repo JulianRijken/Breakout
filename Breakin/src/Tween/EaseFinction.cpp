@@ -3,20 +3,16 @@
 #include <cmath>
 #include <glm/ext/scalar_constants.hpp>
 
-float bin::easeFunction::LinearLerp(float time) { return time; }
+float bin::easeFunction::Linear(float time) { return time; }
 
-float bin::easeFunction::SineInLerp(float time) { return 1.0f - std::cos(time * glm::pi<float>() / 2.0f); }
+float bin::easeFunction::SineIn(float time) { return 1.0f - std::cos(time * glm::pi<float>() / 2.0f); }
 
-float bin::easeFunction::SineOutLerp(float time) { return std::sin(time * glm::pi<float>() / 2.0f); }
+float bin::easeFunction::SineOut(float time) { return std::sin(time * glm::pi<float>() / 2.0f); }
 
-float bin::easeFunction::SineInOutLerp(float time) { return -(std::cos(glm::pi<float>() * time) - 1.0f) / 2.0f; }
+float bin::easeFunction::SineInOut(float time) { return -(std::cos(glm::pi<float>() * time) - 1.0f) / 2.0f; }
 
-float bin::easeFunction::BounceOutLerp(float time)
+float bin::easeFunction::BounceOut(float time)
 {
-    // TODO: Get rid of the magic numbers
-    static constexpr float CONSTANT_F = 7.5625f;
-    static constexpr float CONSTANT_G = 2.75f;
-
     if(time < 1.0f / CONSTANT_G)
         return CONSTANT_F * time * time;
 
@@ -38,30 +34,57 @@ float bin::easeFunction::BounceOutLerp(float time)
 
 float bin::easeFunction::BounceInOutLerp(float time)
 {
-    return time < 0.5f ? (1 - BounceOutLerp(1 - 2 * time)) / 2 : (1 + BounceOutLerp(2 * time - 1)) / 2;
+    return time < 0.5f ? (1 - BounceOut(1 - 2 * time)) / 2 : (1 + BounceOut(2 * time - 1)) / 2;
 }
+
+float bin::easeFunction::BounceInLerp(float time) { return 1 - BounceOut(1 - time); }
+
+float bin::easeFunction::ElasticIn(float time)
+{
+    return time == 0 ? 0
+         : time == 1 ? 1
+                     : -std::pow(2, 10 * time - 10) * std::sin((time * 10.0f - 10.75f) * CONSTANT_D);
+}
+
+float bin::easeFunction::ElasticOut(float time)
+{
+    return time == 0 ? 0 : time == 1 ? 1 : std::pow(2, -10 * time) * std::sin((time * 10 - 0.75f) * CONSTANT_D) + 1;
+}
+
+float bin::easeFunction::ElasticInOut(float time)
+{
+    return time == 0  ? 0
+         : time == 1  ? 1
+         : time < 0.5 ? -(std::pow(2, 20 * time - 10) * std::sin((20 * time - 11.125f) * CONSTANT_E)) / 2
+                      : std::pow(2, -20 * time + 10) * std::sin((20 * time - 11.125f) * CONSTANT_E) / 2 + 1;
+}
+
 
 float bin::easeFunction::Evaluate(float time, EaseType type)
 {
     switch(type)
     {
         case EaseType::Linear:
-            return LinearLerp(time);
+            return Linear(time);
         case EaseType::SineIn:
-            return SineInLerp(time);
+            return SineIn(time);
         case EaseType::SineOut:
-            return SineOutLerp(time);
+            return SineOut(time);
         case EaseType::SineInOut:
-            return SineInOutLerp(time);
+            return SineInOut(time);
         case EaseType::BounceIn:
             return BounceInLerp(time);
         case EaseType::BounceOut:
-            return BounceOutLerp(time);
+            return BounceOut(time);
         case EaseType::BounceInOut:
             return BounceInOutLerp(time);
+        case EaseType::ElasticIn:
+            return ElasticIn(time);
+        case EaseType::ElasticInOut:
+            return ElasticInOut(time);
+        case EaseType::ElasticOut:
+            return ElasticOut(time);
     }
 
     return 0.0f;
 }
-
-float bin::easeFunction::BounceInLerp(float time) { return 1 - BounceOutLerp(1 - time); }

@@ -6,6 +6,12 @@
 #include <queue>
 #include <utility>
 
+// Message Queue based on Event Queue from game programming patterns
+// https://gameprogrammingpatterns.com/event-queue.html
+
+// Originally implemented in Julgen
+// https://github.com/JulianRijken/Julgen
+
 namespace bin
 {
     struct Message final

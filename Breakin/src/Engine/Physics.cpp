@@ -12,6 +12,9 @@ void bin::Physics::UnregisterCollider(bin::BoxCollider* boxCollider) { m_Collide
 
 std::pair<bool, bin::Manifold> bin::Physics::DoesOverlap(bin::BoxCollider* a, bin::BoxCollider* b)
 {
+    // Overlap function based on c2AABBtoAABB from cute_c2
+    // https://github.com/RandyGaul/cute_headers/blob/master/cute_c2.h
+
     const glm::vec2 posA = a->GetWorldPosition();
     const glm::vec2 posB = b->GetWorldPosition();
     const glm::vec2 sizeA = a->GetSize();

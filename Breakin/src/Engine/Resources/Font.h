@@ -11,7 +11,7 @@ namespace bin
     class Font final
     {
     public:
-        explicit Font(const std::filesystem::path& fullPath, int size);
+        Font(const std::filesystem::path& fullPath, int size);
         ~Font();
 
 		Font(Font&&) = delete;

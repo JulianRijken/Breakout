@@ -39,7 +39,7 @@ namespace bout
     private:
         void LateUpdate() override;
 
-        void OnBrickDestroyedEvent(Node& brick);
+        void OnBrickBrokenEvent(Brick& brick);
         void OnPlayfieldCleared();
 
         void CorrectTopWallSize();

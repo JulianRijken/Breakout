@@ -45,6 +45,8 @@ bout::Breakout::Breakout()
     bin::Input::Bind(InputActionName::CheatSpawnBall, this, &Breakout::OnCheatSpawnBallInput);
     bin::Input::Bind(InputActionName::CheatClearField, this, &Breakout::OnCheatClearFieldInput);
 
+    bin::Audio::Play(bin::Resources::GetSound(SoundName::GameStart));
+
     // Move game down and spawn ball
     SetLocalPosition({ 0.0f, m_CameraPtr->GetOrthoSize() * 2.0f });
     bin::TweenEngine::Start(

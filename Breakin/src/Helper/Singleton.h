@@ -1,6 +1,12 @@
 #ifndef SINGLETON_H
 #define SINGLETON_H
 
+// Generic Singleton based on Singleton from game programming patterns
+// https://gameprogrammingpatterns.com/singleton.html
+
+// Originally implemented in Julgen
+// https://github.com/JulianRijken/Julgen
+
 namespace bin
 {
     template<typename T>

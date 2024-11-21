@@ -8,6 +8,9 @@
 #include "Tween.h"
 #include "TweenInstance.h"
 
+// Hevaly inspried by "unity-tweens" from Jeffery Lanters
+// https://github.com/jeffreylanters/unity-tweens
+
 namespace bin
 {
     class Node;

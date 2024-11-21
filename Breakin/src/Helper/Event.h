@@ -6,6 +6,12 @@
 #include <functional>
 #include <unordered_set>
 
+// Event based on Observer from game programming patterns
+// https://gameprogrammingpatterns.com/observer.html
+
+// Originally implemented in Julgen
+// https://github.com/JulianRijken/Julgen
+
 namespace bin
 {
     class IEventListener;

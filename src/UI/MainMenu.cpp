@@ -1,5 +1,6 @@
 #include "MainMenu.h"
 
+#include <Audio.h>
 #include <Button.h>
 #include <Font.h>
 #include <GameTime.h>
@@ -33,11 +34,19 @@ bout::MainMenu::MainMenu()
     startButton.SetParent(this);
     startButton.SetLocalPosition({ 0, -15 });
     startButton.m_OnReleased.AddListener(this, &MainMenu::OnStartButtonPress);
+    startButton.SetOnHoverSound(SoundName::ButtonHover);
+    startButton.SetOnPressSound(SoundName::ButtonPress);
+    startButton.SetOnReleasedSound(SoundName::ButtonRelease);
+
 
     auto& quitButton = prefabs::TextButton({ 10, 2 }, "QUIT", *this);
     quitButton.SetParent(this);
     quitButton.SetLocalPosition({ 0, -15 });
     quitButton.m_OnReleased.AddListener(this, &MainMenu::OnQuitButtonPress);
+    quitButton.SetOnHoverSound(SoundName::ButtonHover);
+    quitButton.SetOnPressSound(SoundName::ButtonPress);
+    quitButton.SetOnReleasedSound(SoundName::ButtonRelease);
+
 
     // Animate Title
     bin::TweenEngine::Start(

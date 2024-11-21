@@ -18,7 +18,7 @@ namespace bin
     class Core final
     {
     public:
-        explicit Core();
+        Core();
         ~Core();
 
         Core(Core&&) = delete;

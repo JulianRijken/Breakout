@@ -53,8 +53,8 @@ bout::Playfield::Playfield(const glm::vec2& size) :
 
             brickSpawned->SetLocalPosition(spawnPosition);
 
-            brickSpawned->m_OnDestroyedEvent.AddListener(this, &Playfield::OnBrickDestroyedEvent);
             m_BrickPtrs.insert(brickSpawned);
+            brickSpawned->m_OnBreakEvent.AddListener(this, &Playfield::OnBrickBrokenEvent);
 
             // Make bricks fall :O
             bin::TweenEngine::Start({ .delay = spawnPosition.y * 0.2f,
@@ -95,7 +95,11 @@ const glm::vec2& bout::Playfield::GetSize() const { return m_Size; }
 
 void bout::Playfield::BreakAllBricks()
 {
-    for(auto&& brick : m_BrickPtrs)
+    // This is a debug option
+    // when breaking a brick it gets removed from m_BrickPtrs
+    // thats why we make a copy before itterating
+    auto brickPtrsCopy = m_BrickPtrs;
+    for(auto&& brick : brickPtrsCopy)
         brick->Break();
 }
 
@@ -165,12 +169,9 @@ void bout::Playfield::HideWalls()
 
 void bout::Playfield::LateUpdate() { CorrectTopWallSize(); }
 
-void bout::Playfield::OnBrickDestroyedEvent(Node& brick)
+void bout::Playfield::OnBrickBrokenEvent(Brick& brick)
 {
-    auto* brickPtr = dynamic_cast<Brick*>(&brick);
-    assert(brickPtr != nullptr);
-
-    m_BrickPtrs.erase(brickPtr);
+    m_BrickPtrs.erase(&brick);
 
     if(m_BrickPtrs.empty())
         OnPlayfieldCleared();

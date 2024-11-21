@@ -5,6 +5,12 @@
 #include <typeindex>
 #include <unordered_map>
 
+// Generic Service based on Service Locator from game programming patterns
+// https://gameprogrammingpatterns.com/service-locator.html
+
+// Originally implemented in Julgen
+// https://github.com/JulianRijken/Julgen
+
 namespace bin
 {
     class Service
