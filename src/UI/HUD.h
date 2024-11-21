@@ -30,12 +30,14 @@ namespace bout
         HUD& operator=(const HUD&) = delete;
 
     private:
-        void OnScoreChanged(int score);
-        void OnBallsLeftChanged(int ballsLeft);
+        void OnScoreChangedEvent(int score);
+        void OnBallsLeftChangedEvent(int ballsLeft);
 
         void OnBallLaunchedMessage(const bin::Message& message);
         void OnBallSpawnedMessage(const bin::Message& message);
 
+        void UpdateBallsLeftText(int ballsLeft);
+        void UpdateScoreText(int score);
 
         static constexpr SDL_Color FULL_BALLS_COLOR{ 200, 200, 200, 255 };
         static constexpr SDL_Color NO_BALLS_COLOR{ 255, 50, 50, 255 };
@@ -43,6 +45,7 @@ namespace bout
         static constexpr float LAUNCH_BALL_TEXT_SHOW_DURATION{ 0.5f };
         static constexpr float FULL_BALLS_SHAKE_STRENGTH{ 0.0f };
         static constexpr float NO_BALLS_SHAKE_STRENGTH{ 0.15f };
+
 
         bin::Shaker* m_BallsLeftShaker{};
         bin::Text* m_ScoreText{};

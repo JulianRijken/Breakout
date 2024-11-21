@@ -22,6 +22,8 @@
 
 bout::Breakout::Breakout()
 {
+    GameState::GetInstance().ResetGame();
+
     m_BackgroundFlashSpritePtr = &bin::SceneGraph::AddNode<bin::Sprite>(SDL_Color(0, 0, 0, 0));
     m_BackgroundFlashSpritePtr->SetParent(this);
     m_BackgroundFlashSpritePtr->SetLocalScale({ 1000, 1000 });

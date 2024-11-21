@@ -50,7 +50,7 @@ namespace bin
         bin::Event<const InputContext&> inputEvent{};
     };
 
-    class Input final : public bin::Singleton<Input>
+    class Input final : public Singleton<Input>
     {
         friend class Core;
 

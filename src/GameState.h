@@ -4,6 +4,7 @@
 #include <Singleton.h>
 
 #include "Event.h"
+#include "GlobalSettings.h"
 
 namespace bin
 {
@@ -16,14 +17,20 @@ namespace bout
     {
     public:
         GameState();
-        ~GameState() = default;
+        ~GameState() override = default;
 
         GameState(GameState&&) = delete;
         GameState(const GameState&) = delete;
         GameState& operator=(GameState&&) = delete;
         GameState& operator=(const GameState&) = delete;
 
+        void ResetGame();
+
+        [[nodiscard]] const DifficultyPreset& GetDifficultyPreset() const;
+        [[nodiscard]] int GetGetScore() const;
+
         [[nodiscard]] bool HasBallsLeft() const;
+        [[nodiscard]] int GetBallsLeft() const;
         void RemoveBall();
 
         bin::Event<int> m_OnScoreChanged{};
@@ -32,8 +39,10 @@ namespace bout
     private:
         void OnBrickBreakMessage(const bin::Message& message);
 
-        int m_BallsLeft{ 5 };
-        int m_Score{ 0 };
+        Difficulty m_Difficulty{ Difficulty::Easy };
+
+        int m_BallsLeft{};
+        int m_Score{};
     };
 }  // namespace bout
 #endif  // GAMESTATS_H

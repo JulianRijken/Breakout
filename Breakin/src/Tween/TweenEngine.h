@@ -15,7 +15,7 @@ namespace bin
 {
     class Node;
 
-    class TweenEngine final : public bin::Singleton<TweenEngine>
+    class TweenEngine final : public Singleton<TweenEngine>
     {
         friend class Core;
 

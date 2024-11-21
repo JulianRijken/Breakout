@@ -22,9 +22,9 @@ namespace bout
     };
 
     const std::unordered_map<Difficulty, DifficultyPreset> DIFFICULTY_SETTINGS{
-        {Difficulty::Easy, { 10 }},
+        {Difficulty::Easy, { .startingBallCount = 10 }},
 
-        {Difficulty::Hard, { 10 }}
+        {Difficulty::Hard,  { .startingBallCount = 5 }}
     };
 
 

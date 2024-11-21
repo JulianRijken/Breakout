@@ -15,7 +15,7 @@
 bout::HUD::HUD()
 {
     m_ScoreText = &bin::SceneGraph::AddNode<bin::Text>(
-        "SCORE 0", bin::Resources::GetFont(FontName::NES_Font), glm::vec2{ 0.5f, 0.5f }, 1.8f);
+        "", bin::Resources::GetFont(FontName::NES_Font), glm::vec2{ 0.5f, 0.5f }, 1.8f);
     m_ScoreText->SetParent(this);
     m_ScoreText->SetLocalPosition({ 0, 9 });
 
@@ -24,7 +24,7 @@ bout::HUD::HUD()
     m_BallsLeftShaker->SetParent(this);
 
     m_BallsLeftText = &bin::SceneGraph::AddNode<bin::Text>(
-        "BALLS LEFT _", bin::Resources::GetFont(FontName::NES_Font), glm::vec2{ 0.5f, 0.5f }, 0.8f, FULL_BALLS_COLOR);
+        "", bin::Resources::GetFont(FontName::NES_Font), glm::vec2{ 0.5f, 0.5f }, 0.8f, FULL_BALLS_COLOR);
     m_BallsLeftText->SetParent(m_BallsLeftShaker);
     m_BallsLeftText->SetLocalPosition({ 0, 7.0f });
 
@@ -38,19 +38,21 @@ bout::HUD::HUD()
     m_LaunchBallText->SetLocalPosition({ 0, -5 });
 
 
-    GameState::GetInstance().m_OnScoreChanged.AddListener(this, &bout::HUD::OnScoreChanged);
-    GameState::GetInstance().m_OnBallsLeftChanged.AddListener(this, &bout::HUD::OnBallsLeftChanged);
+    GameState::GetInstance().m_OnScoreChanged.AddListener(this, &bout::HUD::OnScoreChangedEvent);
+    GameState::GetInstance().m_OnBallsLeftChanged.AddListener(this, &bout::HUD::OnBallsLeftChangedEvent);
 
     bin::MessageQueue::AddListener(MessageType::BallLaunched, this, &HUD::OnBallLaunchedMessage);
     bin::MessageQueue::AddListener(MessageType::BallSpawned, this, &HUD::OnBallSpawnedMessage);
+
+    UpdateBallsLeftText(GameState::GetInstance().GetBallsLeft());
+    UpdateScoreText(GameState::GetInstance().GetGetScore());
 }
 
 bout::HUD::~HUD() { bin::MessageQueue::RemoveListenerInstance(this); }
 
-void bout::HUD::OnScoreChanged(int score)
+void bout::HUD::OnScoreChangedEvent(int score)
 {
-    const std::string text = fmt::format("SCORE {}", score);
-    m_ScoreText->SetText(text);
+    UpdateScoreText(score);
 
     bin::TweenEngine::Start({ .from = 1.2f,
                               .to = 1.8f,
@@ -60,14 +62,12 @@ void bout::HUD::OnScoreChanged(int score)
                             *this);
 }
 
-void bout::HUD::OnBallsLeftChanged(int ballsLeft)
+void bout::HUD::OnBallsLeftChangedEvent(int ballsLeft)
 {
-    const std::string text = ballsLeft > 0 ? fmt::format("BALLS LEFT {}", ballsLeft) : "NO BALLS LEFT";
-    m_BallsLeftText->SetText(text);
+    UpdateBallsLeftText(ballsLeft);
 
-    // TODO: Get rid of magic number 4.0f which is the balls count
-    float alpha = static_cast<float>(ballsLeft) / 4.0f;
-
+    const float alpha =
+        static_cast<float>(ballsLeft) / GameState::GetInstance().GetDifficultyPreset().startingBallCount;
     m_BallsLeftText->SetColor(bin::math::Lerp(NO_BALLS_COLOR, FULL_BALLS_COLOR, alpha));
     m_BallsLeftShaker->SetStrength(bin::math::Lerp(NO_BALLS_SHAKE_STRENGTH, FULL_BALLS_SHAKE_STRENGTH, alpha));
 }
@@ -90,4 +90,16 @@ void bout::HUD::OnBallSpawnedMessage(const bin::Message& /*unused*/)
                               .easeType = bin::EaseType::SineOut,
                               .onUpdate = [this](float value) { m_LaunchBallText->SetSize(value); } },
                             *this);
+}
+
+void bout::HUD::UpdateBallsLeftText(int ballsLeft)
+{
+    const std::string text = ballsLeft > 0 ? fmt::format("BALLS LEFT {}", ballsLeft) : "NO BALLS LEFT";
+    m_BallsLeftText->SetText(text);
+}
+
+void bout::HUD::UpdateScoreText(int score)
+{
+    const std::string text = fmt::format("SCORE {}", score);
+    m_ScoreText->SetText(text);
 }
