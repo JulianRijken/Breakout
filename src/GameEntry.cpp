@@ -1,14 +1,9 @@
 #include <Audio.h>
-#include <Camera.h>
 #include <Core.h>
 #include <Input.h>
-#include <MainMenu.h>
 #include <SceneGraph.h>
-#include <Sprite.h>
 #include <Text.h>
-#include <TweenEngine.h>
 
-#include "Breakout.h"
 #include "GlobalSettings.h"
 #include "Resources.h"
 #include "Scenes.h"
@@ -22,7 +17,7 @@ void bin::Core::PreInit(bin::InitSettings& settings)
 
 void bin::Core::GameEntry()
 {
-    Audio::SetGlobalVolume(0.3f);
+    Audio::SetGlobalVolume(0.4f);
 
     Resources::LoadFont(bout::FontName::NES_Font, "Fonts/NES_Font.ttf", 8);
     Resources::LoadSound(bout::SoundName::WallHit, "Sounds/SFX 3.ogg");

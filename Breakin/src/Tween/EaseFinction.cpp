@@ -41,22 +41,25 @@ float bin::easeFunction::BounceInLerp(float time) { return 1 - BounceOut(1 - tim
 
 float bin::easeFunction::ElasticIn(float time)
 {
-    return time == 0 ? 0
-         : time == 1 ? 1
-                     : -std::pow(2, 10 * time - 10) * std::sin((time * 10.0f - 10.75f) * CONSTANT_D);
+    return time == 0.0f ? 0.0f
+         : time == 1.0f ? 1.0f
+                        : -std::pow(2.0f, 10.0f * time - 10.0f) * std::sin((time * 10.0f - 10.75f) * CONSTANT_D);
 }
 
 float bin::easeFunction::ElasticOut(float time)
 {
-    return time == 0 ? 0 : time == 1 ? 1 : std::pow(2, -10 * time) * std::sin((time * 10 - 0.75f) * CONSTANT_D) + 1;
+    return time == 0.0f ? 0.0f
+         : time == 1.0f ? 1.0f
+                        : std::pow(2.0f, -10.0f * time) * std::sin((time * 10 - 0.75f) * CONSTANT_D) + 1.0f;
 }
 
 float bin::easeFunction::ElasticInOut(float time)
 {
-    return time == 0  ? 0
-         : time == 1  ? 1
-         : time < 0.5 ? -(std::pow(2, 20 * time - 10) * std::sin((20 * time - 11.125f) * CONSTANT_E)) / 2
-                      : std::pow(2, -20 * time + 10) * std::sin((20 * time - 11.125f) * CONSTANT_E) / 2 + 1;
+    return time == 0.0f ? 0.0f
+         : time == 1.0f ? 1.0f
+         : time < 0.5f
+             ? -(std::pow(2.0f, 20.0f * time - 10.0f) * std::sin((20.0f * time - 11.125f) * CONSTANT_E)) / 2.0f
+             : std::pow(2.0f, -20.0f * time + 10.0f) * std::sin((20.0f * time - 11.125f) * CONSTANT_E) / 2.0f + 1.0f;
 }
 
 
