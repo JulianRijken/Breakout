@@ -10,7 +10,11 @@
 
 bin::InitSettings bin::Core::Configure() const
 {
-    return { .windowWidth = 1280, .windowHeight = 720, .windowTitle = "Breakout - By Julian Rijken" };
+    return
+    {
+             .windowSize = {1280, 720},
+            .windowTitle = "Breakout - By Julian Rijken"
+    };
 }
 
 void bin::Core::GameEntry()

@@ -20,16 +20,16 @@
 
 bin::Core::Core()
 {
-    const InitSettings settings{ Configure() };
+    const InitSettings initSettings{ Configure() };
 
     if(SDL_Init(SDL_INIT_VIDEO) != 0)
         throw std::runtime_error(fmt::format("SDL_Init Error: {}", SDL_GetError()));
 
-    m_WindowPtr = SDL_CreateWindow(settings.windowTitle.c_str(),
+    m_WindowPtr = SDL_CreateWindow(initSettings.windowTitle.c_str(),
                                    SDL_WINDOWPOS_CENTERED,
                                    SDL_WINDOWPOS_CENTERED,
-                                   settings.windowWidth,
-                                   settings.windowHeight,
+                                   initSettings.windowSize.x,
+                                   initSettings.windowSize.y,
                                    SDL_WINDOW_RESIZABLE);
 
     Locator::Provide<Renderer>(m_WindowPtr);

@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include <glm/vec2.hpp>
+
 struct SDL_Window;
 struct SDL_Renderer;
 
@@ -10,8 +12,7 @@ namespace bin
 {
     struct InitSettings
     {
-        int windowWidth = 1280;
-        int windowHeight = 720;
+        glm::ivec2 windowSize = { 1280, 720 };
         std::string windowTitle = "Breakin Application";
     };
 
