@@ -8,11 +8,9 @@
 #include "Resources.h"
 #include "Scenes.h"
 
-void bin::Core::PreInit(bin::InitSettings& settings)
+bin::InitSettings bin::Core::Configure() const
 {
-    settings.windowWidth = 1280;
-    settings.windowHeight = 720;
-    settings.windowTitle = "Breakout - By Julian Rijken";
+    return { .windowWidth = 1280, .windowHeight = 720, .windowTitle = "Breakout - By Julian Rijken" };
 }
 
 void bin::Core::GameEntry()

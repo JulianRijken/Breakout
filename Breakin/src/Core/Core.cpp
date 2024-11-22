@@ -20,8 +20,7 @@
 
 bin::Core::Core()
 {
-    InitSettings settings{};
-    PreInit(settings);
+    const InitSettings settings{ Configure() };
 
     if(SDL_Init(SDL_INIT_VIDEO) != 0)
         throw std::runtime_error(fmt::format("SDL_Init Error: {}", SDL_GetError()));

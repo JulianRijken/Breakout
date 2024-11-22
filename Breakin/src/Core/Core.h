@@ -36,7 +36,7 @@ namespace bin
 
     private:
         // Is implemented by the game
-        void PreInit(InitSettings& initSettings);
+        InitSettings Configure() const;
 
         // Is implemented by the game
         void GameEntry();
