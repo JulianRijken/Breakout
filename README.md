@@ -2,6 +2,7 @@
 ## Made by Julian Rijken
 
 The game and engine was made in 5 work days.
+The `src/` directory contains the game, and `Breakin/` contains the engine.
 
 The engine takes a lot of inspiration from Julgen (an engine I made before) but opts for a Node-based system similar to Godot's. This is done for simplicity, allowing for maximum flexibility over performance.
 

@@ -4,6 +4,7 @@
 #include <Locator.h>
 
 #include <glm/vec2.hpp>
+#include <optional>
 #include <unordered_set>
 
 namespace bin
@@ -22,7 +23,7 @@ namespace bin
         friend class BoxCollider;
 
     public:
-        [[nodiscard]] static std::pair<bool, Manifold> DoesOverlap(BoxCollider* a, BoxCollider* b);
+        [[nodiscard]] static std::optional<Manifold> DoesOverlap(BoxCollider* a, BoxCollider* b);
         [[nodiscard]] const std::unordered_set<BoxCollider*>& GetColliders() const;
 
     private:

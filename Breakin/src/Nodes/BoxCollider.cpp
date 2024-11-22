@@ -1,7 +1,6 @@
 #include "BoxCollider.h"
 
 #include "Physics.h"
-#include "Renderer.h"
 
 bin::BoxCollider::BoxCollider(const glm::vec2& size, uint16_t layers) :
     m_Layers(layers),

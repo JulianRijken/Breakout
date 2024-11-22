@@ -27,17 +27,25 @@ void bin::Button::Update()
     const glm::vec2 mouseWorldPosition = camera->ScreenToWorldPosition(mousePosition);
 
     const bool wasMouseOver = m_IsMouseOver;
-    m_IsMouseOver = math::ABB(mouseWorldPosition, GetWorldPosition(), m_Size * GetWorldScale());
+    m_IsMouseOver = math::IsPointInBox(mouseWorldPosition, GetWorldPosition(), m_Size * GetWorldScale());
 
-    if(wasMouseOver == false and m_IsMouseOver == true)
+    if(not wasMouseOver and m_IsMouseOver)
         OnHover();
 
     m_IsMouseDown = (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT));
 
-    const float targetScale = (m_IsPressed ? m_PressedScale : (m_IsMouseOver ? m_SelectedScale : 1.0f));
+    const float targetScale{ [this]()
+                             {
+                                 if(m_IsPressed)
+                                     return m_PressedScale;
+                                 if(m_IsMouseOver)
+                                     return m_SelectedScale;
+
+                                 return 1.0f;
+                             }() };
     m_CurrentScale =
         bin::math::LerpSmooth(m_CurrentScale, targetScale, m_ScaleLerpDuration, GameTime::GetUnscaledDeltaTime());
-    SetLocalScale(glm::vec2(1.0f) * m_CurrentScale);
+    SetLocalScale(glm::vec2(m_CurrentScale));
 
     // TODO: Holding mouse down and hovering over also triggers now
     if(m_IsMouseDown)
@@ -83,6 +91,8 @@ void bin::Button::OnHover()
 {
     if(m_ButtonHoverSound != nullptr)
         Audio::Play(m_ButtonHoverSound);
+
+    m_OnHover.Invoke();
 }
 
 void bin::Button::OnPress()
@@ -97,5 +107,6 @@ void bin::Button::OnReleased()
 {
     if(m_ButtonReleasedSound != nullptr)
         Audio::Play(m_ButtonReleasedSound);
+
     m_OnReleased.Invoke();
 }

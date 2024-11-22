@@ -16,7 +16,7 @@ namespace bin
 {
     class Texture;
 
-    class Renderer final : public bin::Service
+    class Renderer final : public Service
     {
         friend class Core;
 
@@ -26,8 +26,8 @@ namespace bin
         void DrawLine(const glm::vec2& from, const glm::vec2& to,
                       const SDL_Color& color = { 255, 255, 255, 255 }) const;
 
-        void DrawTexture(const Texture* texture, const glm::vec2& position, const glm::vec2& scale, float pixelsPerUnit,
-                         const glm::vec2& pivot) const;
+        void DrawTexture(const Texture* texturePtr, const glm::vec2& position, const glm::vec2& scale,
+                         float pixelsPerUnit, const glm::vec2& pivot) const;
 
         void DrawRectRotated(const glm::vec2& position, const glm::vec2& scale = { 1.0f, 1.0f },
                              const glm::vec2& pivot = { 0.5f, 0.5f }, float angle = 0.0f,

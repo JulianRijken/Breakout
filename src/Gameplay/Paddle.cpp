@@ -48,7 +48,7 @@ void bout::Paddle::TryLaunchBall(Node& parent)
         return;
 
     m_HoldingBallPtr->SetParent(&parent);
-    m_HoldingBallPtr->LaunchBall();
+    m_HoldingBallPtr->Launch();
     m_HoldingBallPtr = nullptr;
 
     bin::MessageQueue::Broadcast(MessageType::BallLaunched);
@@ -60,7 +60,7 @@ void bout::Paddle::FixedUpdate() { UpdatePaddlePosition(); }
 
 void bout::Paddle::Update() { UpdatePaddleVisualAngle(); }
 
-void bout::Paddle::OnHit(const bin::Manifold&)
+void bout::Paddle::OnHit(const bin::Manifold& /*unused*/)
 {
     bin::Audio::Play(bin::Resources::GetSound(SoundName::PaddleHit));
     GameState::GetInstance().IncrementPaddleBounces();
@@ -90,7 +90,7 @@ void bout::Paddle::UpdatePaddleVisualAngle()
     m_PaddleAngle = bin::math::LerpSmooth(
         m_PaddleAngle, -delta * ANGLE_DISTANCE, ANGLE_SMOOTH_DURATION, bin::GameTime::GetDeltaTime());
 
-    SetLocalAngle(m_PaddleAngle);
+    m_SpritePtr->SetLocalAngle(m_PaddleAngle);
 }
 
 void bout::Paddle::UpdatePaddlePosition()

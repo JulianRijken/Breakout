@@ -10,11 +10,12 @@
 
 bin::InitSettings bin::Core::Configure() const
 {
-    return
-    {
-             .windowSize = {1280, 720},
-            .windowTitle = "Breakout - By Julian Rijken"
+    // clang-format off
+    return {
+        .windowSize = { 1280, 720 },
+        .windowTitle = "Breakout - By Julian Rijken"
     };
+    // clang-format on
 }
 
 void bin::Core::GameEntry()
@@ -36,18 +37,19 @@ void bin::Core::GameEntry()
     Resources::LoadSound(bout::SoundName::UnPauseGame, "Sounds/Kenney_ButtonRelease.ogg");
     Resources::LoadSound(bout::SoundName::BallLost, "Sounds/BubbleBobble_BallLost.ogg");
 
-    Input::AddInputAction(bout::InputActionName::CheatOpenMainMenu, { { SDL_SCANCODE_1 } });
-    Input::AddInputAction(bout::InputActionName::CheatOpenGame, { { SDL_SCANCODE_2 } });
-    Input::AddInputAction(bout::InputActionName::CheatOpenWinScreen, { { SDL_SCANCODE_3 } });
-    Input::AddInputAction(bout::InputActionName::CheatOpenLoseScreen, { { SDL_SCANCODE_4 } });
-    Input::AddInputAction(bout::InputActionName::CheatOpenScoreScreen, { { SDL_SCANCODE_5 } });
-    Input::AddInputAction(bout::InputActionName::CheatSpawnBall, { { SDL_SCANCODE_B } });
-    Input::AddInputAction(bout::InputActionName::CheatClearField, { { SDL_SCANCODE_C } });
+    Input::AddInputAction(bout::InputActionName::CheatOpenMainMenu, { .keyboardButtons{ SDL_SCANCODE_1 } });
+    Input::AddInputAction(bout::InputActionName::CheatOpenGame, { .keyboardButtons{ SDL_SCANCODE_2 } });
+    Input::AddInputAction(bout::InputActionName::CheatOpenWinScreen, { .keyboardButtons{ SDL_SCANCODE_3 } });
+    Input::AddInputAction(bout::InputActionName::CheatOpenLoseScreen, { .keyboardButtons{ SDL_SCANCODE_4 } });
+    Input::AddInputAction(bout::InputActionName::CheatOpenScoreScreen, { .keyboardButtons{ SDL_SCANCODE_5 } });
+    Input::AddInputAction(bout::InputActionName::CheatSpawnBall, { .keyboardButtons{ SDL_SCANCODE_B } });
+    Input::AddInputAction(bout::InputActionName::CheatClearField, { .keyboardButtons{ SDL_SCANCODE_C } });
     Input::AddInputAction(bout::InputActionName::PauseGame,
                           {
-                              {SDL_SCANCODE_P, SDL_SCANCODE_ESCAPE}
+                              .keyboardButtons{ SDL_SCANCODE_P, SDL_SCANCODE_ESCAPE }
     });
-    Input::AddInputAction(bout::InputActionName::FireBall, { { SDL_SCANCODE_SPACE }, true });
+    Input::AddInputAction(bout::InputActionName::FireBall,
+                          { .keyboardButtons{ SDL_SCANCODE_SPACE }, .leftMouseButton = true });
 
 
     SceneGraph::BindScene(bout::SceneName::Game, bout::scenes::GameScene);

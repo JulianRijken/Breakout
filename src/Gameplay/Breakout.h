@@ -10,7 +10,7 @@ namespace bin
     class Camera;
     struct InputContext;
     struct Message;
-}
+}  // namespace bin
 
 namespace bout
 {
@@ -46,7 +46,7 @@ namespace bout
 
         void OffsetPlayfield();
         void MovePaddle();
-        void TySpawnBall();
+        void TrySpawnBall();
         void EndGame(bool hasWon);
         void FlashScreen();
 
@@ -65,5 +65,5 @@ namespace bout
         bin::Sprite* m_BackgroundFlashSpritePtr{};
     };
 
-}  // namespace bin
+}  // namespace bout
 #endif  // BREAKOUT_H

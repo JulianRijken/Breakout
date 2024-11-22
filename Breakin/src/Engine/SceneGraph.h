@@ -65,7 +65,7 @@ namespace bin
 
         // Reruns camera with the highest priority
         // Can be nullptr
-        [[nodiscard]] Camera* GetBestCamera();
+        [[nodiscard]] Camera* GetBestCamera() const;
 
     private:
         void AddCamera(Camera* camera);
@@ -81,8 +81,8 @@ namespace bin
         void ClearScene();
 
 
-        bool m_BestCameraDirty{ false };
-        Camera* m_BestCamera{ nullptr };
+        mutable bool m_BestCameraDirty{ false };
+        mutable Camera* m_BestCamera{ nullptr };
 
         // There is a separation because
         // added nodes can only update the next frame

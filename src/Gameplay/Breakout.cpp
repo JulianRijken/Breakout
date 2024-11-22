@@ -66,17 +66,13 @@ bout::Breakout::Breakout()
             .to = 0.0f,
             .duration = 1.0f,
             .easeType = bin::EaseType::SineOut,
-            .onUpdate =
-                [this](float value) {
-                    SetLocalPosition({ 0, value });
-                },
-            .onEnd = [this]() { TySpawnBall(); },
+            .onUpdate = [this](float value) { SetLocalPosition({ 0, value }); },
+            .onEnd = [this]() { TrySpawnBall(); },
         },
         *this);
 }
 
 bout::Breakout::~Breakout() { bin::MessageQueue::RemoveListenerInstance(this); }
-
 
 void bout::Breakout::FixedUpdate()
 {
@@ -101,7 +97,7 @@ void bout::Breakout::OnCheatSpawnBallInput(const bin::InputContext& context)
         return;
 
     auto& ball = bin::SceneGraph::AddNode<Ball>();
-    ball.LaunchBall();
+    ball.Launch();
     ball.SetMoveDirection({ bin::math::RandomRange(-1.0f, 1.0f), 1.0f });
     ball.SetWorldPosition(m_PaddlePtr->GetWorldPosition() + glm::vec2{ 0, 2 });
     GameState::GetInstance().UseCheat();
@@ -147,15 +143,14 @@ void bout::Breakout::OnFieldClearOfBallsMessage(const bin::Message& /*unused*/)
     GameState::GetInstance().IncrementBallsLost();
 
     if(GameState::GetInstance().HasBallsLeft())
-        TySpawnBall();
+        TrySpawnBall();
     else
         EndGame(false);
 }
 
 void bout::Breakout::OnPlayfieldClearedEvent() { EndGame(true); }
 
-
-void bout::Breakout::TySpawnBall()
+void bout::Breakout::TrySpawnBall()
 {
     if(m_PaddlePtr->IsHoldingBall())
         return;
@@ -227,10 +222,7 @@ void bout::Breakout::EndGame(bool hasWon)
                                           .duration = 1.0f,
                                           .ignoreTimeScale = true,
                                           .easeType = bin::EaseType::SineInOut,
-                                          .onUpdate =
-                                              [this](float value) {
-                                                  SetLocalPosition({ 0, value });
-                                              },
+                                          .onUpdate = [this](float value) { SetLocalPosition({ 0, value }); },
                                       },
                                       *this);
 

@@ -29,10 +29,7 @@ void bout::scenes::GameWonScene()
                               .to = 0.0f,
                               .duration = 1.0f,
                               .easeType = bin::EaseType::ElasticOut,
-                              .onUpdate =
-                                  [&winnerText](float value) {
-                                      winnerText.SetLocalPosition({ 0, value });
-                                  } },
+                              .onUpdate = [&winnerText](float value) { winnerText.SetLocalPosition({ 0, value }); } },
                             winnerText);
 
     // Hide text
@@ -41,10 +38,7 @@ void bout::scenes::GameWonScene()
                               .to = 15.0f,
                               .duration = 1.0f,
                               .easeType = bin::EaseType::SineIn,
-                              .onUpdate =
-                                  [&winnerText](float value) {
-                                      winnerText.SetLocalPosition({ 0, value });
-                                  },
+                              .onUpdate = [&winnerText](float value) { winnerText.SetLocalPosition({ 0, value }); },
                               .onEnd = []() { bin::SceneGraph::LoadScene(bout::SceneName::Score); } },
                             winnerText);
 }
@@ -53,35 +47,29 @@ void bout::scenes::GameLostScene()
 {
     bin::SceneGraph::AddNode<bin::Camera>();
 
-    auto& winnerText = bin::SceneGraph::AddNode<bin::Text>("YOU LOSE",
-                                                           bin::Resources::GetFont(bout::FontName::NES_Font),
-                                                           glm::vec2{ 0.5f, 0.5f },
-                                                           3.0f,
-                                                           SDL_Color{ 240, 60, 100, 255 });
+    auto& loserText = bin::SceneGraph::AddNode<bin::Text>("YOU LOSE",
+                                                          bin::Resources::GetFont(bout::FontName::NES_Font),
+                                                          glm::vec2{ 0.5f, 0.5f },
+                                                          3.0f,
+                                                          SDL_Color{ 240, 60, 100, 255 });
 
     // Show text
     bin::TweenEngine::Start({ .from = -15.0f,
                               .to = 0.0f,
                               .duration = 1.0f,
                               .easeType = bin::EaseType::SineOut,
-                              .onUpdate =
-                                  [&winnerText](float value) {
-                                      winnerText.SetLocalPosition({ 0, value });
-                                  } },
-                            winnerText);
+                              .onUpdate = [&loserText](float value) { loserText.SetLocalPosition({ 0, value }); } },
+                            loserText);
 
     // Hide text
     bin::TweenEngine::Start({ .delay = 2.0f,
-                              .from = winnerText.GetLocalPosition().y,
+                              .from = loserText.GetLocalPosition().y,
                               .to = 15.0f,
                               .duration = 1.0f,
                               .easeType = bin::EaseType::SineIn,
-                              .onUpdate =
-                                  [&winnerText](float value) {
-                                      winnerText.SetLocalPosition({ 0, value });
-                                  },
+                              .onUpdate = [&loserText](float value) { loserText.SetLocalPosition({ 0, value }); },
                               .onEnd = []() { bin::SceneGraph::LoadScene(bout::SceneName::Score); } },
-                            winnerText);
+                            loserText);
 }
 
 void bout::scenes::ScoreScene() { bin::SceneGraph::AddNode<ScoreScreen>(); }

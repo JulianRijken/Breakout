@@ -18,13 +18,13 @@ namespace bin::math
     constexpr Type RandomValue()
     {
         return static_cast<Type>(rand() % RAND_MAX) / static_cast<Type>(RAND_MAX);
-    };
+    }
 
     template<typename Type>
         requires std::floating_point<Type>
     constexpr Type RandomRange(Type min, Type max)
     {
-        if (min > max)
+        if(min > max)
         {
             const Type tempMax = max;
             max = min;
@@ -41,7 +41,7 @@ namespace bin::math
         requires std::integral<Type>
     constexpr Type RandomRange(Type min, Type max)
     {
-        if (min > max)
+        if(min > max)
         {
             Type tempMax = max;
             max = min;
@@ -55,7 +55,7 @@ namespace bin::math
     constexpr Type Clamp01(const Type& value)
     {
         return std::clamp(value, static_cast<Type>(0), static_cast<Type>(1));
-    };
+    }
 
     template<typename Type>
         requires std::integral<Type> or std::floating_point<Type>
@@ -64,7 +64,7 @@ namespace bin::math
         if(min == max)
             return value;
 
-        if (min > max)
+        if(min > max)
         {
             const Type tempMax = max;
             max = min;
@@ -93,7 +93,7 @@ namespace bin::math
     constexpr Type ClampLoop01(Type value)
     {
         return ClampLoop(value, static_cast<Type>(0), static_cast<Type>(1));
-    };
+    }
 
     constexpr glm::bvec2 AABB(const glm::vec2& aPos, const glm::vec2& aSize, const glm::vec2& bPos,
                               const glm::vec2& bSize)
@@ -111,7 +111,7 @@ namespace bin::math
         return { (minA.x <= maxB.x) and (maxA.x >= minB.x), (minA.y <= maxB.y) and (maxA.y >= minB.y) };
     }
 
-    constexpr bool ABB(const glm::vec2& aPos, const glm::vec2& bPos, const glm::vec2& bSize)
+    constexpr bool IsPointInBox(const glm::vec2& aPos, const glm::vec2& bPos, const glm::vec2& bSize)
     {
         const glm::vec2 minB = bPos - bSize * 0.5f;
         const glm::vec2 maxB = bPos + bSize * 0.5f;
@@ -221,5 +221,5 @@ namespace bin::math
 
         return glm::mix(d, e, time);
     }
-}
-#endif // MATHEXTENSIONS_H
+}  // namespace bin::math
+#endif  // MATHEXTENSIONS_H

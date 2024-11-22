@@ -112,7 +112,7 @@ bool bin::Node::IsMarkedForDestroy() const { return m_MarkedForDestroy; }
 
 bool bin::Node::IsGettingDestroyed() const { return m_GettingDestroyed; }
 
-void bin::Node::PropagateDirtyTransform()
+void bin::Node::PropagateDirtyTransform() const
 {
     m_TransformDirty = true;
 
@@ -146,7 +146,7 @@ void bin::Node::UpdateWorldTransform() const
     m_TransformDirty = false;
 }
 
-void bin::Node::SetParent(Node* newParentPtr, bool worldPositionStays)
+void bin::Node::SetParent(Node* newParentPtr, bool worldTransformStays)
 {
     if(newParentPtr == m_ParentPtr or newParentPtr == this or IsChild(newParentPtr))
         return;
@@ -156,7 +156,7 @@ void bin::Node::SetParent(Node* newParentPtr, bool worldPositionStays)
     {
         m_ParentPtr->m_ChildPtrs.erase(this);
 
-        if(worldPositionStays)
+        if(worldTransformStays)
         {
             m_LocalPosition += m_ParentPtr->GetWorldPosition();
             m_LocalAngle += m_ParentPtr->GetWorldAngle();
@@ -171,7 +171,7 @@ void bin::Node::SetParent(Node* newParentPtr, bool worldPositionStays)
     {
         m_ParentPtr->m_ChildPtrs.insert(this);
 
-        if(worldPositionStays)
+        if(worldTransformStays)
         {
             m_LocalPosition -= m_ParentPtr->GetWorldPosition();
             m_LocalAngle -= m_ParentPtr->GetWorldAngle();

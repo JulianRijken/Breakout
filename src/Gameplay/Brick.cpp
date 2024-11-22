@@ -85,10 +85,10 @@ void bout::Brick::HoldBall()
 void bout::Brick::Update()
 {
     if(m_HoldsBall)
-        BlinkBrick();
+        Blink();
 }
 
-void bout::Brick::BlinkBrick()
+void bout::Brick::Blink()
 {
     constexpr SDL_Color blinkColor = { 255, 255, 255, 255 };
     constexpr float blinkSpeed = 5.0f;
@@ -105,7 +105,7 @@ void bout::Brick::ReleaseBall()
 
     auto& ball = bin::SceneGraph::AddNode<Ball>(
         GameState::GetInstance().GetDifficultyPreset().ballMoveSpeed, ballHitColor, ballColor);
-    ball.LaunchBall();
+    ball.Launch();
     ball.SetMoveDirection({ bin::math::RandomRange(-1.0f, 1.0f), bin::math::RandomRange(-1.0f, 1.0f) });
     ball.SetWorldPosition(GetWorldPosition());
 }

@@ -29,7 +29,7 @@ namespace bout
 
         void OnHit(const bin::Manifold& manifold);
 
-        void BounceWall();
+        void Bounce();
 
         bin::Sprite* m_SpritePtr{};
         glm::vec2 m_MoveDirection{};

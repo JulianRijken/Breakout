@@ -47,6 +47,7 @@ set(BREAKIN_SOURCE_FILES
     ${SOURCE_DIR}/Nodes/Button.h                ${SOURCE_DIR}/Nodes/Button.cpp
     ${SOURCE_DIR}/Nodes/Sprite.h                ${SOURCE_DIR}/Nodes/Sprite.cpp
     ${SOURCE_DIR}/Nodes/Trail.h                 ${SOURCE_DIR}/Nodes/Trail.cpp
+    ${SOURCE_DIR}/Nodes/Shaker.h                ${SOURCE_DIR}/Nodes/Shaker.cpp
 
     # Helper
     ${SOURCE_DIR}/Helper/Event.h
@@ -65,7 +66,6 @@ set(BREAKIN_SOURCE_FILES
 
 add_library(${TARGET_NAME} STATIC
     ${BREAKIN_SOURCE_FILES}
-    src/Nodes/Shaker.h src/Nodes/Shaker.cpp
 )
 
 

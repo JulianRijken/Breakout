@@ -21,9 +21,9 @@ bout::Wall::Wall(const glm::vec2& moveDirection) :
     m_SpritePtr->SetParent(this);
 }
 
-void bout::Wall::OnHit(const bin::Manifold&) { BounceWall(); }
+void bout::Wall::OnHit(const bin::Manifold& /*unused*/) { Bounce(); }
 
-void bout::Wall::BounceWall()
+void bout::Wall::Bounce()
 {
     bin::Audio::Play(bin::Resources::GetSound(SoundName::WallHit));
 

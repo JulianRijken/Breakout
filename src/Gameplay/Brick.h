@@ -10,7 +10,7 @@ namespace bin
     class BoxCollider;
     class Sprite;
     struct Manifold;
-}
+}  // namespace bin
 
 namespace bout
 {
@@ -33,7 +33,7 @@ namespace bout
     private:
         void Update() override;
 
-        void BlinkBrick();
+        void Blink();
         void ReleaseBall();
         void OnHit(const bin::Manifold& manifold);
 

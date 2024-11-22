@@ -8,7 +8,7 @@ namespace bin
 {
     struct Manifold;
     class Sprite;
-}
+}  // namespace bin
 
 namespace bout
 {
@@ -35,7 +35,7 @@ namespace bout
     private:
         void FixedUpdate() override;
         void Update() override;
-        void OnHit(const bin::Manifold&);
+        void OnHit(const bin::Manifold& /*unused*/);
 
         void UpdatePaddleVisualAngle();
         void UpdatePaddlePosition();

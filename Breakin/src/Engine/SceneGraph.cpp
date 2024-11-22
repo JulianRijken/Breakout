@@ -45,7 +45,7 @@ void bin::SceneGraph::CleanupNodesSetToDestroy()
     // Nodes are first marked for destroy and then actually set getting destroyed
     //
     // Marked For Destroy -> Can be changed during the update and does not
-    //                       tell the children. This is because you might un parent
+    //                       tell the children. This is because you might unparent
     //                       as soon as you mark something for destroy.
     //
     // Getting Destroyed -> We go over all nodes again and go down the tree to set them
@@ -81,7 +81,7 @@ void bin::SceneGraph::LoadSceneSetToLoad()
     // Call functions to load scene
     m_SceneBinds[loadingScene]();
 
-    // Ye someone actually loaded a scene while loading a scene
+    // Ye someone (Julian) actually loaded a scene while loading a scene
     if(m_SceneToLoad >= 0)
     {
         LoadSceneSetToLoad();
@@ -111,8 +111,7 @@ void bin::SceneGraph::ClearScene()
     } while(not m_AddedNodes.empty());
 }
 
-
-bin::Camera* bin::SceneGraph::GetBestCamera()
+bin::Camera* bin::SceneGraph::GetBestCamera() const
 {
     if(m_BestCameraDirty)
     {
@@ -140,4 +139,3 @@ void bin::SceneGraph::RemoveCamera(Camera* camera)
     m_BestCameraDirty = true;
     m_Cameras.erase(camera);
 }
-

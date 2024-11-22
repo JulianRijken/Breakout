@@ -25,18 +25,21 @@ bin::Renderer::Renderer(SDL_Window* windowPtr) :
 
 void bin::Renderer::Render() const
 {
-    const Camera* camera = SceneGraph::GetInstance().GetBestCamera();
-    if(camera == nullptr)
+    const Camera* cameraPtr = SceneGraph::GetInstance().GetBestCamera();
+    if(cameraPtr == nullptr)
     {
         std::cerr << "Scene has no camera" << '\n';
         return;
     }
 
-    SDL_SetRenderDrawColor(
-        m_RendererPtr, camera->m_ClearColor.r, camera->m_ClearColor.g, camera->m_ClearColor.b, camera->m_ClearColor.a);
+    SDL_SetRenderDrawColor(m_RendererPtr,
+                           cameraPtr->m_ClearColor.r,
+                           cameraPtr->m_ClearColor.g,
+                           cameraPtr->m_ClearColor.b,
+                           cameraPtr->m_ClearColor.a);
     SDL_RenderClear(m_RendererPtr);
 
-    // TODO: Should be a global option
+    // TODO: Should have a global isDebugging option
     // DrawUnitGrid();
     bin::SceneGraph::GetInstance().DrawAll(*this);
 
@@ -55,15 +58,15 @@ void bin::Renderer::DrawLine(const glm::vec2& from, const glm::vec2& to, const S
     SDL_RenderDrawLine(m_RendererPtr, fromScreen.x, fromScreen.y, toScreen.x, toScreen.y);
 }
 
-void bin::Renderer::DrawTexture(const Texture* texture, const glm::vec2& position, const glm::vec2& scale,
+void bin::Renderer::DrawTexture(const Texture* texturePtr, const glm::vec2& position, const glm::vec2& scale,
                                 float pixelsPerUnit, const glm::vec2& pivot) const
 {
-    assert(texture != nullptr && "Texture is null!");
+    assert(texturePtr != nullptr && "Texture is null!");
 
     const Camera* camera = SceneGraph::GetInstance().GetBestCamera();
     assert(camera && "Camera is null, you are probably drawing outside of Draw()");
 
-    const glm::ivec2 textureSize = texture->GetSize();
+    const glm::ivec2 textureSize = texturePtr->GetSize();
     const glm::vec2 worldSize = static_cast<glm::vec2>(textureSize) / pixelsPerUnit * scale;
 
     const glm::vec2 offsetPosition = position - worldSize * pivot;
@@ -74,7 +77,7 @@ void bin::Renderer::DrawTexture(const Texture* texture, const glm::vec2& positio
     const SDL_Rect destRect = { screenPos.x, screenPos.y + screenScale.y, screenScale.x, -screenScale.y };
     const SDL_Rect srcRect = { 0, 0, textureSize.x, textureSize.y };
 
-    SDL_RenderCopy(m_RendererPtr, texture->GetSDLTexture(), &srcRect, &destRect);
+    SDL_RenderCopy(m_RendererPtr, texturePtr->GetSDLTexture(), &srcRect, &destRect);
 }
 
 void bin::Renderer::DrawRectRotated(const glm::vec2& position, const glm::vec2& scale, const glm::vec2& pivot,
@@ -155,12 +158,10 @@ float bin::Renderer::GetAspectRatio()
     return static_cast<float>(windowSize.x) / static_cast<float>(windowSize.y);
 }
 
-
 SDL_Texture* bin::Renderer::CreateTextureFromSurface(SDL_Surface* surface)
 {
     return SDL_CreateTextureFromSurface(Locator::Get<Renderer>().m_RendererPtr, surface);
 }
-
 
 void bin::Renderer::DrawUnitGrid() const
 {

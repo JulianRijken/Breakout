@@ -20,7 +20,7 @@ namespace bin
         Trail& operator=(Trail&&) = delete;
         Trail& operator=(const Trail&) = delete;
 
-        void SetTrailColor(SDL_Color newColor);
+        void SetTrailColor(const SDL_Color& newColor);
 
     private:
         void FixedUpdate() override;
@@ -29,6 +29,8 @@ namespace bin
         void IncrementPastPoints();
 
         SDL_Color m_TrailColor{ 255, 255, 255, 255 };
+
+        // NOTE: would ideally use a ring buffer as we know the size
         std::deque<PastPoint> m_PastPoints{};
     };
 }  // namespace bin

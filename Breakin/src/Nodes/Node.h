@@ -2,6 +2,7 @@
 #define NODE_H
 
 #include <Event.h>
+
 #include <glm/mat3x3.hpp>
 #include <glm/vec2.hpp>
 #include <unordered_set>
@@ -9,6 +10,7 @@
 namespace bin
 {
     class Renderer;
+
     class Node
     {
         friend class SceneGraph;
@@ -59,7 +61,7 @@ namespace bin
         [[nodiscard]] float GetWorldAngle() const;
         [[nodiscard]] const glm::vec2& GetWorldScale() const;
 
-        void SetParent(Node* newParentPtr, bool worldPositionStays = true);
+        void SetParent(Node* newParentPtr, bool worldTransformStays = true);
         void MarkForDestroy(bool destroy = true);
 
         [[nodiscard]] bool IsChild(Node* checkChildPtr) const;
@@ -74,7 +76,7 @@ namespace bin
 
 
     private:
-        void PropagateDirtyTransform();
+        void PropagateDirtyTransform() const;
 
         void UpdateWorldTransform() const;
 

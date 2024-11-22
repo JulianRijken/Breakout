@@ -45,6 +45,7 @@ bin::Core::Core()
 
 #ifdef __EMSCRIPTEN__
 #include "emscripten.h"
+
 void LoopCallback(void* arg) { static_cast<bin::Core*>(arg)->IncrementFrame(); }
 #endif
 
