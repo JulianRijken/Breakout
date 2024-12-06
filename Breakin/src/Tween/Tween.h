@@ -2,7 +2,8 @@
 #define TWEEN_H
 
 #include <functional>
-#include "EaseFinction.h"
+
+#include "EaseFunction.h"
 
 namespace bin
 {

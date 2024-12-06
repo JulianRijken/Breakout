@@ -37,7 +37,7 @@ namespace bin
 
     private:
         // Is implemented by the game
-        InitSettings Configure() const;
+        [[nodiscard]] InitSettings Configure() const;
 
         // Is implemented by the game
         void GameEntry();

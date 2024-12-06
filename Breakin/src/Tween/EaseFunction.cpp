@@ -1,4 +1,4 @@
-#include "EaseFinction.h"
+#include "EaseFunction.h"
 
 #include <cmath>
 #include <glm/ext/scalar_constants.hpp>

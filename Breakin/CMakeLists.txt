@@ -59,7 +59,7 @@ set(BREAKIN_SOURCE_FILES
 
     # Tween
     ${SOURCE_DIR}/Tween/Tween.h
-    ${SOURCE_DIR}/Tween/EaseFinction.h          ${SOURCE_DIR}/Tween/EaseFinction.cpp
+    ${SOURCE_DIR}/Tween/EaseFunction.h          ${SOURCE_DIR}/Tween/EaseFunction.cpp
     ${SOURCE_DIR}/Tween/TweenEngine.h           ${SOURCE_DIR}/Tween/TweenEngine.cpp
     ${SOURCE_DIR}/Tween/TweenInstance.h         ${SOURCE_DIR}/Tween/TweenInstance.cpp
 )
